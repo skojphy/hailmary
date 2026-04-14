@@ -45,8 +45,8 @@ export const INTERESTS: InterestDefinition[] = [
 	},
 	{
 		id: 'early-adopter',
-		label: '얼리어답터',
-		emoji: '🕊️',
+		label: '야구',
+		emoji: '⚾',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
 		shape: 'pebble',
@@ -61,8 +61,8 @@ export const INTERESTS: InterestDefinition[] = [
 	},
 	{
 		id: 'running-crew',
-		label: '러닝 크루',
-		emoji: '🔥 🏃🏃 🔥',
+		label: '자전거',
+		emoji: '🚴',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
 		shape: 'tilted-quad',
