@@ -130,13 +130,13 @@
 	}
 
 	.interest-header__emoji {
-		font-size: 1.85rem;
+		font-size: 1.57rem;
 		line-height: 1;
 	}
 
 	.interest-header__label {
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 2.05rem;
+		font-size: 1.74rem;
 		line-height: 1;
 		letter-spacing: -0.03em;
 	}
@@ -228,7 +228,7 @@
 		}
 
 		.interest-header__label {
-			font-size: 1.9rem;
+			font-size: 1.62rem;
 		}
 
 		.interest-header__pill {

@@ -37,6 +37,24 @@
 		if (badge.tone === 'shorts') return 'home-card__badge home-card__badge--shorts';
 		return 'home-card__badge';
 	}
+
+	function getActionLabelParts(label: string) {
+		const match = label.match(/^(더 많은 )(.+?)( 보기)$/);
+
+		if (!match) {
+			return {
+				prefix: label,
+				focus: '',
+				suffix: ''
+			};
+		}
+
+		return {
+			prefix: match[1],
+			focus: match[2],
+			suffix: match[3]
+		};
+	}
 </script>
 
 <svelte:head>
@@ -90,7 +108,10 @@
 							</div>
 							<span>{story.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{story.buttonLabel}</button>
+						{@const action = getActionLabelParts(story.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'product'}
 						{@const product = card as ProductCard}
 						{#if product.badge.kind === 'logo'}
@@ -119,7 +140,10 @@
 							</div>
 							<span>{product.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{product.buttonLabel}</button>
+						{@const action = getActionLabelParts(product.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'live'}
 						{@const live = card as LiveCard}
 						<div class="home-card__badge-live">
@@ -144,7 +168,10 @@
 							</div>
 							<span>{live.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{live.buttonLabel}</button>
+						{@const action = getActionLabelParts(live.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'following'}
 						{@const following = card as FollowingCard}
 						<div class={badgeClass(following.badge)}>{following.badge.text}</div>
@@ -160,7 +187,10 @@
 								</div>
 							{/each}
 						</div>
-						<button type="button" class="home-card__action">{following.buttonLabel}</button>
+						{@const action = getActionLabelParts(following.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{/if}
 				</article>
 			{/each}
@@ -194,7 +224,10 @@
 							</div>
 							<span>{product.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{product.buttonLabel}</button>
+						{@const action = getActionLabelParts(product.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'shorts'}
 						{@const shorts = card as ShortsCard}
 						<div class={badgeClass(shorts.badge)}>{shorts.badge.text}</div>
@@ -216,7 +249,10 @@
 							</div>
 							<span>{shorts.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{shorts.buttonLabel}</button>
+						{@const action = getActionLabelParts(shorts.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'gallery'}
 						{@const gallery = card as GalleryCard}
 						<div class={badgeClass(gallery.badge)}>{gallery.badge.text}</div>
@@ -232,7 +268,10 @@
 							</div>
 							<span>{gallery.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{gallery.buttonLabel}</button>
+						{@const action = getActionLabelParts(gallery.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'ranking'}
 						{@const ranking = card as RankingCard}
 						<div class={badgeClass(ranking.badge)}>{ranking.badge.text}</div>
@@ -250,7 +289,10 @@
 								</div>
 							{/each}
 						</div>
-						<button type="button" class="home-card__action">{ranking.buttonLabel}</button>
+						{@const action = getActionLabelParts(ranking.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{/if}
 				</article>
 			{/each}
@@ -579,12 +621,21 @@
 		border: none;
 		border-radius: 0.86rem;
 		background: rgba(255, 255, 255, 0.95);
-		padding: 0.86rem 0.7rem;
+		padding: 0.68rem 0.7rem;
 		color: #9f9aa3;
-		font-size: 0.93rem;
-		font-weight: 700;
+		font-size: 0.86rem;
+		font-weight: 500;
 		letter-spacing: -0.02em;
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.82);
+	}
+
+	.home-card__action span {
+		color: #9f9aa3;
+	}
+
+	.home-card__action strong {
+		color: #1b1b1b;
+		font-weight: 700;
 	}
 
 	.home-card__link {
