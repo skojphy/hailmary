@@ -10,34 +10,41 @@
 	import type { InterestDefinition } from '$lib/data/interests';
 	import { createInterestPath, getBadgeWidth } from '$lib/utils/interest-geometry';
 
-	type BubbleMotion = {
-		scale: number;
-		offsetY: number;
-		rotation: number;
-		shadowBlur: number;
-	};
+type BubbleMotion = {
+	scale: number;
+	offsetY: number;
+	rotation: number;
+	shadowBlur: number;
+	opacity: number;
+};
 
-	let {
-		interest,
-		selected = false,
-		muted = false,
-		onselect = () => {}
-	}: {
-		interest: InterestDefinition;
-		selected?: boolean;
-		muted?: boolean;
-		onselect?: (selection: { id: string; enabled: boolean }) => void;
-	} = $props();
+let {
+	interest,
+	selected = false,
+	muted = false,
+	intro = false,
+	introDelay = 0,
+	onselect = () => {}
+}: {
+	interest: InterestDefinition;
+	selected?: boolean;
+	muted?: boolean;
+	intro?: boolean;
+	introDelay?: number;
+	onselect?: (selection: { id: string; enabled: boolean }) => void;
+} = $props();
 
-	let hovered = $state(false);
-	let ready = $state(false);
-	let activeAnimation: { cancel?: () => void } | undefined;
-	let motion = $state<BubbleMotion>({
-		scale: 1,
-		offsetY: 0,
-		rotation: 0,
-		shadowBlur: 20
-	});
+let hovered = $state(false);
+let ready = $state(false);
+let introSettled = $state(false);
+let activeAnimation: { cancel?: () => void } | undefined;
+let motion = $state<BubbleMotion>({
+	scale: 1.01,
+	offsetY: 0,
+	rotation: 0,
+	shadowBlur: 20,
+	opacity: 1
+});
 
 	const pathData = $derived(createInterestPath(interest.shape, interest.width, interest.height));
 	const titleWidth = $derived(Math.max(132, interest.width - 68));
@@ -49,68 +56,100 @@
 			titleWidth
 		)
 	);
-	const badgeFontSize = $derived(badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
-	const badgeHeight = 40;
-	const titleY = $derived(Math.max(-16, -interest.height * 0.12));
-	const badgeY = $derived(
-		Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
-	);
+const badgeFontSize = $derived(badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
+const badgeHeight = 40;
+const titleY = $derived(Math.max(-16, -interest.height * 0.12));
+const badgeY = $derived(
+	Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
+);
 	const isMuted = $derived(!selected && muted);
-	const displayFillStart = $derived(isMuted ? muteHexColor(interest.fillStart) : interest.fillStart);
-	const displayFillEnd = $derived(isMuted ? muteHexColor(interest.fillEnd) : interest.fillEnd);
-	const opacity = $derived(selected ? 1 : 0.96);
-	const titleColor = $derived(selected ? '#fff8f4' : '#f0efed');
+	const displayFillStart = $derived(isMuted ? '#4b4b4b' : interest.fillStart);
+	const displayFillEnd = $derived(isMuted ? '#4b4b4b' : interest.fillEnd);
+	const opacity = $derived(selected ? 1 : 0.84);
+	const titleColor = $derived(selected ? '#fff8f4' : '#ece7e3');
 	const badgeFill = $derived(
-		selected ? `${displayFillStart}88` : `${displayFillStart}cc`
+		selected ? `${displayFillStart}88` : '#5d5d5dcc'
 	);
-	const glowColor = $derived(selected ? `${displayFillStart}aa` : `${displayFillStart}55`);
-	const motionTarget = $derived.by(() => {
-		if (selected) {
-			return {
-				scale: 1.08,
-				offsetY: -16,
-				rotation: interest.rotation + 2,
-				shadowBlur: 48
-			};
-		}
-
-		if (hovered && interest.enabled) {
-			return {
-				scale: 1.03,
-				offsetY: -8,
-				rotation: interest.rotation + 1.5,
-				shadowBlur: 40
-			};
-		}
-
+const glowColor = $derived(selected ? `${displayFillStart}aa` : '#00000014');
+const motionTarget = $derived.by(() => {
+	if (selected) {
 		return {
-			scale: 1,
-			offsetY: 0,
-			rotation: interest.rotation,
-			shadowBlur: interest.enabled ? 32 : 18
+			scale: 1.09,
+			offsetY: -16,
+			rotation: interest.rotation + 2,
+			shadowBlur: 48,
+			opacity
 		};
-	});
+	}
+
+	if (hovered && interest.enabled) {
+		return {
+			scale: 1.04,
+			offsetY: -8,
+			rotation: interest.rotation + 1.5,
+			shadowBlur: 40,
+			opacity
+		};
+	}
+
+	return {
+		scale: 1.01,
+		offsetY: 0,
+		rotation: interest.rotation,
+		shadowBlur: selected ? 32 : 10,
+		opacity
+	};
+});
 
 	onMount(() => {
-		ready = true;
-		runMotion(motionTarget, true);
-	});
+		if (intro) {
+			motion = {
+				scale: 0.985,
+				offsetY: -Math.max(480, interest.y + interest.height),
+				rotation: interest.rotation - 6,
+				shadowBlur: 0,
+				opacity: 1
+			};
+			ready = true;
+			runMotion(
+				motionTarget,
+				false,
+				introDelay,
+				() => {
+					introSettled = true;
+				},
+				true
+			);
+			return;
+		}
+
+	ready = true;
+	introSettled = true;
+	runMotion(motionTarget, true);
+});
 
 	onDestroy(() => {
 		activeAnimation?.cancel?.();
 	});
 
 	$effect(() => {
-		if (!ready) return;
+	if (!ready || !introSettled) return;
 
-		untrack(() => {
-			runMotion(motionTarget);
-		});
+	untrack(() => {
+		runMotion(motionTarget);
 	});
+});
 
-	function runMotion(next: BubbleMotion, immediate = false) {
+	function runMotion(
+		next: BubbleMotion,
+		immediate = false,
+		delay = 0,
+		onComplete?: () => void,
+		introDrop = false
+	) {
 		if (immediate) {
 			motion = next;
+			onComplete?.();
 			return;
 		}
 
@@ -122,18 +161,24 @@
 			offsetY: next.offsetY,
 			rotation: next.rotation,
 			shadowBlur: next.shadowBlur,
-			duration: selected ? 900 : 700,
+			opacity: next.opacity,
+			delay,
+			duration: introDrop ? 1320 : selected ? 900 : 700,
 			ease: spring({
-				bounce: selected ? 0.6 : 0.38,
-				duration: selected ? 900 : 700
+				bounce: introDrop ? 0.72 : selected ? 0.6 : 0.38,
+				duration: introDrop ? 1320 : selected ? 900 : 700
 			}),
 			onUpdate: () => {
 				motion = {
 					scale: animated.scale,
 					offsetY: animated.offsetY,
 					rotation: animated.rotation,
-					shadowBlur: animated.shadowBlur
+					shadowBlur: animated.shadowBlur,
+					opacity: animated.opacity
 				};
+			},
+			onComplete: () => {
+				onComplete?.();
 			}
 		});
 	}
@@ -150,38 +195,6 @@
 		return Math.max(20, Math.min(base, estimated));
 	}
 
-	function muteHexColor(hex: string) {
-		const value = hex.replace('#', '');
-		const normalized =
-			value.length === 3
-				? value
-						.split('')
-						.map((char) => `${char}${char}`)
-						.join('')
-				: value;
-
-		const r = Number.parseInt(normalized.slice(0, 2), 16);
-		const g = Number.parseInt(normalized.slice(2, 4), 16);
-		const b = Number.parseInt(normalized.slice(4, 6), 16);
-		const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-		const grayTarget = luminance * 0.58 + 38;
-
-		return toHex(
-			mixChannel(r, grayTarget, 0.84),
-			mixChannel(g, grayTarget, 0.84),
-			mixChannel(b, grayTarget, 0.84)
-		);
-	}
-
-	function mixChannel(value: number, target: number, amount: number) {
-		return Math.round(value + (target - value) * amount);
-	}
-
-	function toHex(r: number, g: number, b: number) {
-		return `#${[r, g, b]
-			.map((channel) => Math.max(0, Math.min(255, channel)).toString(16).padStart(2, '0'))
-			.join('')}`;
-	}
 </script>
 
 <Group
@@ -190,7 +203,7 @@
 	rotation={motion.rotation}
 	scaleX={motion.scale}
 	scaleY={motion.scale}
-	{opacity}
+	opacity={motion.opacity}
 	onpointerclick={emitSelection}
 	ontap={emitSelection}
 	onmouseover={() => (hovered = true)}

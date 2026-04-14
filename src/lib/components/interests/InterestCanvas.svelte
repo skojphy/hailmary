@@ -21,12 +21,15 @@
 	let initialized = $state(false);
 	let isPinching = $state(false);
 	let pinchDistance = $state<number | null>(null);
+	let introBubbleIds = $state(new Set<string>());
+	let introDelays = $state<Record<string, number>>({});
+	let introResetTimer = $state<number | null>(null);
 	let canvasElement = $state<HTMLDivElement | null>(null);
 	let stageHandle: { node?: { position: (pos: { x: number; y: number }) => void } } | null =
 		$state(null);
 
 	const MAX_SCALE = 1.5;
-	const CONTENT_EDGE_PADDING = 14;
+	const CONTENT_EDGE_PADDING = 8;
 	const CONTENT_BOUNDS = getContentBounds();
 	const CONTENT_WIDTH = CONTENT_BOUNDS.maxX - CONTENT_BOUNDS.minX;
 	const CONTENT_HEIGHT = CONTENT_BOUNDS.maxY - CONTENT_BOUNDS.minY;
@@ -44,6 +47,16 @@
 			const initial = getInitialStagePosition(viewportWidth, viewportHeight, scale);
 			stageX = initial.x;
 			stageY = initial.y;
+			introBubbleIds = getIntroBubbleIds(initial.x, initial.y, scale);
+			introDelays = getIntroDelays(introBubbleIds, initial.x, initial.y, scale);
+			const maxDelay = Math.max(0, ...Object.values(introDelays));
+			if (introResetTimer !== null) {
+				window.clearTimeout(introResetTimer);
+			}
+			introResetTimer = window.setTimeout(() => {
+				introBubbleIds = new Set<string>();
+				introDelays = {};
+			}, maxDelay + 1100);
 			initialized = true;
 		}
 	});
@@ -63,28 +76,15 @@
 	});
 
 	function clampStage(x: number, y: number, nextScale: number) {
-		const minX = viewportWidth - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxX * nextScale;
-		const maxX = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minX * nextScale;
-		const minY = viewportHeight - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxY * nextScale;
-		const maxY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
-
-		const boundedX = minX > maxX ? (minX + maxX) / 2 : Math.min(maxX, Math.max(minX, x));
-		const boundedY = minY > maxY ? (minY + maxY) / 2 : Math.min(maxY, Math.max(minY, y));
-
-		return {
-			x: boundedX,
-			y: boundedY
-		};
+		return clampStageToViewport(x, y, nextScale, viewportWidth, viewportHeight);
 	}
 
 	function getInitialStagePosition(width: number, height: number, nextScale: number) {
 		const contentWidth = CONTENT_WIDTH * nextScale;
-		const contentHeight = CONTENT_HEIGHT * nextScale;
+		const centeredX = width / 2 - (CONTENT_BOUNDS.minX * nextScale + contentWidth / 2);
+		const topAlignedY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
 
-		return {
-			x: width / 2 - (CONTENT_BOUNDS.minX * nextScale + contentWidth / 2),
-			y: height / 2 - (CONTENT_BOUNDS.minY * nextScale + contentHeight / 2)
-		};
+		return clampStageToViewport(centeredX, topAlignedY, nextScale, width, height);
 	}
 
 	function handleDragMove(event: { target?: { x: () => number; y: () => number } }) {
@@ -216,6 +216,64 @@
 			}
 		);
 	}
+
+	function clampStageToViewport(
+		x: number,
+		y: number,
+		nextScale: number,
+		width: number,
+		height: number
+	) {
+		const minX = width - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxX * nextScale;
+		const maxX = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minX * nextScale;
+		const minY = height - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxY * nextScale;
+		const maxY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
+
+		return {
+			x: minX > maxX ? (minX + maxX) / 2 : Math.min(maxX, Math.max(minX, x)),
+			y: minY > maxY ? (minY + maxY) / 2 : Math.min(maxY, Math.max(minY, y))
+		};
+	}
+
+	function getIntroBubbleIds(initialX: number, initialY: number, nextScale: number) {
+		const visible = new Set<string>();
+		const viewportRight = viewportWidth + 90;
+		const viewportBottom = viewportHeight + 140;
+
+		for (const interest of INTERESTS) {
+			const left = initialX + (interest.x - interest.width / 2) * nextScale;
+			const top = initialY + (interest.y - interest.height / 2) * nextScale;
+			const right = initialX + (interest.x + interest.width / 2) * nextScale;
+			const bottom = initialY + (interest.y + interest.height / 2) * nextScale;
+
+			if (right >= -90 && left <= viewportRight && bottom >= -60 && top <= viewportBottom) {
+				visible.add(interest.id);
+			}
+		}
+
+		return visible;
+	}
+
+	function getIntroDelays(
+		visibleIds: Set<string>,
+		initialX: number,
+		initialY: number,
+		nextScale: number
+	) {
+		const delays: Record<string, number> = {};
+
+		for (const interest of INTERESTS) {
+			if (!visibleIds.has(interest.id)) continue;
+
+			const screenX = initialX + interest.x * nextScale;
+			const screenY = initialY + interest.y * nextScale;
+			const rowDelay = Math.max(0, Math.round(screenY / 90) * 34);
+			const columnDelay = Math.max(0, Math.round(screenX / 240) * 22);
+			delays[interest.id] = rowDelay + columnDelay;
+		}
+
+		return delays;
+	}
 </script>
 
 <div
@@ -254,6 +312,8 @@
 						{interest}
 						selected={false}
 						muted={true}
+						intro={introBubbleIds.has(interest.id)}
+						introDelay={introDelays[interest.id] ?? 0}
 						onselect={() => handleSelect(interest)}
 					/>
 				{/each}
@@ -263,6 +323,8 @@
 						{interest}
 						selected={true}
 						muted={false}
+						intro={introBubbleIds.has(interest.id)}
+						introDelay={introDelays[interest.id] ?? 0}
 						onselect={() => handleSelect(interest)}
 					/>
 				{/each}
