@@ -44,6 +44,5 @@ export const following = writable([
   { id: '1', name: '맛피자', followers: '49,241명', imageUrl: 'https://i.pravatar.cc/150?u=12' },
   { id: '2', name: '윤남노', followers: '12,913명', imageUrl: 'https://i.pravatar.cc/150?u=15' },
   { id: '3', name: '손종원', followers: '89,483명', imageUrl: 'https://i.pravatar.cc/150?u=16' },
-  { id: '4', name: '김풍', followers: '53,219명', imageUrl: 'https://i.pravatar.cc/150?u=18' },
-  { id: '5', name: '아기맹수', followers: '1,512명', imageUrl: 'https://i.pravatar.cc/150?u=19' },
+  { id: '4', name: '아기맹수', followers: '1,512명', imageUrl: 'https://i.pravatar.cc/150?u=19' },
 ]);
