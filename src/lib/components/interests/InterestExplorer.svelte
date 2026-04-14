@@ -9,6 +9,8 @@
 	} from '$lib/data/interests';
 
 	let selectedIds = $state(new Set<string>(SELECTABLE_IDS));
+	let titleOffsetX = $state(0);
+	let titleOffsetY = $state(0);
 
 	const selectedCount = $derived(selectedIds.size);
 	const firstSelectedId = $derived(Array.from(selectedIds)[0] ?? null);
@@ -36,6 +38,17 @@
 		selectedIds = next;
 	}
 
+	function handleViewportChange(viewport: {
+		x: number;
+		y: number;
+		scale: number;
+		initialX: number;
+		initialY: number;
+	}) {
+		titleOffsetX = viewport.x - viewport.initialX;
+		titleOffsetY = viewport.y - viewport.initialY;
+	}
+
 	async function finishSelection() {
 		if (selectedCount !== MAX_SELECTIONS) {
 			window.alert(`메이크업, 러닝, 테크까지 ${MAX_SELECTIONS}개를 모두 선택해 주세요.`);
@@ -57,14 +70,19 @@
 	<title>관심사 선택</title>
 </svelte:head>
 
-<section
-	class="min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl relative bg-gray-50 svelte-b4ygjh"
->
+<section class="interest-explorer min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl">
 	<div class="interest-explorer__canvas">
-		<InterestCanvas {selectedIds} onInterestSelect={handleInterestSelect} />
+		<InterestCanvas
+			{selectedIds}
+			onInterestSelect={handleInterestSelect}
+			onViewportChange={handleViewportChange}
+		/>
 	</div>
 
-	<header class="interest-explorer__header">
+	<header
+		class="interest-explorer__header"
+		style={`transform: translate(${titleOffsetX}px, ${titleOffsetY}px);`}
+	>
 		<h1>요즘 관심 있는 게 뭐예요?</h1>
 	</header>
 
@@ -76,6 +94,13 @@
 </section>
 
 <style>
+	:global(html),
+	:global(body) {
+		background: #252525;
+		overflow: hidden;
+		overscroll-behavior: none;
+	}
+
 	.interest-explorer {
 		position: relative;
 		height: 100dvh;
@@ -114,7 +139,7 @@
 
 	.interest-explorer__header {
 		position: absolute;
-		top: 18px;
+		top: 28px;
 		left: 0;
 		right: 0;
 		z-index: 3;
@@ -125,10 +150,11 @@
 
 	.interest-explorer__header h1 {
 		margin: 0;
-		font-size: clamp(2rem, 4.6vw, 3.05rem);
+		font-size: clamp(1.28rem, 2.9vw, 1.72rem);
 		line-height: 1.08;
 		letter-spacing: -0.045em;
-		font-weight: 800;
+		font-weight: 400;
+		color: #ffffff;
 		text-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
 	}
 
@@ -136,11 +162,13 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 18px;
+		bottom: 0;
 		z-index: 4;
 		display: flex;
 		justify-content: center;
-		padding: 0 24px max(18px, env(safe-area-inset-bottom));
+		padding:
+			0 24px
+			calc(24px + env(safe-area-inset-bottom, 0px) + 28px);
 	}
 
 	.interest-explorer__footer button {
@@ -173,7 +201,7 @@
 
 	@media (max-width: 720px) {
 		.interest-explorer__header {
-			top: 14px;
+			top: 22px;
 			padding: 0 18px;
 		}
 
@@ -183,11 +211,13 @@
 		}
 
 		.interest-explorer__footer {
-			padding-inline: 18px;
+			padding:
+				0 18px
+				calc(24px + env(safe-area-inset-bottom, 0px) + 32px);
 		}
 
 		.interest-explorer__header h1 {
-			font-size: clamp(1.9rem, 7.4vw, 2.6rem);
+			font-size: clamp(1.18rem, 5.3vw, 1.48rem);
 		}
 	}
 </style>

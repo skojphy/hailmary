@@ -7,10 +7,18 @@
 
 	let {
 		selectedIds = new Set<string>(),
-		onInterestSelect = () => {}
+		onInterestSelect = () => {},
+		onViewportChange = () => {}
 	}: {
 		selectedIds?: Set<string>;
 		onInterestSelect?: (interest: InterestDefinition) => void;
+		onViewportChange?: (viewport: {
+			x: number;
+			y: number;
+			scale: number;
+			initialX: number;
+			initialY: number;
+		}) => void;
 	} = $props();
 
 	let viewportWidth = $state(0);
@@ -19,6 +27,8 @@
 	let stageY = $state(0);
 	let scale = $state(1);
 	let initialized = $state(false);
+	let initialStageX = $state(0);
+	let initialStageY = $state(0);
 	let isPinching = $state(false);
 	let pinchDistance = $state<number | null>(null);
 	let introBubbleIds = $state(new Set<string>());
@@ -29,13 +39,16 @@
 		$state(null);
 
 	const MAX_SCALE = 1.5;
-	const CONTENT_EDGE_PADDING = 8;
+	const INITIAL_SCALE = 0.8;
+	const CONTENT_EDGE_PADDING_X = 24;
+	const CONTENT_EDGE_PADDING_TOP = 96;
+	const CONTENT_EDGE_PADDING_BOTTOM = 104;
 	const CONTENT_BOUNDS = getContentBounds();
 	const CONTENT_WIDTH = CONTENT_BOUNDS.maxX - CONTENT_BOUNDS.minX;
 	const CONTENT_HEIGHT = CONTENT_BOUNDS.maxY - CONTENT_BOUNDS.minY;
 	const minScale = $derived(
 		viewportWidth > 0
-			? Math.min(1, (viewportWidth - CONTENT_EDGE_PADDING * 2) / Math.max(CONTENT_WIDTH, 1))
+			? Math.min(1, (viewportWidth - CONTENT_EDGE_PADDING_X * 2) / Math.max(CONTENT_WIDTH, 1))
 			: 1
 	);
 
@@ -44,11 +57,15 @@
 
 	$effect(() => {
 		if (viewportWidth > 0 && viewportHeight > 0 && !initialized) {
-			const initial = getInitialStagePosition(viewportWidth, viewportHeight, scale);
+			const initialScale = clampScale(INITIAL_SCALE);
+			scale = initialScale;
+			const initial = getInitialStagePosition(viewportWidth, viewportHeight, initialScale);
+			initialStageX = initial.x;
+			initialStageY = initial.y;
 			stageX = initial.x;
 			stageY = initial.y;
-			introBubbleIds = getIntroBubbleIds(initial.x, initial.y, scale);
-			introDelays = getIntroDelays(introBubbleIds, initial.x, initial.y, scale);
+			introBubbleIds = getIntroBubbleIds(initial.x, initial.y, initialScale);
+			introDelays = getIntroDelays(introBubbleIds, initial.x, initial.y, initialScale);
 			const maxDelay = Math.max(0, ...Object.values(introDelays));
 			if (introResetTimer !== null) {
 				window.clearTimeout(introResetTimer);
@@ -59,6 +76,18 @@
 			}, maxDelay + 1100);
 			initialized = true;
 		}
+	});
+
+	$effect(() => {
+		if (!initialized) return;
+
+		onViewportChange({
+			x: stageX,
+			y: stageY,
+			scale,
+			initialX: initialStageX,
+			initialY: initialStageY
+		});
 	});
 
 	$effect(() => {
@@ -82,7 +111,7 @@
 	function getInitialStagePosition(width: number, height: number, nextScale: number) {
 		const contentWidth = CONTENT_WIDTH * nextScale;
 		const centeredX = width / 2 - (CONTENT_BOUNDS.minX * nextScale + contentWidth / 2);
-		const topAlignedY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
+		const topAlignedY = CONTENT_EDGE_PADDING_TOP - CONTENT_BOUNDS.minY * nextScale;
 
 		return clampStageToViewport(centeredX, topAlignedY, nextScale, width, height);
 	}
@@ -224,10 +253,10 @@
 		width: number,
 		height: number
 	) {
-		const minX = width - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxX * nextScale;
-		const maxX = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minX * nextScale;
-		const minY = height - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxY * nextScale;
-		const maxY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
+		const minX = width - CONTENT_EDGE_PADDING_X - CONTENT_BOUNDS.maxX * nextScale;
+		const maxX = CONTENT_EDGE_PADDING_X - CONTENT_BOUNDS.minX * nextScale;
+		const minY = height - CONTENT_EDGE_PADDING_BOTTOM - CONTENT_BOUNDS.maxY * nextScale;
+		const maxY = CONTENT_EDGE_PADDING_TOP - CONTENT_BOUNDS.minY * nextScale;
 
 		return {
 			x: minX > maxX ? (minX + maxX) / 2 : Math.min(maxX, Math.max(minX, x)),
@@ -267,8 +296,8 @@
 
 			const screenX = initialX + interest.x * nextScale;
 			const screenY = initialY + interest.y * nextScale;
-			const rowDelay = Math.max(0, Math.round(screenY / 90) * 34);
-			const columnDelay = Math.max(0, Math.round(screenX / 240) * 22);
+			const rowDelay = Math.max(0, Math.round(screenY / 120) * 16);
+			const columnDelay = Math.max(0, Math.round(screenX / 260) * 10);
 			delays[interest.id] = rowDelay + columnDelay;
 		}
 

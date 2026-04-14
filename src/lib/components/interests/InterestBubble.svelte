@@ -24,6 +24,13 @@ let {
 	muted = false,
 	intro = false,
 	introDelay = 0,
+	interactive = true,
+	showSelectionMark = true,
+	showBadge = true,
+	showEmoji = false,
+	compact = false,
+	staticPose = false,
+	showGlow = true,
 	onselect = () => {}
 }: {
 	interest: InterestDefinition;
@@ -31,6 +38,13 @@ let {
 	muted?: boolean;
 	intro?: boolean;
 	introDelay?: number;
+	interactive?: boolean;
+	showSelectionMark?: boolean;
+	showBadge?: boolean;
+	showEmoji?: boolean;
+	compact?: boolean;
+	staticPose?: boolean;
+	showGlow?: boolean;
 	onselect?: (selection: { id: string; enabled: boolean }) => void;
 } = $props();
 
@@ -47,20 +61,37 @@ let motion = $state<BubbleMotion>({
 });
 
 	const pathData = $derived(createInterestPath(interest.shape, interest.width, interest.height));
-	const titleWidth = $derived(Math.max(132, interest.width - 68));
-	const badgeWidth = $derived(Math.min(getBadgeWidth(interest.badge), interest.width - 56));
+	const titleWidth = $derived(
+		compact ? Math.max(86, interest.width - 26) : Math.max(96, interest.width - 68)
+	);
+	const badgeWidth = $derived(
+		Math.min(getBadgeWidth(interest.badge), interest.width - (compact ? 28 : 56))
+	);
 	const titleFontSize = $derived(
 		getTitleFontSize(
-			interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36),
+			(interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36)) * (compact ? 0.4 : 1),
 			interest.label,
 			titleWidth
 		)
 	);
-const badgeFontSize = $derived(badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
-const badgeHeight = 40;
-const titleY = $derived(Math.max(-16, -interest.height * 0.12));
+const badgeFontSize = $derived(compact ? 8.5 : badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
+const badgeHeight = $derived(compact ? 22 : 40);
+const titleY = $derived(
+	showBadge
+		? compact
+			? Math.max(-4, -interest.height * 0.02)
+			: Math.max(-16, -interest.height * 0.12)
+		: -titleFontSize * 0.52
+);
+const emojiY = $derived(showBadge ? titleY - (compact ? 26 : 34) : titleY - (compact ? 24 : 28));
 const badgeY = $derived(
-	Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
+	Math.min(
+		interest.height / 2 - badgeHeight - (compact ? 10 : 18),
+		titleY + titleFontSize + (compact ? 5 : 14)
+	)
+);
+const badgeTextY = $derived(
+	badgeY + (badgeHeight - badgeFontSize) / 2 + badgeFontSize * (compact ? 0.12 : 0.1)
 );
 	const isMuted = $derived(!selected && muted);
 	const displayFillStart = $derived(isMuted ? '#4b4b4b' : interest.fillStart);
@@ -70,14 +101,24 @@ const badgeY = $derived(
 	const badgeFill = $derived(
 		selected ? `${displayFillStart}88` : '#5d5d5dcc'
 	);
-const glowColor = $derived(selected ? `${displayFillStart}aa` : '#00000014');
+const glowColor = $derived(showGlow ? (selected ? `${displayFillStart}aa` : '#00000014') : 'transparent');
 const motionTarget = $derived.by(() => {
+	if (staticPose) {
+		return {
+			scale: 1,
+			offsetY: 0,
+			rotation: interest.rotation,
+			shadowBlur: showGlow ? (selected ? 24 : 10) : 0,
+			opacity
+		};
+	}
+
 	if (selected) {
 		return {
 			scale: 1.09,
 			offsetY: -16,
 			rotation: interest.rotation + 2,
-			shadowBlur: 48,
+			shadowBlur: showGlow ? 48 : 0,
 			opacity
 		};
 	}
@@ -87,7 +128,7 @@ const motionTarget = $derived.by(() => {
 			scale: 1.04,
 			offsetY: -8,
 			rotation: interest.rotation + 1.5,
-			shadowBlur: 40,
+			shadowBlur: showGlow ? 40 : 0,
 			opacity
 		};
 	}
@@ -96,7 +137,7 @@ const motionTarget = $derived.by(() => {
 		scale: 1.01,
 		offsetY: 0,
 		rotation: interest.rotation,
-		shadowBlur: selected ? 32 : 10,
+		shadowBlur: showGlow ? (selected ? 32 : 10) : 0,
 		opacity
 	};
 });
@@ -105,9 +146,9 @@ const motionTarget = $derived.by(() => {
 		if (intro) {
 			motion = {
 				scale: 0.985,
-				offsetY: -Math.max(480, interest.y + interest.height),
-				rotation: interest.rotation - 6,
-				shadowBlur: 0,
+				offsetY: -4,
+				rotation: interest.rotation + (selected ? 2.8 : -2.4),
+				shadowBlur: showGlow ? (selected ? 18 : 8) : 0,
 				opacity: 1
 			};
 			ready = true;
@@ -145,7 +186,7 @@ const motionTarget = $derived.by(() => {
 		immediate = false,
 		delay = 0,
 		onComplete?: () => void,
-		introDrop = false
+		introShake = false
 	) {
 		if (immediate) {
 			motion = next;
@@ -163,10 +204,10 @@ const motionTarget = $derived.by(() => {
 			shadowBlur: next.shadowBlur,
 			opacity: next.opacity,
 			delay,
-			duration: introDrop ? 1320 : selected ? 900 : 700,
+			duration: introShake ? 620 : selected ? 900 : 700,
 			ease: spring({
-				bounce: introDrop ? 0.72 : selected ? 0.6 : 0.38,
-				duration: introDrop ? 1320 : selected ? 900 : 700
+				bounce: introShake ? 0.22 : selected ? 0.6 : 0.38,
+				duration: introShake ? 620 : selected ? 900 : 700
 			}),
 			onUpdate: () => {
 				motion = {
@@ -184,6 +225,8 @@ const motionTarget = $derived.by(() => {
 	}
 
 	function emitSelection() {
+		if (!interactive) return;
+
 		onselect({
 			id: interest.id,
 			enabled: interest.enabled
@@ -191,6 +234,10 @@ const motionTarget = $derived.by(() => {
 	}
 
 	function getTitleFontSize(base: number, label: string, width: number) {
+		if (compact) {
+			return Math.max(16, Math.min(18, Math.floor(width / Math.max(label.length * 0.98, 1))));
+		}
+
 		const estimated = Math.floor(width / Math.max(label.length * 0.92, 1));
 		return Math.max(20, Math.min(base, estimated));
 	}
@@ -204,10 +251,10 @@ const motionTarget = $derived.by(() => {
 	scaleX={motion.scale}
 	scaleY={motion.scale}
 	opacity={motion.opacity}
-	onpointerclick={emitSelection}
-	ontap={emitSelection}
-	onmouseover={() => (hovered = true)}
-	onmouseout={() => (hovered = false)}
+	onpointerclick={interactive ? emitSelection : undefined}
+	ontap={interactive ? emitSelection : undefined}
+	onmouseover={interactive ? () => (hovered = true) : undefined}
+	onmouseout={interactive ? () => (hovered = false) : undefined}
 >
 	<Path
 		data={pathData}
@@ -216,8 +263,8 @@ const motionTarget = $derived.by(() => {
 		fillLinearGradientColorStops={[0, displayFillStart, 1, displayFillEnd]}
 		shadowColor={glowColor}
 		shadowBlur={motion.shadowBlur}
-		shadowOffsetY={16}
-		shadowOpacity={selected ? 0.45 : 0.3}
+		shadowOffsetY={showGlow ? 16 : 0}
+		shadowOpacity={showGlow ? (selected ? 0.45 : 0.3) : 0}
 	/>
 
 	<Text
@@ -230,31 +277,46 @@ const motionTarget = $derived.by(() => {
 		fontSize={titleFontSize}
 		fontStyle="900"
 		fill={titleColor}
-		lineHeight={0.98}
+		lineHeight={compact ? 0.84 : 0.98}
 		letterSpacing={-1.4}
 	/>
 
-	<Rect
-		x={-badgeWidth / 2}
-		y={badgeY}
-		width={badgeWidth}
-		height={badgeHeight}
-		cornerRadius={999}
-		fill={badgeFill}
-	/>
+	{#if showEmoji}
+		<Text
+			x={-titleWidth / 2}
+			y={emojiY}
+			width={titleWidth}
+			align="center"
+			text={interest.emoji}
+			fontSize={compact ? 14 : 20}
+			lineHeight={1}
+		/>
+	{/if}
 
-	<Text
-		x={-badgeWidth / 2}
-		y={badgeY + 9}
-		width={badgeWidth}
-		align="center"
-		text={interest.badge}
-		fontSize={badgeFontSize}
-		fontStyle="700"
-		fill="#ffffff"
-	/>
+	{#if showBadge}
+		<Rect
+			x={-badgeWidth / 2}
+			y={badgeY}
+			width={badgeWidth}
+			height={badgeHeight}
+			cornerRadius={999}
+			fill={badgeFill}
+		/>
 
-	{#if selected}
+		<Text
+			x={-badgeWidth / 2}
+			y={badgeTextY}
+			width={badgeWidth}
+			align="center"
+			text={interest.badge}
+			fontSize={badgeFontSize}
+			fontStyle="700"
+			lineHeight={1}
+			fill="#ffffff"
+		/>
+	{/if}
+
+	{#if selected && showSelectionMark}
 		<Circle
 			x={-interest.width / 2 + 26}
 			y={-interest.height / 2 + 24}

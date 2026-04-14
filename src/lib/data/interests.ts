@@ -1,4 +1,11 @@
-export type InterestShape = 'orb' | 'pebble' | 'hex' | 'clover' | 'tilted-quad' | 'pill';
+export type InterestShape =
+	| 'orb'
+	| 'pebble'
+	| 'hex'
+	| 'clover'
+	| 'four-leaf'
+	| 'tilted-quad'
+	| 'pill';
 
 export type InterestDefinition = {
 	id: string;
@@ -38,7 +45,7 @@ export const INTERESTS: InterestDefinition[] = [
 		y: 274,
 		width: 250,
 		height: 232,
-		rotation: -8,
+		rotation: -11,
 		enabled: true,
 		fillStart: '#ff4fc4',
 		fillEnd: '#ff2758'
@@ -49,12 +56,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '⚾',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'pebble',
+		shape: 'hex',
 		x: 381,
 		y: 238,
 		width: 244,
 		height: 216,
-		rotation: -2,
+		rotation: -6,
 		enabled: false,
 		fillStart: '#6857d9',
 		fillEnd: '#3f3ba8'
@@ -65,12 +72,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🚴',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'tilted-quad',
+		shape: 'four-leaf',
 		x: 625,
 		y: 286,
 		width: 220,
 		height: 206,
-		rotation: 14,
+		rotation: 8,
 		enabled: false,
 		fillStart: '#ff8a30',
 		fillEnd: '#d85a22'
@@ -97,12 +104,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '💻 👩‍💻 🖥️',
 		badge: '12.2K 참여 중',
 		labelFontSize: 30,
-		shape: 'clover',
+		shape: 'hex',
 		x: 360,
 		y: 516,
-		width: 238,
-		height: 222,
-		rotation: -6,
+		width: 250,
+		height: 228,
+		rotation: 12,
 		enabled: true,
 		fillStart: '#17d0c1',
 		fillEnd: '#2257ff'
@@ -113,12 +120,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🕊️',
 		badge: '4.4M 참여 중',
 		labelFontSize: 26,
-		shape: 'orb',
+		shape: 'hex',
 		x: 620,
 		y: 518,
 		width: 214,
 		height: 198,
-		rotation: 5,
+		rotation: 8,
 		enabled: false,
 		fillStart: '#6faa7a',
 		fillEnd: '#4d7863'
@@ -134,7 +141,7 @@ export const INTERESTS: InterestDefinition[] = [
 		y: 753,
 		width: 260,
 		height: 228,
-		rotation: -4,
+		rotation: 4,
 		enabled: true,
 		fillStart: '#a8d400',
 		fillEnd: '#59a400'
@@ -161,12 +168,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🥐',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'tilted-quad',
+		shape: 'four-leaf',
 		x: 106,
 		y: 982,
 		width: 214,
 		height: 206,
-		rotation: -9,
+		rotation: -6,
 		enabled: false,
 		fillStart: '#c98a54',
 		fillEnd: '#8d5d39'
@@ -177,12 +184,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '📱',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'pebble',
+		shape: 'hex',
 		x: 351,
 		y: 989,
 		width: 248,
 		height: 218,
-		rotation: 8,
+		rotation: 11,
 		enabled: false,
 		fillStart: '#8f78d9',
 		fillEnd: '#5b56b8'
@@ -241,12 +248,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🥗',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'tilted-quad',
+		shape: 'four-leaf',
 		x: 455,
 		y: 1274,
 		width: 228,
 		height: 210,
-		rotation: 12,
+		rotation: 7,
 		enabled: false,
 		fillStart: '#ff8d32',
 		fillEnd: '#d45a22'
@@ -305,12 +312,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🎨',
 		badge: '4.4M 참여 중',
 		labelFontSize: 28,
-		shape: 'tilted-quad',
+		shape: 'four-leaf',
 		x: 366,
 		y: 1738,
 		width: 226,
 		height: 208,
-		rotation: 8,
+		rotation: 5,
 		enabled: false,
 		fillStart: '#ff9f63',
 		fillEnd: '#d36d44'
@@ -417,12 +424,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🧗',
 		badge: '12.2K 참여 중',
 		labelFontSize: 24,
-		shape: 'tilted-quad',
+		shape: 'pebble',
 		x: 600,
 		y: 2232,
 		width: 224,
 		height: 204,
-		rotation: 11,
+		rotation: 6,
 		enabled: false,
 		fillStart: '#ff9852',
 		fillEnd: '#cf6539'
@@ -481,12 +488,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '📚',
 		badge: '4.4M 참여 중',
 		labelFontSize: 24,
-		shape: 'tilted-quad',
+		shape: 'pill',
 		x: 112,
 		y: 2694,
 		width: 214,
 		height: 202,
-		rotation: -10,
+		rotation: -4,
 		enabled: false,
 		fillStart: '#6e92dd',
 		fillEnd: '#4b66b4'
@@ -577,12 +584,12 @@ export const INTERESTS: InterestDefinition[] = [
 		emoji: '🪞',
 		badge: '4.4M 참여 중',
 		labelFontSize: 26,
-		shape: 'tilted-quad',
+		shape: 'hex',
 		x: 178,
 		y: 3132,
 		width: 212,
 		height: 194,
-		rotation: -7,
+		rotation: -9,
 		enabled: false,
 		fillStart: '#c78d72',
 		fillEnd: '#8b614f'
