@@ -24,6 +24,7 @@
 	class="interest-shell"
 	style={`
 		--interest-shell-bg: ${shellMeta.palette.background};
+		--interest-shell-gradient: ${shellMeta.palette.backgroundGradient};
 		--interest-shell-surface: ${shellMeta.palette.cardBg};
 	`}
 >
@@ -45,10 +46,20 @@
 		max-width: 28rem;
 		margin: 0 auto;
 		position: relative;
-		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 11rem),
-			var(--interest-shell-bg);
+		background: transparent;
 		box-shadow: 0 20px 48px rgba(27, 31, 52, 0.16);
+		isolation: isolate;
+	}
+
+	.interest-shell::before {
+		content: '';
+		position: fixed;
+		inset: 0 auto 0 50%;
+		width: min(100vw, 28rem);
+		transform: translateX(-50%);
+		background: var(--interest-shell-gradient);
+		z-index: -1;
+		pointer-events: none;
 	}
 
 	.interest-shell__main {

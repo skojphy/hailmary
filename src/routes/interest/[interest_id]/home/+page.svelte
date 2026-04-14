@@ -47,6 +47,7 @@
 	class="interest-home"
 	style={`
 		--home-bg: ${data.theme.palette.background};
+		--home-bg-gradient: ${data.theme.palette.backgroundGradient};
 		--home-notice-bg: ${data.theme.palette.noticeBg};
 		--home-notice-border: ${data.theme.palette.noticeBorder};
 		--home-notice-accent: ${data.theme.palette.noticeAccent};
@@ -66,8 +67,8 @@
 		<div class="home-notice__text">
 			<span class="home-notice__icon">{data.theme.notice.icon}</span>
 			<span>{data.theme.notice.text}</span>
-			<strong>{data.theme.notice.highlight}</strong>
-			<span>의 잇템 모아봤어요!</span>
+			<strong>초보 러너</strong>
+			<span>의 잇템 모아 봤어요!</span>
 		</div>
 		<button type="button">{data.theme.notice.cta}</button>
 	</div>
@@ -93,7 +94,10 @@
 					{:else if card.type === 'product'}
 						{@const product = card as ProductCard}
 						{#if product.badge.kind === 'logo'}
-							<div class:home-card__chip={product.chipStyle === 'highlight'} class="home-card__badge-logo">
+							<div
+								class:home-card__chip={product.chipStyle === 'highlight'}
+								class="home-card__badge-logo"
+							>
 								<img src={product.badge.image} alt={product.badge.alt} />
 							</div>
 						{:else}
@@ -262,9 +266,7 @@
 	.interest-home {
 		min-height: 100%;
 		padding: 0 1rem calc(2rem + env(safe-area-inset-bottom));
-		background:
-			radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.42) 0%, transparent 32%),
-			var(--home-bg);
+		background: transparent;
 	}
 
 	.home-notice {
@@ -273,7 +275,7 @@
 		justify-content: space-between;
 		gap: 0.65rem;
 		margin: 0.15rem 0 1rem;
-		padding: 0.72rem 0.7rem 0.72rem 0.9rem;
+		padding: 0.52rem 0.56rem 0.52rem 0.8rem;
 		border: 2px solid var(--home-notice-border);
 		border-radius: 999px;
 		background: var(--home-notice-bg);
@@ -286,14 +288,16 @@
 		flex-wrap: wrap;
 		gap: 0.14rem;
 		min-width: 0;
-		font-size: 0.88rem;
-		font-weight: 800;
+		font-size: 0.84rem;
+		line-height: 1.1;
+		font-weight: 500;
 		letter-spacing: -0.02em;
 		color: var(--home-card-text);
 	}
 
 	.home-notice__text strong {
 		color: var(--home-notice-accent);
+		font-weight: 700;
 	}
 
 	.home-notice__icon {
@@ -307,10 +311,11 @@
 		border: none;
 		border-radius: 999px;
 		background: linear-gradient(135deg, #8d20ff 0%, #406fff 100%);
-		padding: 0.76rem 1rem;
+		padding: 0.62rem 0.92rem;
 		color: #ffffff;
-		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 0.95rem;
+		font-family: 'Pretendard', sans-serif;
+		font-size: 0.8rem;
+		font-weight: 700;
 		line-height: 1;
 	}
 
@@ -692,16 +697,16 @@
 		}
 
 		.home-notice {
-			padding-inline: 0.82rem 0.64rem;
+			padding: 0.48rem 0.5rem 0.48rem 0.72rem;
 		}
 
 		.home-notice__text {
-			font-size: 0.84rem;
+			font-size: 0.8rem;
 		}
 
 		.home-notice button {
-			padding-inline: 0.92rem;
-			font-size: 0.89rem;
+			padding: 0.56rem 0.82rem;
+			font-size: 0.76rem;
 		}
 
 		.home-card {
