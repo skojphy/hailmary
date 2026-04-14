@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Eye } from 'lucide-svelte';
+	import { Bell, Eye, MessageSquareMore } from 'lucide-svelte';
 	import BottomNav from '$lib/components/layout/BottomNav.svelte';
 	import ProfileInterestCanvas from '$lib/components/profile/ProfileInterestCanvas.svelte';
 
@@ -168,8 +168,12 @@
 			<button type="button" class="ghost-button" aria-label="뒤로 가기">←</button>
 
 			<div class="profile-hero__icons">
-				<button type="button" class="ghost-button" aria-label="메시지">✉</button>
-				<button type="button" class="ghost-button" aria-label="알림">◌</button>
+				<button type="button" class="ghost-button" aria-label="메시지">
+					<MessageSquareMore size={28} strokeWidth={2.4} />
+				</button>
+				<button type="button" class="ghost-button" aria-label="알림">
+					<Bell size={28} strokeWidth={2.4} />
+				</button>
 			</div>
 		</div>
 
