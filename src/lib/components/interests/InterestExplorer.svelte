@@ -49,7 +49,9 @@
 	<title>관심사 선택</title>
 </svelte:head>
 
-<section class="interest-explorer">
+<section
+	class="min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl relative bg-gray-50 svelte-b4ygjh"
+>
 	<div class="interest-explorer__canvas">
 		<InterestCanvas {selectedIds} onInterestSelect={handleInterestSelect} />
 	</div>
