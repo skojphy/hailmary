@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Layer from 'svelte-konva/Layer.svelte';
-	import Line from 'svelte-konva/Line.svelte';
 	import Rect from 'svelte-konva/Rect.svelte';
 	import Stage from 'svelte-konva/Stage.svelte';
 	import InterestBubble from '$lib/components/interests/InterestBubble.svelte';
@@ -22,20 +21,14 @@
 	let stageHandle: { node?: { position: (pos: { x: number; y: number }) => void } } | null =
 		$state(null);
 
-	const gridStep = 120;
-	const gridX = Array.from({ length: Math.floor(WORLD_SIZE.width / gridStep) + 1 }, (_, index) => index * gridStep);
-	const gridY = Array.from(
-		{ length: Math.floor(WORLD_SIZE.height / gridStep) + 1 },
-		(_, index) => index * gridStep
-	);
-
 	const highlighted = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
 	const dimmed = $derived(INTERESTS.filter((interest) => !selectedIds.has(interest.id)));
 
 	$effect(() => {
 		if (viewportWidth > 0 && viewportHeight > 0 && !initialized) {
-			stageX = viewportWidth / 2 - WORLD_SIZE.width / 2;
-			stageY = viewportHeight / 2 - WORLD_SIZE.height / 2 + 88;
+			const initial = getInitialStagePosition(viewportWidth);
+			stageX = initial.x;
+			stageY = initial.y;
 			initialized = true;
 		}
 	});
@@ -52,11 +45,24 @@
 	function clampStage(x: number, y: number) {
 		const overflowX = Math.max(0, WORLD_SIZE.width - viewportWidth);
 		const overflowY = Math.max(0, WORLD_SIZE.height - viewportHeight);
-		const padding = 120;
+		const horizontalPadding = 72;
+		const topPadding = 190;
+		const bottomPadding = 130;
 
 		return {
-			x: Math.min(padding, Math.max(-(overflowX + padding), x)),
-			y: Math.min(180, Math.max(-(overflowY + padding), y))
+			x: Math.min(horizontalPadding, Math.max(-(overflowX + horizontalPadding), x)),
+			y: Math.min(topPadding, Math.max(-(overflowY + bottomPadding), y))
+		};
+	}
+
+	function getInitialStagePosition(width: number) {
+		if (width <= 720) {
+			return { x: -24, y: 162 };
+		}
+
+		return {
+			x: width / 2 - WORLD_SIZE.width / 2,
+			y: 120
 		};
 	}
 
@@ -92,25 +98,8 @@
 					y={0}
 					width={WORLD_SIZE.width}
 					height={WORLD_SIZE.height}
-					fill="#151515"
-					cornerRadius={72}
+					fill="#252525"
 				/>
-
-				{#each gridX as x}
-					<Line
-						points={[x, 0, x, WORLD_SIZE.height]}
-						stroke="rgba(255,255,255,0.05)"
-						strokeWidth={1}
-					/>
-				{/each}
-
-				{#each gridY as y}
-					<Line
-						points={[0, y, WORLD_SIZE.width, y]}
-						stroke="rgba(255,255,255,0.05)"
-						strokeWidth={1}
-					/>
-				{/each}
 			</Layer>
 
 			<Layer>
@@ -142,12 +131,8 @@
 		height: 100%;
 		width: 100%;
 		overflow: hidden;
-		border-radius: 40px;
 		cursor: grab;
-	}
-
-	.interest-canvas :global(canvas) {
-		border-radius: 40px;
+		touch-action: none;
 	}
 
 	.interest-canvas:active {

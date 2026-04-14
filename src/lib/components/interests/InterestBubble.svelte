@@ -41,10 +41,12 @@
 
 	const pathData = $derived(createInterestPath(interest.shape, interest.width, interest.height));
 	const badgeWidth = $derived(getBadgeWidth(interest.badge));
-	const opacity = $derived(interest.enabled ? (muted ? 0.64 : 1) : 0.58);
+	const titleFontSize = $derived(interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36));
+	const emojiFontSize = $derived(Math.max(20, titleFontSize - 9));
+	const opacity = $derived(interest.enabled ? (muted ? 0.8 : 1) : 0.92);
 	const titleColor = $derived(interest.enabled ? '#fff8f4' : '#f2f2f2');
 	const badgeFill = $derived(
-		interest.enabled ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.12)'
+		interest.enabled ? `${interest.fillStart}88` : 'rgba(255,255,255,0.16)'
 	);
 	const glowColor = $derived(interest.enabled ? `${interest.fillStart}AA` : '#00000055');
 	const motionTarget = $derived.by(() => {
@@ -154,23 +156,23 @@
 
 	<Text
 		x={-interest.width / 2 + 28}
-		y={-interest.height / 2 + 38}
+		y={-interest.height / 2 + 34}
 		width={interest.width - 56}
 		align="center"
 		text={interest.emoji}
-		fontSize={34}
+		fontSize={emojiFontSize}
 		fontStyle="700"
 		fill="#ffffff"
 	/>
 
 	<Text
 		x={-interest.width / 2 + 30}
-		y={-18}
+		y={-10}
 		width={interest.width - 60}
 		align="center"
 		text={interest.label}
 		fontFamily="RomanticGumi"
-		fontSize={interest.label.length > 5 ? 34 : 40}
+		fontSize={titleFontSize}
 		fontStyle="900"
 		fill={titleColor}
 		lineHeight={1.04}
@@ -192,7 +194,7 @@
 		width={badgeWidth}
 		align="center"
 		text={interest.badge}
-		fontSize={18}
+		fontSize={15}
 		fontStyle="700"
 		fill="#ffffff"
 	/>

@@ -1,12 +1,21 @@
 <script lang="ts">
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
-	import { INTERESTS, MAX_SELECTIONS, type InterestDefinition } from '$lib/data/interests';
+	import {
+		INTERESTS,
+		MAX_SELECTIONS,
+		SELECTABLE_IDS,
+		type InterestDefinition
+	} from '$lib/data/interests';
 
-	let selectedIds = $state(new Set<string>());
+	let selectedIds = $state(new Set<string>(SELECTABLE_IDS));
 
 	const selectedInterests = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
 	const selectedCount = $derived(selectedIds.size);
-	const completionLabel = `나의 관심사 ${MAX_SELECTIONS}개 선택 완료`;
+	const completionLabel = $derived(
+		selectedCount === MAX_SELECTIONS
+			? `나의 관심사 ${MAX_SELECTIONS}개 선택 완료`
+			: `나의 관심사 ${selectedCount}/${MAX_SELECTIONS} 선택 중`
+	);
 
 	function handleInterestSelect(interest: InterestDefinition) {
 		if (!interest.enabled) {
@@ -45,23 +54,13 @@
 </svelte:head>
 
 <section class="interest-explorer">
-	<div class="interest-explorer__glow interest-explorer__glow--left"></div>
-	<div class="interest-explorer__glow interest-explorer__glow--right"></div>
-
-	<header class="interest-explorer__header">
-		<p class="interest-explorer__eyebrow">Prototype interest map</p>
-		<h1>요즘 관심 있는 게 뭐예요?</h1>
-	</header>
-
-	<div class="interest-explorer__selected">
-		{#each selectedInterests as interest (interest.id)}
-			<span>{interest.label}</span>
-		{/each}
-	</div>
-
-	<div class="interest-explorer__canvas-frame">
+	<div class="interest-explorer__canvas">
 		<InterestCanvas {selectedIds} onInterestSelect={handleInterestSelect} />
 	</div>
+
+	<header class="interest-explorer__header">
+		<h1>요즘 관심 있는 게 뭐예요?</h1>
+	</header>
 
 	<footer class="interest-explorer__footer">
 		<button type="button" class:ready={selectedCount === MAX_SELECTIONS} onclick={finishSelection}>
@@ -73,129 +72,82 @@
 <style>
 	.interest-explorer {
 		position: relative;
-		min-height: 100dvh;
+		height: 100dvh;
 		overflow: hidden;
-		padding: 32px 20px 24px;
-		background:
-			radial-gradient(circle at top left, rgba(255, 78, 170, 0.18), transparent 30%),
-			radial-gradient(circle at top right, rgba(53, 120, 255, 0.18), transparent 34%),
-			linear-gradient(180deg, #202020 0%, #121212 100%);
+		background: #252525;
 		color: #fff7f0;
 	}
 
-	.interest-explorer__glow {
+	.interest-explorer::before,
+	.interest-explorer::after {
+		content: '';
 		position: absolute;
-		inset: auto;
-		height: 300px;
-		width: 300px;
-		filter: blur(70px);
-		opacity: 0.24;
+		left: 0;
+		right: 0;
+		z-index: 2;
 		pointer-events: none;
 	}
 
-	.interest-explorer__glow--left {
-		top: 140px;
-		left: -80px;
-		background: #ff4fc4;
+	.interest-explorer::before {
+		top: 0;
+		height: 150px;
+		background: linear-gradient(180deg, rgba(37, 37, 37, 0.95) 0%, rgba(37, 37, 37, 0) 100%);
 	}
 
-	.interest-explorer__glow--right {
-		top: 220px;
-		right: -90px;
-		background: #2f74ff;
+	.interest-explorer::after {
+		bottom: 0;
+		height: 180px;
+		background: linear-gradient(0deg, rgba(37, 37, 37, 0.98) 0%, rgba(37, 37, 37, 0) 100%);
+	}
+
+	.interest-explorer__canvas {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
 	}
 
 	.interest-explorer__header {
-		position: relative;
-		z-index: 1;
-		margin: 0 auto 18px;
-		max-width: 980px;
+		position: absolute;
+		top: 18px;
+		left: 0;
+		right: 0;
+		z-index: 3;
+		padding: 0 24px;
 		text-align: center;
-	}
-
-	.interest-explorer__eyebrow {
-		margin: 0 0 10px;
-		font-size: 0.82rem;
-		font-weight: 700;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.55);
+		pointer-events: none;
 	}
 
 	.interest-explorer__header h1 {
 		margin: 0;
-		font-size: clamp(2rem, 6vw, 4.3rem);
-		line-height: 0.94;
-		letter-spacing: -0.06em;
-	}
-
-	.interest-explorer__hint {
-		margin: 14px auto 0;
-		max-width: 560px;
-		font-size: 1rem;
-		line-height: 1.5;
-		color: rgba(255, 247, 240, 0.72);
-	}
-
-	.interest-explorer__selected {
-		position: relative;
-		z-index: 1;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		margin: 0 auto 18px;
-		max-width: 980px;
-	}
-
-	.interest-explorer__selected span {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.7rem 1rem;
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.08);
-		backdrop-filter: blur(18px);
-		font-size: 0.95rem;
-		font-weight: 700;
-	}
-
-	.interest-explorer__selected .interest-explorer__placeholder {
-		color: rgba(255, 247, 240, 0.56);
-	}
-
-	.interest-explorer__canvas-frame {
-		position: relative;
-		z-index: 1;
-		height: min(68vh, 860px);
-		max-width: 980px;
-		margin: 0 auto;
-		padding: 14px;
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		border-radius: 44px;
-		background: rgba(255, 255, 255, 0.04);
-		backdrop-filter: blur(22px);
-		box-shadow: 0 36px 100px rgba(0, 0, 0, 0.34);
+		font-size: clamp(2rem, 4.6vw, 3.05rem);
+		line-height: 1.08;
+		letter-spacing: -0.045em;
+		font-weight: 800;
+		text-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
 	}
 
 	.interest-explorer__footer {
-		position: sticky;
-		bottom: 20px;
-		z-index: 2;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 18px;
+		z-index: 4;
 		display: flex;
 		justify-content: center;
-		margin-top: 20px;
+		padding: 0 24px max(18px, env(safe-area-inset-bottom));
 	}
 
 	.interest-explorer__footer button {
-		min-width: min(92vw, 660px);
-		padding: 1.15rem 1.6rem;
+		width: min(100%, 540px);
+		padding: 1.25rem 1.6rem;
 		border: none;
 		border-radius: 999px;
-		background: linear-gradient(90deg, #1f8fff 0%, #2450ff 100%);
-		box-shadow: 0 20px 50px rgba(16, 59, 255, 0.38);
+		background: linear-gradient(90deg, #1697ff 0%, #2b35ef 100%);
+		box-shadow:
+			0 18px 40px rgba(18, 71, 255, 0.38),
+			inset 0 1px 0 rgba(255, 255, 255, 0.18);
 		color: #fff;
-		font-size: clamp(1rem, 2vw, 1.7rem);
+		font-size: clamp(1rem, 2.2vw, 1.35rem);
 		font-weight: 800;
 		letter-spacing: -0.03em;
 		transition:
@@ -205,8 +157,8 @@
 	}
 
 	.interest-explorer__footer button:not(.ready) {
-		opacity: 0.82;
-		filter: saturate(0.86);
+		opacity: 0.75;
+		filter: saturate(0.88);
 	}
 
 	.interest-explorer__footer button:hover {
@@ -214,19 +166,22 @@
 	}
 
 	@media (max-width: 720px) {
-		.interest-explorer {
-			padding-inline: 14px;
-			padding-top: 24px;
-		}
-
-		.interest-explorer__canvas-frame {
-			height: 66vh;
-			padding: 10px;
-			border-radius: 32px;
+		.interest-explorer__header {
+			top: 14px;
+			padding: 0 18px;
 		}
 
 		.interest-explorer__footer button {
 			min-width: 100%;
+			padding-block: 1.28rem;
+		}
+
+		.interest-explorer__footer {
+			padding-inline: 18px;
+		}
+
+		.interest-explorer__header h1 {
+			font-size: clamp(1.9rem, 7.4vw, 2.6rem);
 		}
 	}
 </style>
