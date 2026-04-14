@@ -141,8 +141,8 @@ export const INTERESTS: InterestDefinition[] = [
 	},
 	{
 		id: 'beauty',
-		label: '메이크업',
-		emoji: '✨',
+		label: '촌캉스',
+		emoji: '🛖',
 		badge: '12.2K 참여 중',
 		labelFontSize: 28,
 		shape: 'clover',
@@ -218,6 +218,22 @@ export const INTERESTS: InterestDefinition[] = [
 		enabled: false,
 		fillStart: '#1bd0c2',
 		fillEnd: '#2a72ea'
+	},
+	{
+		id: 'interior',
+		label: '인테리어',
+		emoji: '🪑',
+		badge: '4.4M 참여 중',
+		labelFontSize: 24,
+		shape: 'pebble',
+		x: 170,
+		y: 1512,
+		width: 210,
+		height: 194,
+		rotation: -5,
+		enabled: false,
+		fillStart: '#7c9fd0',
+		fillEnd: '#546fa4'
 	},
 	{
 		id: 'running-crew-2',
