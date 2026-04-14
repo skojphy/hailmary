@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
 	import {
 		INTERESTS,
@@ -9,8 +10,8 @@
 
 	let selectedIds = $state(new Set<string>(SELECTABLE_IDS));
 
-	const selectedInterests = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
 	const selectedCount = $derived(selectedIds.size);
+	const firstSelectedId = $derived(Array.from(selectedIds)[0] ?? null);
 	const completionLabel = $derived(`나의 관심사 ${selectedCount}개 선택 완료`);
 
 	function handleInterestSelect(interest: InterestDefinition) {
@@ -35,13 +36,20 @@
 		selectedIds = next;
 	}
 
-	function finishSelection() {
+	async function finishSelection() {
 		if (selectedCount !== MAX_SELECTIONS) {
 			window.alert(`메이크업, 러닝, 테크까지 ${MAX_SELECTIONS}개를 모두 선택해 주세요.`);
 			return;
 		}
 
-		window.alert(`${selectedInterests.map((interest) => interest.label).join(', ')} 선택 완료`);
+		const nextRoute = firstSelectedId ? `/interest/${firstSelectedId}/home` : null;
+
+		if (!nextRoute) {
+			window.alert('이동할 관심사를 찾지 못했어요.');
+			return;
+		}
+
+		await goto(nextRoute);
 	}
 </script>
 
