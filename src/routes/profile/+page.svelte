@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Eye } from 'lucide-svelte';
+	import { Bell, Eye, MessageSquareMore } from 'lucide-svelte';
 	import BottomNav from '$lib/components/layout/BottomNav.svelte';
 	import ProfileInterestCanvas from '$lib/components/profile/ProfileInterestCanvas.svelte';
 
 	const tabs = ['나의 활동', '주문 내역', '미션 · 보상'] as const;
+	let activeTab = $state<(typeof tabs)[number]>('나의 활동');
 
 	const savedShorts = [
 		{
@@ -44,6 +45,117 @@
 				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80'
 		}
 	];
+
+	const recentBadges = [
+		{
+			id: 'recent-1',
+			title: '스마일 유니버스',
+			description: '이제 나도 스클 멤버',
+			reward: '+5,000P',
+			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+		},
+		{
+			id: 'recent-2',
+			title: '스마일 유니버스',
+			description: '이제 나도 스클 멤버',
+			reward: '+5,000P',
+			image: 'https://placehold.co/200x200/a8d8ff/a8d8ff.png'
+		},
+		{
+			id: 'recent-3',
+			title: '스마일 유니버스',
+			description: '이제 나도 스클 멤버',
+			reward: '+5,000P',
+			image: 'https://placehold.co/200x200/99ccff/99ccff.png'
+		}
+	];
+
+	const ownedBadges = [
+		{
+			id: 'owned-1',
+			title: '혼자보다 같이',
+			reward: '+100',
+			earned: true,
+			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+		},
+		{
+			id: 'owned-2',
+			title: '공유는 사랑',
+			reward: '+100',
+			earned: true,
+			image: 'https://placehold.co/200x200/a8d8ff/a8d8ff.png'
+		},
+		{
+			id: 'owned-3',
+			title: '리액션 부자',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-4',
+			title: '경험 나눔러',
+			reward: '+100',
+			earned: true,
+			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+		},
+		{
+			id: 'owned-5',
+			title: '오늘의 출석왕',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-6',
+			title: '취향 마스터',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-7',
+			title: '기록 수집가',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-8',
+			title: '찜하기 전문가',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-9',
+			title: '발견의 즐거움',
+			reward: '+100',
+			earned: true,
+			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+		},
+		{
+			id: 'owned-10',
+			title: '리스트 수집가',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-11',
+			title: '취향 레벨업',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		},
+		{
+			id: 'owned-12',
+			title: '정보 나눔꾼',
+			reward: '+5,000P',
+			earned: false,
+			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -56,8 +168,12 @@
 			<button type="button" class="ghost-button" aria-label="뒤로 가기">←</button>
 
 			<div class="profile-hero__icons">
-				<button type="button" class="ghost-button" aria-label="메시지">✉</button>
-				<button type="button" class="ghost-button" aria-label="알림">◌</button>
+				<button type="button" class="ghost-button" aria-label="메시지">
+					<MessageSquareMore size={28} strokeWidth={2.4} />
+				</button>
+				<button type="button" class="ghost-button" aria-label="알림">
+					<Bell size={28} strokeWidth={2.4} />
+				</button>
 			</div>
 		</div>
 
@@ -88,56 +204,98 @@
 	<section class="profile-content">
 		<div class="profile-tabs">
 			{#each tabs as tab, index}
-				<button type="button" class:active={index === 0}>{tab}</button>
+				<button type="button" class:active={activeTab === tab} onclick={() => (activeTab = tab)}>
+					{tab}
+				</button>
 			{/each}
 		</div>
 
-		<section class="profile-section">
-			<h2>내가 저장한 쇼츠</h2>
-			<div class="shorts-grid">
-				{#each savedShorts as item}
-					<article class="short-card">
-						<img src={item.image} alt="" />
-						<div class="short-card__overlay">
-							<div class="short-card__meta">
-								<span class="shorts-badge">Shorts</span>
-								<span class="short-card__views"><Eye size={18} /> {item.views}</span>
+		{#if activeTab === '나의 활동'}
+			<section class="profile-section">
+				<h2>내가 저장한 쇼츠</h2>
+				<div class="shorts-grid">
+					{#each savedShorts as item}
+						<article class="short-card">
+							<img src={item.image} alt="" />
+							<div class="short-card__overlay">
+								<div class="short-card__meta">
+									<span class="shorts-badge">Shorts</span>
+									<span class="short-card__views"><Eye size={18} /> {item.views}</span>
+								</div>
+								<p>{item.title}</p>
 							</div>
-							<p>{item.title}</p>
-						</div>
-					</article>
-				{/each}
-			</div>
-		</section>
+						</article>
+					{/each}
+				</div>
+			</section>
 
-		<section class="profile-section">
-			<h2>내가 쓴 글</h2>
-			<div class="post-grid">
-				{#each posts as post}
-					<article class="post-card">
-						<div class="post-card__header">
-							<img src={post.image} alt="" />
-							<div>
-								<h3>{post.title}</h3>
+			<section class="profile-section">
+				<h2>내가 쓴 글</h2>
+				<div class="post-grid">
+					{#each posts as post}
+						<article class="post-card">
+							<div class="post-card__header">
+								<img src={post.image} alt="" />
+								<div>
+									<h3>{post.title}</h3>
+								</div>
 							</div>
-						</div>
-						<p>{post.body}</p>
-						<div class="post-card__footer">
-							<img class="post-card__avatar" src={post.avatar} alt="" />
-							<span>{post.author}</span>
-						</div>
-					</article>
-				{/each}
-			</div>
-		</section>
+							<p>{post.body}</p>
+							<div class="post-card__footer">
+								<img class="post-card__avatar" src={post.avatar} alt="" />
+								<span>{post.author}</span>
+							</div>
+						</article>
+					{/each}
+				</div>
+			</section>
+		{:else if activeTab === '주문 내역'}
+			<section class="profile-section">
+				<div class="profile-empty-card">
+					<h3>주문 내역이 아직 없어요</h3>
+					<p>다음 공구나 쇼핑 활동이 생기면 이곳에서 바로 확인할 수 있어요.</p>
+				</div>
+			</section>
+		{:else}
+			<section class="profile-section badge-section">
+				<h2>최근 획득 뱃지</h2>
+				<div class="recent-badge-row">
+					{#each recentBadges as badge}
+						<article class="badge-card badge-card--recent">
+							<img class="badge-card__image" src={badge.image} alt="" />
+							<h3>{badge.title}</h3>
+							<p>{badge.description}</p>
+							<span class="badge-card__reward">{badge.reward}</span>
+						</article>
+					{/each}
+				</div>
+			</section>
+
+			<section class="profile-section badge-section">
+				<h2>보유뱃지 5</h2>
+				<div class="badge-grid">
+					{#each ownedBadges as badge}
+						<article class:earned={badge.earned} class="badge-card badge-card--owned">
+							<img class="badge-card__image" src={badge.image} alt="" />
+							<h3>{badge.title}</h3>
+							<span class="badge-card__reward">{badge.reward}</span>
+						</article>
+					{/each}
+				</div>
+			</section>
+		{/if}
 	</section>
 
 	<BottomNav />
 </div>
 
 <style>
+	:global(html),
 	:global(body) {
 		background: #f3f4f6;
+		overflow-x: hidden;
+		overflow-y: auto;
+		overscroll-behavior: auto;
 	}
 
 	.profile-shell {
@@ -286,6 +444,10 @@
 		color: #111827;
 	}
 
+	.badge-section h2 {
+		margin-bottom: 18px;
+	}
+
 	.shorts-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -299,7 +461,10 @@
 		gap: 12px;
 		overflow-x: auto;
 		padding-bottom: 4px;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-x: contain;
 		scroll-snap-type: x proximity;
+		touch-action: pan-x;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
@@ -420,5 +585,113 @@
 		height: 26px;
 		border-radius: 999px;
 		object-fit: cover;
+	}
+
+	.profile-empty-card {
+		padding: 22px 18px;
+		border: 1px solid #eef1f5;
+		border-radius: 24px;
+		background: #ffffff;
+		box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+	}
+
+	.profile-empty-card h3 {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 800;
+		color: #1f2937;
+	}
+
+	.profile-empty-card p {
+		margin: 10px 0 0;
+		font-size: 0.88rem;
+		line-height: 1.5;
+		color: #8b93a1;
+	}
+
+	.recent-badge-row {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 34%;
+		gap: 18px;
+		overflow-x: auto;
+		padding-bottom: 6px;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.recent-badge-row::-webkit-scrollbar {
+		display: none;
+	}
+
+	.badge-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 24px 18px;
+	}
+
+	.badge-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.badge-card__image {
+		width: 100%;
+		aspect-ratio: 1;
+		border-radius: 999px;
+		object-fit: cover;
+		background: #dfefff;
+	}
+
+	.badge-card h3 {
+		margin: 12px 0 0;
+		font-size: 0.88rem;
+		line-height: 1.32;
+		letter-spacing: -0.03em;
+		font-weight: 800;
+		color: #111827;
+	}
+
+	.badge-card p {
+		margin: 4px 0 0;
+		font-size: 0.72rem;
+		line-height: 1.35;
+		color: #6b7280;
+	}
+
+	.badge-card__reward {
+		margin-top: 10px;
+		padding: 0.45rem 0.9rem;
+		border-radius: 999px;
+		background: #edf5ff;
+		font-size: 0.8rem;
+		font-weight: 800;
+		color: #1479ff;
+	}
+
+	.badge-card--recent {
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	.badge-card--recent .badge-card__reward {
+		align-self: flex-start;
+	}
+
+	.badge-card--owned:not(.earned) .badge-card__image {
+		filter: grayscale(1);
+		background: #e5e7eb;
+	}
+
+	.badge-card--owned:not(.earned) h3,
+	.badge-card--owned:not(.earned) .badge-card__reward {
+		color: #a8acb4;
+	}
+
+	.badge-card--owned:not(.earned) .badge-card__reward {
+		background: #f2f3f5;
 	}
 </style>

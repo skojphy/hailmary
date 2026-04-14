@@ -81,9 +81,17 @@ const titleY = $derived(
 		? compact
 			? Math.max(-4, -interest.height * 0.02)
 			: Math.max(-16, -interest.height * 0.12)
-		: -titleFontSize * 0.52
+		: showEmoji && compact
+			? 4
+			: -titleFontSize * 0.52
 );
-const emojiY = $derived(showBadge ? titleY - (compact ? 26 : 34) : titleY - (compact ? 24 : 28));
+const emojiY = $derived(
+	showBadge
+		? titleY - (compact ? 26 : 34)
+		: showEmoji && compact
+			? titleY - 28
+			: titleY - (compact ? 24 : 28)
+);
 const badgeY = $derived(
 	Math.min(
 		interest.height / 2 - badgeHeight - (compact ? 10 : 18),
