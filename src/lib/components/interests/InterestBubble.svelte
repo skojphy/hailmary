@@ -85,6 +85,9 @@ const badgeY = $derived(
 		titleY + titleFontSize + (compact ? 5 : 14)
 	)
 );
+const badgeTextY = $derived(
+	badgeY + (badgeHeight - badgeFontSize) / 2 + badgeFontSize * (compact ? 0.12 : 0.1)
+);
 	const isMuted = $derived(!selected && muted);
 	const displayFillStart = $derived(isMuted ? '#4b4b4b' : interest.fillStart);
 	const displayFillEnd = $derived(isMuted ? '#4b4b4b' : interest.fillEnd);
@@ -138,9 +141,9 @@ const motionTarget = $derived.by(() => {
 		if (intro) {
 			motion = {
 				scale: 0.985,
-				offsetY: -Math.max(480, interest.y + interest.height),
-				rotation: interest.rotation - 6,
-				shadowBlur: 0,
+				offsetY: -4,
+				rotation: interest.rotation + (selected ? 2.8 : -2.4),
+				shadowBlur: selected ? 18 : 8,
 				opacity: 1
 			};
 			ready = true;
@@ -178,7 +181,7 @@ const motionTarget = $derived.by(() => {
 		immediate = false,
 		delay = 0,
 		onComplete?: () => void,
-		introDrop = false
+		introShake = false
 	) {
 		if (immediate) {
 			motion = next;
@@ -196,10 +199,10 @@ const motionTarget = $derived.by(() => {
 			shadowBlur: next.shadowBlur,
 			opacity: next.opacity,
 			delay,
-			duration: introDrop ? 1320 : selected ? 900 : 700,
+			duration: introShake ? 620 : selected ? 900 : 700,
 			ease: spring({
-				bounce: introDrop ? 0.72 : selected ? 0.6 : 0.38,
-				duration: introDrop ? 1320 : selected ? 900 : 700
+				bounce: introShake ? 0.22 : selected ? 0.6 : 0.38,
+				duration: introShake ? 620 : selected ? 900 : 700
 			}),
 			onUpdate: () => {
 				motion = {
@@ -285,11 +288,9 @@ const motionTarget = $derived.by(() => {
 
 		<Text
 			x={-badgeWidth / 2}
-			y={badgeY}
+			y={badgeTextY}
 			width={badgeWidth}
-			height={badgeHeight}
 			align="center"
-			verticalAlign="middle"
 			text={interest.badge}
 			fontSize={badgeFontSize}
 			fontStyle="700"
