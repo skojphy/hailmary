@@ -55,12 +55,15 @@
 	const badgeY = $derived(
 		Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
 	);
-	const opacity = $derived(interest.enabled ? (muted ? 0.8 : 1) : 0.92);
-	const titleColor = $derived(interest.enabled ? '#fff8f4' : '#f2f2f2');
+	const isMuted = $derived(!selected && muted);
+	const displayFillStart = $derived(isMuted ? muteHexColor(interest.fillStart) : interest.fillStart);
+	const displayFillEnd = $derived(isMuted ? muteHexColor(interest.fillEnd) : interest.fillEnd);
+	const opacity = $derived(selected ? 1 : 0.96);
+	const titleColor = $derived(selected ? '#fff8f4' : '#f0efed');
 	const badgeFill = $derived(
-		interest.enabled ? `${interest.fillStart}88` : 'rgba(255,255,255,0.16)'
+		selected ? `${displayFillStart}88` : `${displayFillStart}cc`
 	);
-	const glowColor = $derived(interest.enabled ? `${interest.fillStart}AA` : '#00000055');
+	const glowColor = $derived(selected ? `${displayFillStart}aa` : `${displayFillStart}55`);
 	const motionTarget = $derived.by(() => {
 		if (selected) {
 			return {
@@ -146,6 +149,39 @@
 		const estimated = Math.floor(width / Math.max(label.length * 0.92, 1));
 		return Math.max(20, Math.min(base, estimated));
 	}
+
+	function muteHexColor(hex: string) {
+		const value = hex.replace('#', '');
+		const normalized =
+			value.length === 3
+				? value
+						.split('')
+						.map((char) => `${char}${char}`)
+						.join('')
+				: value;
+
+		const r = Number.parseInt(normalized.slice(0, 2), 16);
+		const g = Number.parseInt(normalized.slice(2, 4), 16);
+		const b = Number.parseInt(normalized.slice(4, 6), 16);
+		const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+		const grayTarget = luminance * 0.58 + 38;
+
+		return toHex(
+			mixChannel(r, grayTarget, 0.84),
+			mixChannel(g, grayTarget, 0.84),
+			mixChannel(b, grayTarget, 0.84)
+		);
+	}
+
+	function mixChannel(value: number, target: number, amount: number) {
+		return Math.round(value + (target - value) * amount);
+	}
+
+	function toHex(r: number, g: number, b: number) {
+		return `#${[r, g, b]
+			.map((channel) => Math.max(0, Math.min(255, channel)).toString(16).padStart(2, '0'))
+			.join('')}`;
+	}
 </script>
 
 <Group
@@ -154,7 +190,7 @@
 	rotation={motion.rotation}
 	scaleX={motion.scale}
 	scaleY={motion.scale}
-	opacity={opacity}
+	{opacity}
 	onpointerclick={emitSelection}
 	ontap={emitSelection}
 	onmouseover={() => (hovered = true)}
@@ -164,7 +200,7 @@
 		data={pathData}
 		fillLinearGradientStartPoint={{ x: -interest.width / 2, y: -interest.height / 2 }}
 		fillLinearGradientEndPoint={{ x: interest.width / 2, y: interest.height / 2 }}
-		fillLinearGradientColorStops={[0, interest.fillStart, 1, interest.fillEnd]}
+		fillLinearGradientColorStops={[0, displayFillStart, 1, displayFillEnd]}
 		shadowColor={glowColor}
 		shadowBlur={motion.shadowBlur}
 		shadowOffsetY={16}

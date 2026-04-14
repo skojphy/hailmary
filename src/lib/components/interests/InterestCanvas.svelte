@@ -228,7 +228,7 @@
 					<InterestBubble
 						interest={interest}
 						selected={false}
-						muted={selectedIds.size > 0}
+						muted={true}
 						onselect={() => handleSelect(interest)}
 					/>
 				{/each}
