@@ -11,7 +11,7 @@
 
 	const selectedInterests = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
 	const selectedCount = $derived(selectedIds.size);
-	const completionLabel = $derived(`나의 관심사 ${selectedCount}/${MAX_SELECTIONS} 선택 중`);
+	const completionLabel = $derived(`나의 관심사 ${selectedCount}개 선택 완료`);
 
 	function handleInterestSelect(interest: InterestDefinition) {
 		if (!interest.enabled) {
