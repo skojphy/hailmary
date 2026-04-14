@@ -1,108 +1,239 @@
 <script lang="ts">
-  import { Heart, ChevronDown, ChevronUp } from 'lucide-svelte';
-  import { currentInterest, themeColors, type InterestArea } from '$lib/stores/interest';
-  import { scale, fade } from 'svelte/transition';
+	import { ChevronDown, ChevronUp, Heart } from 'lucide-svelte';
+	import { interestHeaderMeta } from '$lib/data/interest-home';
+	import { currentInterest, type InterestArea } from '$lib/stores/interest';
+	import { fade, scale } from 'svelte/transition';
 
-  let showDropdown = $state(false);
+	let showDropdown = $state(false);
 
-  const interestLabels: Record<InterestArea, string> = {
-    running: '🏃 러닝',
-    makeup: '💄 메이크업',
-    tech: '💻 테크',
-  };
+	const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
 
-  const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
+	const displayInterests = $derived([
+		$currentInterest,
+		...availableInterests.filter((interest) => interest !== $currentInterest)
+	]);
 
-  // Reorder to always put current interest at top
-  let displayInterests = $derived([
-    $currentInterest,
-    ...availableInterests.filter(i => i !== $currentInterest)
-  ]);
+	const activeMeta = $derived(interestHeaderMeta[$currentInterest]);
 
-  function selectInterest(interest: InterestArea) {
-    if (interest === $currentInterest) {
-      showDropdown = false; // Just close if clicking the top one
-    } else {
-      currentInterest.set(interest);
-      showDropdown = false;
-    }
-  }
+	const interestCountParts = $derived.by(() => {
+		const text = activeMeta.interestCount;
+		const match = text.match(/^(.*?)(\s*관심)$/);
 
-  function splitLabel(label: string) {
-    const parts = label.split(' ');
-    // parts[0] is the emoji, parts[1] is the text
-    return { emoji: parts[0], text: parts.slice(1).join(' ') };
-  }
+		if (!match) {
+			return {
+				count: text,
+				label: ''
+			};
+		}
+
+		return {
+			count: match[1],
+			label: match[2].trim()
+		};
+	});
+
+	function selectInterest(interest: InterestArea) {
+		currentInterest.set(interest);
+		showDropdown = false;
+	}
 </script>
 
-<header class="relative z-40 w-full flex items-center justify-between px-5 h-16 pt-2">
-  <button 
-    class="flex items-center gap-1 font-black text-2xl tracking-tight"
-    onclick={() => showDropdown = true}
-  >
-    <span class="mr-0.5">{splitLabel(interestLabels[$currentInterest]).emoji}</span>
-    <span style={`background-image: ${$themeColors.gradient}; -webkit-background-clip: text; color: transparent;`}>
-      {splitLabel(interestLabels[$currentInterest]).text}
-    </span>
-    <ChevronDown size={24} strokeWidth={3} class="text-gray-900 ml-1" />
-  </button>
+<header
+	class="interest-header"
+	style={`
+		--header-text: ${activeMeta.palette.headerText};
+		--header-pill-bg: ${activeMeta.palette.headerPillBg};
+		--header-pill-text: ${activeMeta.palette.headerPillText};
+		--header-accent: ${activeMeta.palette.accent};
+		--header-accent-strong: ${activeMeta.palette.accentStrong};
+	`}
+>
+	<button class="interest-header__title" type="button" onclick={() => (showDropdown = true)}>
+		<span class="interest-header__emoji">{activeMeta.emoji}</span>
+		<span class="interest-header__label">{activeMeta.label}</span>
+		<ChevronDown size={22} strokeWidth={3.2} />
+	</button>
 
-  <div class="flex items-center gap-2">
-    <button class="flex items-center gap-1.5 px-3 py-1.5 bg-white/40 rounded-full hover:bg-white/60 transition-colors">
-      <Heart size={16} fill="#ef4444" stroke="none" />
-      <span class="text-[13px] font-bold text-blue-600 tracking-tighter w-full border-b-[1.5px] border-blue-600 leading-tight">2.6M</span>
-    </button>
-  </div>
+	<button class="interest-header__pill" type="button">
+		<Heart size={12} fill="currentColor" stroke="none" />
+		<span class="interest-header__pill-count">{interestCountParts.count}</span>
+		{#if interestCountParts.label}
+			<span class="interest-header__pill-label">{interestCountParts.label}</span>
+		{/if}
+	</button>
 </header>
 
-<!-- Floating Menu Popup Overlay -->
 {#if showDropdown}
-  <!-- Popup Wrapper -->
-  <div class="fixed inset-y-0 left-0 right-0 w-full max-w-md mx-auto z-[100]">
-    <!-- Backdrop inside the mobile wrapper -->
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div 
-      class="absolute inset-0 bg-transparent/20 backdrop-blur-sm" 
-      onclick={() => showDropdown = false} 
-      aria-label="Close popup" 
-      transition:fade={{duration: 150}}
-    ></div>
+	<div class="interest-header__overlay">
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div
+			class="interest-header__backdrop"
+			aria-label="Close interest selector"
+			onclick={() => (showDropdown = false)}
+			transition:fade={{ duration: 150 }}
+		></div>
 
-    <!-- Popup Card placed directly over the header button -->
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-    <div 
-      class="absolute top-2 left-4 bg-white rounded-[24px] p-4 pr-10 shadow-2xl origin-top-left" 
-      role="dialog"
-      transition:scale={{ duration: 300, start: 0.95, opacity: 0 }}
-    >
-      <div class="flex flex-col gap-4 py-1 flex-1">
-        {#each displayInterests as interest, i (interest)}
-          <div in:fade|global={{ delay: i * 200, duration: 300 }}>
-            <a
-              href={i === 0 ? '#' : `/interest/${interest}/home`}
-              class="flex items-center gap-1 font-black text-[25px] tracking-tight transition-all active:scale-[0.98]"
-              onclick={(e) => {
-                if (i === 0) e.preventDefault();
-                selectInterest(interest);
-              }}
-            >
-              <span class="mr-1">{splitLabel(interestLabels[interest]).emoji}</span>
-              {#if i === 0}
-                <span style={`background-image: ${$themeColors.gradient}; -webkit-background-clip: text; color: transparent;`}>
-                  {splitLabel(interestLabels[interest]).text}
-                </span>
-                <ChevronUp size={24} strokeWidth={4} class="ml-1 text-gray-800" />
-              {:else}
-                <span class="text-gray-400">
-                  {splitLabel(interestLabels[interest]).text}
-                </span>
-              {/if}
-            </a>
-          </div>
-        {/each}
-      </div>
-    </div>
-  </div>
+		<div
+			class="interest-header__menu"
+			role="dialog"
+			aria-label="관심사 선택"
+			transition:scale={{ duration: 220, start: 0.96, opacity: 0 }}
+		>
+			{#each displayInterests as interest, index (interest)}
+				{@const meta = interestHeaderMeta[interest]}
+				{#if index === 0}
+					<button
+						class="interest-header__item interest-header__item--active"
+						type="button"
+						onclick={() => (showDropdown = false)}
+					>
+						<span>{meta.emoji}</span>
+						<span>{meta.label}</span>
+						<ChevronUp size={22} strokeWidth={3.2} />
+					</button>
+				{:else}
+					<a
+						class="interest-header__item"
+						href={`/interest/${interest}/home`}
+						onclick={() => selectInterest(interest)}
+					>
+						<span>{meta.emoji}</span>
+						<span>{meta.label}</span>
+					</a>
+				{/if}
+			{/each}
+		</div>
+	</div>
 {/if}
+
+<style>
+	.interest-header {
+		position: relative;
+		z-index: 40;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: calc(1.95rem + env(safe-area-inset-top)) 1.25rem 0.95rem;
+		color: var(--header-text);
+	}
+
+	.interest-header__title {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		border: none;
+		background: transparent;
+		padding: 0;
+		color: inherit;
+	}
+
+	.interest-header__emoji {
+		font-size: 1.85rem;
+		line-height: 1;
+	}
+
+	.interest-header__label {
+		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
+		font-size: 2.05rem;
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.interest-header__title :global(svg) {
+		flex-shrink: 0;
+		margin-left: 0.1rem;
+	}
+
+	.interest-header__pill {
+		display: inline-flex;
+		flex-shrink: 0;
+		align-items: center;
+		gap: 0.34rem;
+		border: none;
+		border-radius: 10px;
+		background: rgba(255, 234, 244, 0.78);
+		padding: 0.58rem 0.72rem;
+		color: #ff5a63;
+		font-size: 0.79rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+	}
+
+	.interest-header__pill-count {
+		color: #ff5a63;
+	}
+
+	.interest-header__pill-label {
+		color: #111111;
+	}
+
+	.interest-header__overlay {
+		position: fixed;
+		inset: 0;
+		left: 50%;
+		z-index: 100;
+		width: 100%;
+		max-width: 28rem;
+		transform: translateX(-50%);
+	}
+
+	.interest-header__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(18, 18, 26, 0.16);
+		backdrop-filter: blur(10px);
+	}
+
+	.interest-header__menu {
+		position: absolute;
+		top: 0.95rem;
+		left: 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		min-width: 10.25rem;
+		border-radius: 1.5rem;
+		background: rgba(255, 255, 255, 0.95);
+		padding: 0.6rem;
+		box-shadow: 0 22px 44px rgba(24, 26, 42, 0.18);
+	}
+
+	.interest-header__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.42rem;
+		border: none;
+		border-radius: 1rem;
+		background: transparent;
+		padding: 0.72rem 0.85rem;
+		color: #8e8e96;
+		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
+		font-size: 1.55rem;
+		line-height: 1;
+		text-decoration: none;
+	}
+
+	.interest-header__item--active {
+		color: var(--header-text);
+		background: rgba(255, 255, 255, 0.78);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+	}
+
+	@media (max-width: 420px) {
+		.interest-header {
+			padding: calc(1.7rem + env(safe-area-inset-top)) 1rem 0.85rem;
+		}
+
+		.interest-header__label {
+			font-size: 1.9rem;
+		}
+
+		.interest-header__pill {
+			padding: 0.52rem 0.66rem;
+			font-size: 0.74rem;
+		}
+	}
+</style>

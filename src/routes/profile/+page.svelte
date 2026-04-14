@@ -565,6 +565,7 @@
 		color: #8d8d93;
 		display: -webkit-box;
 		overflow: hidden;
+		line-clamp: 3;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
 		min-height: calc(0.76rem * 1.45 * 3);

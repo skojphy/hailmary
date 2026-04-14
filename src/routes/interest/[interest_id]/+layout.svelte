@@ -1,37 +1,64 @@
 <script lang="ts">
-  import Header from '$lib/components/layout/Header.svelte';
-  import BottomNav from '$lib/components/layout/BottomNav.svelte';
-  import { currentInterest, themeColors, type InterestArea } from '$lib/stores/interest';
-  import { page } from '$app/state';
-  import { onMount } from 'svelte';
-  import { page as pageStore } from '$app/stores';
+	import Header from '$lib/components/layout/Header.svelte';
+	import BottomNav from '$lib/components/layout/BottomNav.svelte';
+	import { interestHeaderMeta } from '$lib/data/interest-home';
+	import { currentInterest, type InterestArea } from '$lib/stores/interest';
+	import { page as pageStore } from '$app/stores';
 
-  let { children } = $props();
-  
-  // pageStore ($page) is the reactive way to access route params in standard Sveltekit unless data is passed
-  // We'll sync the current interest store with URL params
-  $effect(() => {
-    if ($pageStore.params.interest_id) {
-      const interest = $pageStore.params.interest_id as InterestArea;
-      if (['running', 'makeup', 'tech'].includes(interest) && $currentInterest !== interest) {
-        currentInterest.set(interest);
-      }
-    }
-  });
+	let { children } = $props();
+
+	const shellMeta = $derived(interestHeaderMeta[$currentInterest]);
+
+	$effect(() => {
+		if ($pageStore.params.interest_id) {
+			const interest = $pageStore.params.interest_id as InterestArea;
+
+			if (['running', 'makeup', 'tech'].includes(interest) && $currentInterest !== interest) {
+				currentInterest.set(interest);
+			}
+		}
+	});
 </script>
 
-<div class={`min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl relative ${$themeColors.background}`} style="--theme-primary: {$themeColors.primary}">
-  <Header />
+<div
+	class="interest-shell"
+	style={`
+		--interest-shell-bg: ${shellMeta.palette.background};
+		--interest-shell-surface: ${shellMeta.palette.cardBg};
+	`}
+>
+	<Header />
 
-  <main class="flex-1 pb-20 w-full overflow-x-hidden relative">
-    {@render children()}
-  </main>
+	<main class="interest-shell__main">
+		{@render children()}
+	</main>
 
-  <BottomNav />
+	<BottomNav />
 </div>
 
 <style>
-  :global(body) {
-    background-color: #f9fafb;
-  }
+	.interest-shell {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 28rem;
+		margin: 0 auto;
+		position: relative;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 11rem),
+			var(--interest-shell-bg);
+		box-shadow: 0 20px 48px rgba(27, 31, 52, 0.16);
+	}
+
+	.interest-shell__main {
+		flex: 1;
+		position: relative;
+		padding-bottom: 5rem;
+		overflow-x: hidden;
+	}
+
+	:global(body) {
+		background: #f4f4f8;
+	}
 </style>
