@@ -27,8 +27,10 @@ let {
 	interactive = true,
 	showSelectionMark = true,
 	showBadge = true,
+	showEmoji = false,
 	compact = false,
 	staticPose = false,
+	showGlow = true,
 	onselect = () => {}
 }: {
 	interest: InterestDefinition;
@@ -39,8 +41,10 @@ let {
 	interactive?: boolean;
 	showSelectionMark?: boolean;
 	showBadge?: boolean;
+	showEmoji?: boolean;
 	compact?: boolean;
 	staticPose?: boolean;
+	showGlow?: boolean;
 	onselect?: (selection: { id: string; enabled: boolean }) => void;
 } = $props();
 
@@ -79,6 +83,7 @@ const titleY = $derived(
 			: Math.max(-16, -interest.height * 0.12)
 		: -titleFontSize * 0.52
 );
+const emojiY = $derived(showBadge ? titleY - (compact ? 26 : 34) : titleY - (compact ? 24 : 28));
 const badgeY = $derived(
 	Math.min(
 		interest.height / 2 - badgeHeight - (compact ? 10 : 18),
@@ -96,14 +101,14 @@ const badgeTextY = $derived(
 	const badgeFill = $derived(
 		selected ? `${displayFillStart}88` : '#5d5d5dcc'
 	);
-const glowColor = $derived(selected ? `${displayFillStart}aa` : '#00000014');
+const glowColor = $derived(showGlow ? (selected ? `${displayFillStart}aa` : '#00000014') : 'transparent');
 const motionTarget = $derived.by(() => {
 	if (staticPose) {
 		return {
 			scale: 1,
 			offsetY: 0,
 			rotation: interest.rotation,
-			shadowBlur: selected ? 24 : 10,
+			shadowBlur: showGlow ? (selected ? 24 : 10) : 0,
 			opacity
 		};
 	}
@@ -113,7 +118,7 @@ const motionTarget = $derived.by(() => {
 			scale: 1.09,
 			offsetY: -16,
 			rotation: interest.rotation + 2,
-			shadowBlur: 48,
+			shadowBlur: showGlow ? 48 : 0,
 			opacity
 		};
 	}
@@ -123,7 +128,7 @@ const motionTarget = $derived.by(() => {
 			scale: 1.04,
 			offsetY: -8,
 			rotation: interest.rotation + 1.5,
-			shadowBlur: 40,
+			shadowBlur: showGlow ? 40 : 0,
 			opacity
 		};
 	}
@@ -132,7 +137,7 @@ const motionTarget = $derived.by(() => {
 		scale: 1.01,
 		offsetY: 0,
 		rotation: interest.rotation,
-		shadowBlur: selected ? 32 : 10,
+		shadowBlur: showGlow ? (selected ? 32 : 10) : 0,
 		opacity
 	};
 });
@@ -143,7 +148,7 @@ const motionTarget = $derived.by(() => {
 				scale: 0.985,
 				offsetY: -4,
 				rotation: interest.rotation + (selected ? 2.8 : -2.4),
-				shadowBlur: selected ? 18 : 8,
+				shadowBlur: showGlow ? (selected ? 18 : 8) : 0,
 				opacity: 1
 			};
 			ready = true;
@@ -258,8 +263,8 @@ const motionTarget = $derived.by(() => {
 		fillLinearGradientColorStops={[0, displayFillStart, 1, displayFillEnd]}
 		shadowColor={glowColor}
 		shadowBlur={motion.shadowBlur}
-		shadowOffsetY={16}
-		shadowOpacity={selected ? 0.45 : 0.3}
+		shadowOffsetY={showGlow ? 16 : 0}
+		shadowOpacity={showGlow ? (selected ? 0.45 : 0.3) : 0}
 	/>
 
 	<Text
@@ -275,6 +280,18 @@ const motionTarget = $derived.by(() => {
 		lineHeight={compact ? 0.84 : 0.98}
 		letterSpacing={-1.4}
 	/>
+
+	{#if showEmoji}
+		<Text
+			x={-titleWidth / 2}
+			y={emojiY}
+			width={titleWidth}
+			align="center"
+			text={interest.emoji}
+			fontSize={compact ? 14 : 20}
+			lineHeight={1}
+		/>
+	{/if}
 
 	{#if showBadge}
 		<Rect

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Eye } from 'lucide-svelte';
 	import BottomNav from '$lib/components/layout/BottomNav.svelte';
 	import ProfileInterestCanvas from '$lib/components/profile/ProfileInterestCanvas.svelte';
 
@@ -14,10 +15,10 @@
 		},
 		{
 			id: '2',
-			title: '4시간후 설화수와 함께 2026년에 만나요',
+			title: '요즘 빠진 러닝화 추천 5가지 직접 신어봄',
 			views: '0.5K',
 			image:
-				'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80'
+				'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'
 		}
 	];
 
@@ -25,18 +26,22 @@
 		{
 			id: '1',
 			title: '내돈내산 흑백요리사 맛집 BEST 10',
-			body: '제가 가본 곳중에 제일 괜찮은 곳을 뽑아보았는데요. 맛피자의 가장 맛있는데, 위치는 용...',
+			body: '제가 가본 곳중에 제일 괜찮은 곳을 뽑아보았는데요. 맛피자 집이 가장 맛있었는데, 위치는 용산 쪽이고 웨이팅 팁까지 같이 정리해봤어요.',
 			image:
 				'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=300&q=80',
-			author: '@daeyoon'
+			author: '@dami',
+			avatar:
+				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80'
 		},
 		{
 			id: '2',
-			title: '내돈내산 흑백요리사 맛집 BEST 10',
-			body: '제가 가본 곳중에 제일 괜찮은 곳을 뽑아보았는데요. 맛피자의 가장 맛있는데, 위치는 용...',
+			title: '빈티지 소품샵 투어하기 좋은 성수 코스 6선',
+			body: '주말에 천천히 걷기 좋은 동선으로 묶어봤어요. 소품샵 분위기부터 가격대, 쉬어가기 좋은 카페까지...',
 			image:
-				'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=300&q=80',
-			author: '@daeyoon'
+				'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=80',
+			author: '@dami',
+			avatar:
+				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80'
 		}
 	];
 </script>
@@ -96,7 +101,7 @@
 						<div class="short-card__overlay">
 							<div class="short-card__meta">
 								<span class="shorts-badge">Shorts</span>
-								<span>◔ {item.views}</span>
+								<span class="short-card__views"><Eye size={18} /> {item.views}</span>
 							</div>
 							<p>{item.title}</p>
 						</div>
@@ -114,11 +119,11 @@
 							<img src={post.image} alt="" />
 							<div>
 								<h3>{post.title}</h3>
-								<p>{post.body}</p>
 							</div>
 						</div>
+						<p>{post.body}</p>
 						<div class="post-card__footer">
-							<div class="post-card__avatar"></div>
+							<img class="post-card__avatar" src={post.avatar} alt="" />
 							<span>{post.author}</span>
 						</div>
 					</article>
@@ -281,11 +286,26 @@
 		color: #111827;
 	}
 
-	.shorts-grid,
-	.post-grid {
+	.shorts-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 12px;
+	}
+
+	.post-grid {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 58%;
+		gap: 12px;
+		overflow-x: auto;
+		padding-bottom: 4px;
+		scroll-snap-type: x proximity;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.post-grid::-webkit-scrollbar {
+		display: none;
 	}
 
 	.short-card {
@@ -325,6 +345,13 @@
 		padding: 0.2rem 0.5rem;
 		border-radius: 8px;
 		background: #e11dcb;
+		font-style: italic;
+	}
+
+	.short-card__views {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 	}
 
 	.short-card__overlay p {
@@ -334,38 +361,48 @@
 	}
 
 	.post-card {
-		padding: 12px;
+		padding: 14px;
 		border: 1px solid #eceef2;
-		border-radius: 18px;
+		border-radius: 20px;
 		background: #ffffff;
 		box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+		scroll-snap-align: start;
 	}
 
 	.post-card__header {
 		display: flex;
+		align-items: flex-start;
 		gap: 10px;
 	}
 
 	.post-card__header img {
 		flex-shrink: 0;
-		width: 44px;
-		height: 44px;
-		border-radius: 10px;
+		width: 48px;
+		height: 48px;
+		border-radius: 12px;
 		object-fit: cover;
 	}
 
 	.post-card h3 {
 		margin: 0;
-		font-size: 0.95rem;
-		line-height: 1.3;
-		color: #111827;
+		font-size: 0.98rem;
+		line-height: 1.35;
+		letter-spacing: -0.02em;
+		font-weight: 800;
+		color: #111111;
 	}
 
 	.post-card p {
-		margin: 6px 0 0;
-		font-size: 0.73rem;
+		margin: 10px 0 0;
+		font-size: 0.76rem;
 		line-height: 1.45;
-		color: #6b7280;
+		letter-spacing: -0.02em;
+		color: #8d8d93;
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		min-height: calc(0.76rem * 1.45 * 3);
 	}
 
 	.post-card__footer {
@@ -373,14 +410,14 @@
 		align-items: center;
 		gap: 8px;
 		margin-top: 12px;
-		color: #6b7280;
-		font-size: 0.8rem;
+		color: #87878d;
+		font-size: 0.82rem;
 	}
 
 	.post-card__avatar {
-		width: 24px;
-		height: 24px;
+		width: 26px;
+		height: 26px;
 		border-radius: 999px;
-		background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 100%);
+		object-fit: cover;
 	}
 </style>

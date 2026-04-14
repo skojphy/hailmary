@@ -53,8 +53,10 @@
 						interactive={false}
 						showSelectionMark={false}
 						showBadge={false}
+						showEmoji={true}
 						compact={true}
 						staticPose={true}
+						showGlow={false}
 					/>
 				{/each}
 			</Layer>
