@@ -136,8 +136,12 @@
 </div>
 
 <style>
+	:global(html),
 	:global(body) {
 		background: #f3f4f6;
+		overflow-x: hidden;
+		overflow-y: auto;
+		overscroll-behavior: auto;
 	}
 
 	.profile-shell {
@@ -299,7 +303,10 @@
 		gap: 12px;
 		overflow-x: auto;
 		padding-bottom: 4px;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior-x: contain;
 		scroll-snap-type: x proximity;
+		touch-action: pan-x;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}

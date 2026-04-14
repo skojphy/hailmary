@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onDestroy, onMount } from 'svelte';
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
 	import {
 		INTERESTS,
@@ -11,6 +12,11 @@
 	let selectedIds = $state(new Set<string>(SELECTABLE_IDS));
 	let titleOffsetX = $state(0);
 	let titleOffsetY = $state(0);
+	let previousHtmlOverflow = '';
+	let previousHtmlOverscroll = '';
+	let previousBodyOverflow = '';
+	let previousBodyOverscroll = '';
+	let previousBodyBackground = '';
 
 	const selectedCount = $derived(selectedIds.size);
 	const firstSelectedId = $derived(Array.from(selectedIds)[0] ?? null);
@@ -48,6 +54,28 @@
 		titleOffsetX = viewport.x - viewport.initialX;
 		titleOffsetY = viewport.y - viewport.initialY;
 	}
+
+	onMount(() => {
+		previousHtmlOverflow = document.documentElement.style.overflow;
+		previousHtmlOverscroll = document.documentElement.style.overscrollBehavior;
+		previousBodyOverflow = document.body.style.overflow;
+		previousBodyOverscroll = document.body.style.overscrollBehavior;
+		previousBodyBackground = document.body.style.background;
+
+		document.documentElement.style.overflow = 'hidden';
+		document.documentElement.style.overscrollBehavior = 'none';
+		document.body.style.overflow = 'hidden';
+		document.body.style.overscrollBehavior = 'none';
+		document.body.style.background = '#252525';
+	});
+
+	onDestroy(() => {
+		document.documentElement.style.overflow = previousHtmlOverflow;
+		document.documentElement.style.overscrollBehavior = previousHtmlOverscroll;
+		document.body.style.overflow = previousBodyOverflow;
+		document.body.style.overscrollBehavior = previousBodyOverscroll;
+		document.body.style.background = previousBodyBackground;
+	});
 
 	async function finishSelection() {
 		if (selectedCount !== MAX_SELECTIONS) {
@@ -94,13 +122,6 @@
 </section>
 
 <style>
-	:global(html),
-	:global(body) {
-		background: #252525;
-		overflow: hidden;
-		overscroll-behavior: none;
-	}
-
 	.interest-explorer {
 		position: relative;
 		height: 100dvh;
