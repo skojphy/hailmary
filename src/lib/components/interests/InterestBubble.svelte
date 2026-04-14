@@ -24,6 +24,11 @@ let {
 	muted = false,
 	intro = false,
 	introDelay = 0,
+	interactive = true,
+	showSelectionMark = true,
+	showBadge = true,
+	compact = false,
+	staticPose = false,
 	onselect = () => {}
 }: {
 	interest: InterestDefinition;
@@ -31,6 +36,11 @@ let {
 	muted?: boolean;
 	intro?: boolean;
 	introDelay?: number;
+	interactive?: boolean;
+	showSelectionMark?: boolean;
+	showBadge?: boolean;
+	compact?: boolean;
+	staticPose?: boolean;
 	onselect?: (selection: { id: string; enabled: boolean }) => void;
 } = $props();
 
@@ -47,20 +57,33 @@ let motion = $state<BubbleMotion>({
 });
 
 	const pathData = $derived(createInterestPath(interest.shape, interest.width, interest.height));
-	const titleWidth = $derived(Math.max(132, interest.width - 68));
-	const badgeWidth = $derived(Math.min(getBadgeWidth(interest.badge), interest.width - 56));
+	const titleWidth = $derived(
+		compact ? Math.max(86, interest.width - 26) : Math.max(96, interest.width - 68)
+	);
+	const badgeWidth = $derived(
+		Math.min(getBadgeWidth(interest.badge), interest.width - (compact ? 28 : 56))
+	);
 	const titleFontSize = $derived(
 		getTitleFontSize(
-			interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36),
+			(interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36)) * (compact ? 0.4 : 1),
 			interest.label,
 			titleWidth
 		)
 	);
-const badgeFontSize = $derived(badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
-const badgeHeight = 40;
-const titleY = $derived(Math.max(-16, -interest.height * 0.12));
+const badgeFontSize = $derived(compact ? 8.5 : badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
+const badgeHeight = $derived(compact ? 22 : 40);
+const titleY = $derived(
+	showBadge
+		? compact
+			? Math.max(-4, -interest.height * 0.02)
+			: Math.max(-16, -interest.height * 0.12)
+		: -titleFontSize * 0.52
+);
 const badgeY = $derived(
-	Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
+	Math.min(
+		interest.height / 2 - badgeHeight - (compact ? 10 : 18),
+		titleY + titleFontSize + (compact ? 5 : 14)
+	)
 );
 	const isMuted = $derived(!selected && muted);
 	const displayFillStart = $derived(isMuted ? '#4b4b4b' : interest.fillStart);
@@ -72,6 +95,16 @@ const badgeY = $derived(
 	);
 const glowColor = $derived(selected ? `${displayFillStart}aa` : '#00000014');
 const motionTarget = $derived.by(() => {
+	if (staticPose) {
+		return {
+			scale: 1,
+			offsetY: 0,
+			rotation: interest.rotation,
+			shadowBlur: selected ? 24 : 10,
+			opacity
+		};
+	}
+
 	if (selected) {
 		return {
 			scale: 1.09,
@@ -184,6 +217,8 @@ const motionTarget = $derived.by(() => {
 	}
 
 	function emitSelection() {
+		if (!interactive) return;
+
 		onselect({
 			id: interest.id,
 			enabled: interest.enabled
@@ -191,6 +226,10 @@ const motionTarget = $derived.by(() => {
 	}
 
 	function getTitleFontSize(base: number, label: string, width: number) {
+		if (compact) {
+			return Math.max(16, Math.min(18, Math.floor(width / Math.max(label.length * 0.98, 1))));
+		}
+
 		const estimated = Math.floor(width / Math.max(label.length * 0.92, 1));
 		return Math.max(20, Math.min(base, estimated));
 	}
@@ -204,10 +243,10 @@ const motionTarget = $derived.by(() => {
 	scaleX={motion.scale}
 	scaleY={motion.scale}
 	opacity={motion.opacity}
-	onpointerclick={emitSelection}
-	ontap={emitSelection}
-	onmouseover={() => (hovered = true)}
-	onmouseout={() => (hovered = false)}
+	onpointerclick={interactive ? emitSelection : undefined}
+	ontap={interactive ? emitSelection : undefined}
+	onmouseover={interactive ? () => (hovered = true) : undefined}
+	onmouseout={interactive ? () => (hovered = false) : undefined}
 >
 	<Path
 		data={pathData}
@@ -230,31 +269,36 @@ const motionTarget = $derived.by(() => {
 		fontSize={titleFontSize}
 		fontStyle="900"
 		fill={titleColor}
-		lineHeight={0.98}
+		lineHeight={compact ? 0.84 : 0.98}
 		letterSpacing={-1.4}
 	/>
 
-	<Rect
-		x={-badgeWidth / 2}
-		y={badgeY}
-		width={badgeWidth}
-		height={badgeHeight}
-		cornerRadius={999}
-		fill={badgeFill}
-	/>
+	{#if showBadge}
+		<Rect
+			x={-badgeWidth / 2}
+			y={badgeY}
+			width={badgeWidth}
+			height={badgeHeight}
+			cornerRadius={999}
+			fill={badgeFill}
+		/>
 
-	<Text
-		x={-badgeWidth / 2}
-		y={badgeY + 9}
-		width={badgeWidth}
-		align="center"
-		text={interest.badge}
-		fontSize={badgeFontSize}
-		fontStyle="700"
-		fill="#ffffff"
-	/>
+		<Text
+			x={-badgeWidth / 2}
+			y={badgeY}
+			width={badgeWidth}
+			height={badgeHeight}
+			align="center"
+			verticalAlign="middle"
+			text={interest.badge}
+			fontSize={badgeFontSize}
+			fontStyle="700"
+			lineHeight={1}
+			fill="#ffffff"
+		/>
+	{/if}
 
-	{#if selected}
+	{#if selected && showSelectionMark}
 		<Circle
 			x={-interest.width / 2 + 26}
 			y={-interest.height / 2 + 24}
