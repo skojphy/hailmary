@@ -130,111 +130,96 @@
 </script>
 
 <Group
-	config={{
-		x: interest.x,
-		y: interest.y + motion.offsetY,
-		rotation: motion.rotation,
-		scaleX: motion.scale,
-		scaleY: motion.scale,
-		opacity
-	}}
+	x={interest.x}
+	y={interest.y + motion.offsetY}
+	rotation={motion.rotation}
+	scaleX={motion.scale}
+	scaleY={motion.scale}
+	opacity={opacity}
 	onpointerclick={emitSelection}
 	ontap={emitSelection}
 	onmouseover={() => (hovered = true)}
 	onmouseout={() => (hovered = false)}
 >
 	<Path
-		config={{
-			data: pathData,
-			fillLinearGradientStartPoint: { x: -interest.width / 2, y: -interest.height / 2 },
-			fillLinearGradientEndPoint: { x: interest.width / 2, y: interest.height / 2 },
-			fillLinearGradientColorStops: [0, interest.fillStart, 1, interest.fillEnd],
-			shadowColor: glowColor,
-			shadowBlur: motion.shadowBlur,
-			shadowOffsetY: 16,
-			shadowOpacity: selected ? 0.45 : 0.3
-		}}
+		data={pathData}
+		fillLinearGradientStartPoint={{ x: -interest.width / 2, y: -interest.height / 2 }}
+		fillLinearGradientEndPoint={{ x: interest.width / 2, y: interest.height / 2 }}
+		fillLinearGradientColorStops={[0, interest.fillStart, 1, interest.fillEnd]}
+		shadowColor={glowColor}
+		shadowBlur={motion.shadowBlur}
+		shadowOffsetY={16}
+		shadowOpacity={selected ? 0.45 : 0.3}
 	/>
 
 	<Text
-		config={{
-			x: -interest.width / 2 + 28,
-			y: -interest.height / 2 + 38,
-			width: interest.width - 56,
-			align: 'center',
-			text: interest.emoji,
-			fontSize: 34,
-			fontStyle: '700',
-			fill: '#ffffff'
-		}}
+		x={-interest.width / 2 + 28}
+		y={-interest.height / 2 + 38}
+		width={interest.width - 56}
+		align="center"
+		text={interest.emoji}
+		fontSize={34}
+		fontStyle="700"
+		fill="#ffffff"
 	/>
 
 	<Text
-		config={{
-			x: -interest.width / 2 + 30,
-			y: -18,
-			width: interest.width - 60,
-			align: 'center',
-			text: interest.label,
-			fontSize: interest.label.length > 5 ? 34 : 40,
-			fontStyle: '900',
-			fill: titleColor,
-			lineHeight: 1.04,
-			letterSpacing: -1.4
-		}}
+		x={-interest.width / 2 + 30}
+		y={-18}
+		width={interest.width - 60}
+		align="center"
+		text={interest.label}
+		fontFamily="RomanticGumi"
+		fontSize={interest.label.length > 5 ? 34 : 40}
+		fontStyle="900"
+		fill={titleColor}
+		lineHeight={1.04}
+		letterSpacing={-1.4}
 	/>
 
 	<Rect
-		config={{
-			x: -badgeWidth / 2,
-			y: interest.height / 2 - 58,
-			width: badgeWidth,
-			height: 44,
-			cornerRadius: 999,
-			fill: badgeFill
-		}}
+		x={-badgeWidth / 2}
+		y={interest.height / 2 - 58}
+		width={badgeWidth}
+		height={44}
+		cornerRadius={999}
+		fill={badgeFill}
 	/>
 
 	<Text
-		config={{
-			x: -badgeWidth / 2,
-			y: interest.height / 2 - 46,
-			width: badgeWidth,
-			align: 'center',
-			text: interest.badge,
-			fontSize: 18,
-			fontStyle: '700',
-			fill: '#ffffff'
-		}}
+		x={-badgeWidth / 2}
+		y={interest.height / 2 - 46}
+		width={badgeWidth}
+		align="center"
+		text={interest.badge}
+		fontSize={18}
+		fontStyle="700"
+		fill="#ffffff"
 	/>
 
 	{#if selected}
 		<Circle
-			config={{
-				x: interest.width / 2 - 34,
-				y: -interest.height / 2 + 36,
-				radius: 28,
-				fill: '#ffffff',
-				shadowColor: '#00000055',
-				shadowBlur: 18,
-				shadowOffsetY: 6
-			}}
+			x={interest.width / 2 - 34}
+			y={-interest.height / 2 + 36}
+			radius={28}
+			fill="#ffffff"
+			shadowColor="#00000055"
+			shadowBlur={18}
+			shadowOffsetY={6}
 		/>
 		<Line
-			config={{
-				points: [
-					interest.width / 2 - 46,
-					-interest.height / 2 + 36,
-					interest.width / 2 - 36,
-					-interest.height / 2 + 48,
-					interest.width / 2 - 20,
-					-interest.height / 2 + 22
-				],
-				stroke: '#111111',
-				strokeWidth: 6,
-				lineCap: 'round',
-				lineJoin: 'round'
-			}}
+			points={[
+				interest.width / 2 - 46,
+				-interest.height / 2 + 36,
+				interest.width / 2 - 36,
+				-interest.height / 2 + 48,
+				interest.width / 2 - 20,
+				-interest.height / 2 + 22
+			]}
+			stroke="#111111"
+			strokeWidth={6}
+			lineCap="round"
+			lineJoin="round"
 		/>
 	{/if}
 </Group>

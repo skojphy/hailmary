@@ -78,45 +78,37 @@
 	{#if viewportWidth > 0 && viewportHeight > 0}
 		<Stage
 			bind:this={stageHandle}
-			config={{
-				width: viewportWidth,
-				height: viewportHeight,
-				x: stageX,
-				y: stageY,
-				draggable: true,
-				dragDistance: 10
-			}}
+			width={viewportWidth}
+			height={viewportHeight}
+			x={stageX}
+			y={stageY}
+			draggable={true}
+			dragDistance={10}
 			ondragmove={handleDragMove}
 		>
 			<Layer>
 				<Rect
-					config={{
-						x: 0,
-						y: 0,
-						width: WORLD_SIZE.width,
-						height: WORLD_SIZE.height,
-						fill: '#151515',
-						cornerRadius: 72
-					}}
+					x={0}
+					y={0}
+					width={WORLD_SIZE.width}
+					height={WORLD_SIZE.height}
+					fill="#151515"
+					cornerRadius={72}
 				/>
 
 				{#each gridX as x}
 					<Line
-						config={{
-							points: [x, 0, x, WORLD_SIZE.height],
-							stroke: 'rgba(255,255,255,0.05)',
-							strokeWidth: 1
-						}}
+						points={[x, 0, x, WORLD_SIZE.height]}
+						stroke="rgba(255,255,255,0.05)"
+						strokeWidth={1}
 					/>
 				{/each}
 
 				{#each gridY as y}
 					<Line
-						config={{
-							points: [0, y, WORLD_SIZE.width, y],
-							stroke: 'rgba(255,255,255,0.05)',
-							strokeWidth: 1
-						}}
+						points={[0, y, WORLD_SIZE.width, y]}
+						stroke="rgba(255,255,255,0.05)"
+						strokeWidth={1}
 					/>
 				{/each}
 			</Layer>

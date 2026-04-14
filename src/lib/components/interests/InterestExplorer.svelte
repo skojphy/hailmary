@@ -1,22 +1,12 @@
 <script lang="ts">
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
-	import {
-		INTERESTS,
-		MAX_SELECTIONS,
-		type InterestDefinition
-	} from '$lib/data/interests';
+	import { INTERESTS, MAX_SELECTIONS, type InterestDefinition } from '$lib/data/interests';
 
 	let selectedIds = $state(new Set<string>());
 
-	const selectedInterests = $derived(
-		INTERESTS.filter((interest) => selectedIds.has(interest.id))
-	);
+	const selectedInterests = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
 	const selectedCount = $derived(selectedIds.size);
-	const completionLabel = $derived(
-		selectedCount === MAX_SELECTIONS
-			? `나의 관심사 ${MAX_SELECTIONS}개 선택 완료`
-			: `나의 관심사 ${selectedCount}/${MAX_SELECTIONS} 선택 중`
-	);
+	const completionLabel = `나의 관심사 ${MAX_SELECTIONS}개 선택 완료`;
 
 	function handleInterestSelect(interest: InterestDefinition) {
 		if (!interest.enabled) {
@@ -61,20 +51,12 @@
 	<header class="interest-explorer__header">
 		<p class="interest-explorer__eyebrow">Prototype interest map</p>
 		<h1>요즘 관심 있는 게 뭐예요?</h1>
-		<p class="interest-explorer__hint">
-			평면을 드래그해서 탐색해보세요. 지금은 <strong>메이크업</strong>, <strong>러닝</strong>,
-			<strong>테크</strong>만 선택할 수 있어요.
-		</p>
 	</header>
 
 	<div class="interest-explorer__selected">
 		{#each selectedInterests as interest (interest.id)}
 			<span>{interest.label}</span>
 		{/each}
-
-		{#if selectedInterests.length === 0}
-			<span class="interest-explorer__placeholder">선택한 관심사가 여기에 표시돼요</span>
-		{/if}
 	</div>
 
 	<div class="interest-explorer__canvas-frame">
@@ -82,11 +64,7 @@
 	</div>
 
 	<footer class="interest-explorer__footer">
-		<button
-			type="button"
-			class:ready={selectedCount === MAX_SELECTIONS}
-			onclick={finishSelection}
-		>
+		<button type="button" class:ready={selectedCount === MAX_SELECTIONS} onclick={finishSelection}>
 			{completionLabel}
 		</button>
 	</footer>
