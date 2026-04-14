@@ -171,43 +171,43 @@ const makeupPalette: HomePalette = {
 };
 
 const runningPalette: HomePalette = {
-	background: '#d9f2ff',
-	headerText: '#10222e',
-	headerPillBg: '#eefaff',
-	headerPillText: '#1580c8',
-	noticeBg: '#f6fdff',
-	noticeBorder: '#1595d9',
-	noticeAccent: '#0f78c5',
-	cardBg: 'rgba(248, 253, 255, 0.95)',
-	cardBorder: 'rgba(255, 255, 255, 0.85)',
-	cardShadow: '0 14px 28px rgba(39, 139, 196, 0.12)',
-	cardText: '#162430',
-	cardMuted: '#6f8291',
-	accent: '#0a88cc',
-	accentStrong: '#008bd7',
-	accentSoft: '#edf7ff',
-	accentText: '#1189d2',
-	rankingAccent: '#1189d2'
+	background: '#ccecff',
+	headerText: '#111111',
+	headerPillBg: '#e8f5ff',
+	headerPillText: '#ff6065',
+	noticeBg: '#f7fbff',
+	noticeBorder: '#3b82ff',
+	noticeAccent: '#6a3dff',
+	cardBg: 'rgba(243, 250, 255, 0.92)',
+	cardBorder: 'rgba(255, 255, 255, 0.86)',
+	cardShadow: '0 14px 28px rgba(58, 132, 214, 0.14)',
+	cardText: '#1b1b1b',
+	cardMuted: '#65717f',
+	accent: '#4f7df0',
+	accentStrong: '#ff5a42',
+	accentSoft: '#ecf6ff',
+	accentText: '#5b86d9',
+	rankingAccent: '#3380ff'
 };
 
 const techPalette: HomePalette = {
-	background: '#edf2ff',
-	headerText: '#151a28',
-	headerPillBg: '#f2f5ff',
-	headerPillText: '#536cff',
-	noticeBg: '#ffffff',
-	noticeBorder: '#536cff',
-	noticeAccent: '#2e55ff',
-	cardBg: 'rgba(255, 255, 255, 0.96)',
-	cardBorder: 'rgba(236, 239, 255, 0.95)',
-	cardShadow: '0 16px 30px rgba(65, 86, 173, 0.12)',
-	cardText: '#1b2030',
-	cardMuted: '#72809a',
-	accent: '#536cff',
-	accentStrong: '#2451ff',
-	accentSoft: '#eff3ff',
-	accentText: '#4b63f3',
-	rankingAccent: '#536cff'
+	background: '#dce5f6',
+	headerText: '#111111',
+	headerPillBg: '#eef2fa',
+	headerPillText: '#ff6065',
+	noticeBg: '#f7faff',
+	noticeBorder: '#7b8ec8',
+	noticeAccent: '#5973d9',
+	cardBg: 'rgba(246, 250, 255, 0.92)',
+	cardBorder: 'rgba(255, 255, 255, 0.84)',
+	cardShadow: '0 14px 28px rgba(91, 116, 168, 0.14)',
+	cardText: '#222222',
+	cardMuted: '#6f7689',
+	accent: '#6d7fc4',
+	accentStrong: '#ff5c44',
+	accentSoft: '#edf3ff',
+	accentText: '#6b8fca',
+	rankingAccent: '#2b7cff'
 };
 
 const avatars = [
@@ -220,6 +220,18 @@ const makeupAvatars = [
 	'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
 	'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=120&q=80',
 	'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=120&q=80'
+];
+
+const techAvatars = [
+	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
+	'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80',
+	'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&q=80'
+];
+
+const runningAvatars = [
+	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
+	'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=120&q=80',
+	'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80'
 ];
 
 export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
@@ -391,13 +403,13 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 		header: {
 			emoji: '🏃',
 			label: '러닝',
-			interestCount: '287,442명 관심'
+			interestCount: '9,281명 관심'
 		},
 		notice: {
 			icon: '✦',
-			text: '민수님, 요즘',
-			highlight: 'PB 갱신템',
-			cta: '둘러보기'
+			text: '유진님,',
+			highlight: '초보 러너 잇템',
+			cta: '구경하기'
 		},
 		palette: runningPalette,
 		cards: [
@@ -405,12 +417,41 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'rn-story',
 				type: 'story',
 				column: 'left',
-				badge: { kind: 'text', text: '🏅 인기글' },
-				title: '10K PB 달성한 러너의 회복 루틴',
-				body: '서브50 노리면서 가장 체감 좋았던 회복법이랑, 기록 다음날 꼭 챙긴 식단을 적어봤어요.',
-				avatars,
-				meta: '18,204명이 봄',
+				badge: { kind: 'text', text: '🏆 인기글' },
+				title: '러닝 초보자를 위한 필수 아이템 모음!!',
+				body: '내돈내산 초보 러너 아이템을 모아봤습니다. 운동 처음 하신다구요? 그럼 이것부터 챙기면 좋아요...',
+				avatars: runningAvatars,
+				meta: '24,910명이 봄',
 				buttonLabel: '더 많은 인기글 보기'
+			},
+			{
+				id: 'rn-super',
+				type: 'product',
+				column: 'right',
+				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				image:
+					'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
+				title: 'LightSpray Cloudmonst...',
+				discount: '24%',
+				price: '281,500원',
+				avatars: runningAvatars,
+				meta: '192명이 구매',
+				buttonLabel: '더 많은 슈퍼딜 보기'
+			},
+			{
+				id: 'rn-select',
+				type: 'product',
+				column: 'left',
+				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				image:
+					'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80',
+				title: '아디다스 스트랩 무릎 보...',
+				discount: '12%',
+				price: '19,400원',
+				avatars: runningAvatars,
+				meta: '331명이 구매',
+				chipStyle: 'highlight',
+				buttonLabel: '더 많은 셀렉티 보기'
 			},
 			{
 				id: 'rn-shorts',
@@ -418,36 +459,105 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'right',
 				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
 				image:
-					'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=600&q=80',
-				title: '5km 20분대 진입하는 호흡 템포 훈련',
-				duration: '00:21',
-				avatars,
-				meta: '8,331명이 봄',
+					'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80',
+				title: '레이싱 경기장 달리기, 본노의 질주',
+				duration: '00:24',
+				avatars: runningAvatars,
+				meta: '1,215명이 봄',
 				buttonLabel: '더 많은 숏츠 보기'
 			},
 			{
-				id: 'rn-product',
-				type: 'product',
+				id: 'rn-live',
+				type: 'live',
 				column: 'left',
-				badge: { kind: 'text', text: '러닝딜', tone: 'accent' },
+				badge: {
+					kind: 'live',
+					image: '/interest-home/makeup/badge-live.svg',
+					alt: 'LIVE',
+					suffix: '공구 · 경매'
+				},
 				image:
-					'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
-				title: '레이스 데이용 초경량 러닝화 스페셜 딜',
-				discount: '24%',
-				price: '129,000원',
-				avatars,
-				meta: '410명이 구매',
-				buttonLabel: '더 많은 러닝딜 보기'
+					'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80',
+				title: '아디다스 언더웨어 리뷰...',
+				discount: '26%',
+				price: '52,400원',
+				avatars: runningAvatars,
+				meta: '391개 구매',
+				mediaCaption: '500개 한정\n공동구매',
+				buttonLabel: '더 많은 라이브 보기'
+			},
+			{
+				id: 'rn-gallery',
+				type: 'gallery',
+				column: 'right',
+				badge: { kind: 'text', text: '📸 갤러리' },
+				image:
+					'https://images.unsplash.com/photo-1486218119243-13883505764c?auto=format&fit=crop&w=900&q=80',
+				title: '오늘도 러닝 완료! 날씨는 아주 좋음!',
+				avatars: runningAvatars,
+				meta: '4,112명이 봄',
+				buttonLabel: '더 많은 사진 보기'
+			},
+			{
+				id: 'rn-following',
+				type: 'following',
+				column: 'left',
+				badge: { kind: 'text', text: '💘 TOP 인플루언서' },
+				people: [
+					{
+						name: '기안84',
+						followers: '49,241명',
+						image:
+							'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '션',
+						followers: '12,913명',
+						image:
+							'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '박보검나웃겨',
+						followers: '89,483명',
+						image:
+							'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '운동 많이된다',
+						followers: '1,512명',
+						image:
+							'https://images.unsplash.com/photo-1566753323558-f4e0952af115?auto=format&fit=crop&w=240&q=80'
+					}
+				],
+				buttonLabel: '더 많은 인플루언서 보기'
 			},
 			{
 				id: 'rn-ranking',
 				type: 'ranking',
 				column: 'right',
-				badge: { kind: 'text', text: '⚡ 이번주 키워드' },
+				badge: { kind: 'text', text: '🔥 Hot 키워드' },
 				items: [
-					{ rank: 1, label: '알파플라이', views: '3.4K 조회', image: 'https://placehold.co/92x92/d8f0ff/0f78c5?text=A' },
-					{ rank: 2, label: '한강런', views: '2.1K 조회', image: 'https://placehold.co/92x92/e3f6ff/33a2ff?text=B' },
-					{ rank: 3, label: '젤', views: '1.7K 조회', image: 'https://placehold.co/92x92/d0ecff/007bc4?text=C' }
+					{
+						rank: 1,
+						label: '러닝화',
+						views: '2.9K 조회',
+						image:
+							'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=180&q=80'
+					},
+					{
+						rank: 2,
+						label: '선글라스',
+						views: '1.1K 조회',
+						image:
+							'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=180&q=80'
+					},
+					{
+						rank: 3,
+						label: '러닝캡',
+						views: '0.6K 조회',
+						image:
+							'https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=180&q=80'
+					}
 				],
 				buttonLabel: '더 많은 키워드 보기'
 			}
@@ -455,31 +565,57 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 	},
 	tech: {
 		header: {
-			emoji: '💻',
+			emoji: '🖥️',
 			label: '테크',
-			interestCount: '512,903명 관심'
+			interestCount: '25,103명 관심'
 		},
 		notice: {
 			icon: '✦',
-			text: '지훈님, 오늘',
-			highlight: '책상 셋업템',
-			cta: '보러가기'
+			text: '준호님, 요즘',
+			highlight: '데스크 셋업템',
+			cta: '구경하기'
 		},
 		palette: techPalette,
 		cards: [
 			{
-				id: 'te-banner',
+				id: 'te-story',
+				type: 'story',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 인기글' },
+				title: '붉은 사막 굴러가는 최소 사양 노트북 추천',
+				body: '요즘 핫한 붉은 사막 플레이하시려면 최소 이정도 사양은 갖춰야 합니다. 실제로 돌려본 기준으로 정리했어요...',
+				avatars: techAvatars,
+				meta: '624,910명이 봄',
+				buttonLabel: '더 많은 인기글 보기'
+			},
+			{
+				id: 'te-super',
+				type: 'product',
+				column: 'right',
+				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				image:
+					'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80',
+				title: 'LG 32G600A 32인치 게...',
+				discount: '26%',
+				price: '416,200원',
+				avatars: techAvatars,
+				meta: '463명이 구매',
+				buttonLabel: '더 많은 슈퍼딜 보기'
+			},
+			{
+				id: 'te-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'text', text: '데스크딜', tone: 'accent' },
+				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
 				image:
-					'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=600&q=80',
-				title: '책상 셋업 끝내는 27인치 4K 모니터 특가',
-				discount: '18%',
-				price: '329,000원',
-				avatars,
-				meta: '220명이 구매',
-				buttonLabel: '더 많은 장비 보기'
+					'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
+				title: '무선 마우스 충전식 마우...',
+				discount: '14%',
+				price: '25,200원',
+				avatars: techAvatars,
+				meta: '1,210명이 구매',
+				chipStyle: 'highlight',
+				buttonLabel: '더 많은 셀렉티 보기'
 			},
 			{
 				id: 'te-shorts',
@@ -487,23 +623,75 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'right',
 				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
 				image:
-					'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
-				title: '맥북 초보가 켜면 삶이 편해지는 설정 5개',
+					'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80',
+				title: '닌텐도 스위치2, 케이스 하나로 분위기 전환',
 				duration: '00:31',
-				avatars,
-				meta: '9,812명이 봄',
+				avatars: techAvatars,
+				meta: '35,912명이 봄',
 				buttonLabel: '더 많은 숏츠 보기'
+			},
+			{
+				id: 'te-live',
+				type: 'live',
+				column: 'left',
+				badge: {
+					kind: 'live',
+					image: '/interest-home/makeup/badge-live.svg',
+					alt: 'LIVE',
+					suffix: '공구 · 경매'
+				},
+				image:
+					'https://images.unsplash.com/photo-1516321310764-8d2e29b0f9f1?auto=format&fit=crop&w=900&q=80',
+				title: '[잇섭의 힛IT슈] 최고의 W...',
+				discount: '14%',
+				price: '466,500원',
+				avatars: techAvatars,
+				meta: '486개 구매',
+				mediaCaption: '500개 한정\n공동구매',
+				buttonLabel: '더 많은 라이브 보기'
+			},
+			{
+				id: 'te-gallery',
+				type: 'gallery',
+				column: 'right',
+				badge: { kind: 'text', text: '📸 갤러리' },
+				image:
+					'https://images.unsplash.com/photo-1616588589676-62b3bd2f190f?auto=format&fit=crop&w=900&q=80',
+				title: '내가 직접 꾸민 게이밍룸과 데스크테리어',
+				avatars: techAvatars,
+				meta: '1,990명이 봄',
+				buttonLabel: '더 많은 사진 보기'
 			},
 			{
 				id: 'te-following',
 				type: 'following',
 				column: 'left',
-				badge: { kind: 'text', text: '👨‍💻 팔로잉 크리에이터' },
+				badge: { kind: 'text', text: '💘 TOP 인플루언서' },
 				people: [
-					{ name: '맥북오너', followers: '120,001명', image: avatars[0] },
-					{ name: '얼리어답터', followers: '84,210명', image: avatars[1] },
-					{ name: '데스크테리어', followers: '44,102명', image: avatars[2] },
-					{ name: '기계식덕후', followers: '23,901명', image: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=120&q=80' }
+					{
+						name: '잇섭',
+						followers: '49,241명',
+						image:
+							'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '귀곰',
+						followers: '12,913명',
+						image:
+							'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '젠슨황',
+						followers: '4,289,483명',
+						image:
+							'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80'
+					},
+					{
+						name: '팀쿡',
+						followers: '9,821,512명',
+						image:
+							'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80'
+					}
 				],
 				buttonLabel: '더 많은 인플루언서 보기'
 			},
@@ -511,11 +699,29 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'te-ranking',
 				type: 'ranking',
 				column: 'right',
-				badge: { kind: 'text', text: '📈 Hot 키워드' },
+				badge: { kind: 'text', text: '🔥 Hot 키워드' },
 				items: [
-					{ rank: 1, label: 'M4', views: '5.2K 조회', image: 'https://placehold.co/92x92/dce3ff/5165ff?text=M4' },
-					{ rank: 2, label: '키보드', views: '3.3K 조회', image: 'https://placehold.co/92x92/e9edff/7d8fff?text=K' },
-					{ rank: 3, label: '에어팟', views: '2.4K 조회', image: 'https://placehold.co/92x92/e3f0ff/53a1ff?text=A' }
+					{
+						rank: 1,
+						label: 'LG그램',
+						views: '2.9K 조회',
+						image:
+							'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=180&q=80'
+					},
+					{
+						rank: 2,
+						label: '맥북 프로',
+						views: '1.1K 조회',
+						image:
+							'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=180&q=80'
+					},
+					{
+						rank: 3,
+						label: '로지텍',
+						views: '0.6K 조회',
+						image:
+							'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=180&q=80'
+					}
 				],
 				buttonLabel: '더 많은 키워드 보기'
 			}

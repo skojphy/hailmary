@@ -330,10 +330,10 @@
 	.home-card {
 		padding: 0.92rem;
 		border-radius: 1.45rem;
-		background: rgba(255, 244, 249, 0.78);
-		border: 1px solid rgba(255, 255, 255, 0.78);
-		box-shadow: 0 14px 28px rgba(220, 72, 132, 0.12);
-		color: #181518;
+		background: var(--home-card-bg);
+		border: 1px solid var(--home-card-border);
+		box-shadow: var(--home-card-shadow);
+		color: var(--home-card-text);
 		backdrop-filter: blur(16px);
 	}
 
@@ -344,11 +344,11 @@
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
 		font-size: 1rem;
 		line-height: 1;
-		color: #141414;
+		color: var(--home-card-text);
 	}
 
 	.home-card__badge--accent {
-		color: #2d2d2d;
+		color: var(--home-accent);
 	}
 
 	.home-card__badge--shorts {
@@ -410,7 +410,7 @@
 		margin: 0.52rem 0 0;
 		font-size: 0.8rem;
 		line-height: 1.42;
-		color: #605560;
+		color: var(--home-card-muted);
 		display: -webkit-box;
 		overflow: hidden;
 		line-clamp: 3;
@@ -534,7 +534,7 @@
 	.home-card__price span {
 		font-size: 1.02rem;
 		font-weight: 900;
-		color: #ff5b45;
+		color: var(--home-accent-strong);
 	}
 
 	.home-card__price strong {
@@ -550,7 +550,7 @@
 		margin-top: 0.64rem;
 		font-size: 0.79rem;
 		font-weight: 700;
-		color: #ff4f98;
+		color: var(--home-accent-text);
 	}
 
 	.home-card__avatars {
@@ -637,7 +637,7 @@
 	.following-person small {
 		margin-top: 0.16rem;
 		font-size: 0.7rem;
-		color: #91858f;
+		color: var(--home-card-muted);
 	}
 
 	.ranking-list {
@@ -670,7 +670,7 @@
 	.ranking-item__copy strong {
 		font-size: 1.55rem;
 		line-height: 1;
-		color: #ff557f;
+		color: var(--home-ranking-accent);
 	}
 
 	.ranking-item h4 {
@@ -683,7 +683,7 @@
 	.ranking-item p {
 		margin: 0.2rem 0 0;
 		font-size: 0.78rem;
-		color: #746a74;
+		color: var(--home-card-muted);
 	}
 
 	@media (max-width: 390px) {
