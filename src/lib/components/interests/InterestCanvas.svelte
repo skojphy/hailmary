@@ -26,8 +26,14 @@
 		$state(null);
 
 	const MAX_SCALE = 1.5;
+	const CONTENT_EDGE_PADDING = 14;
+	const CONTENT_BOUNDS = getContentBounds();
+	const CONTENT_WIDTH = CONTENT_BOUNDS.maxX - CONTENT_BOUNDS.minX;
+	const CONTENT_HEIGHT = CONTENT_BOUNDS.maxY - CONTENT_BOUNDS.minY;
 	const minScale = $derived(
-		viewportWidth > 0 ? Math.min(1, viewportWidth / WORLD_SIZE.width) : 1
+		viewportWidth > 0
+			? Math.min(1, (viewportWidth - CONTENT_EDGE_PADDING * 2) / Math.max(CONTENT_WIDTH, 1))
+			: 1
 	);
 
 	const highlighted = $derived(INTERESTS.filter((interest) => selectedIds.has(interest.id)));
@@ -57,27 +63,27 @@
 	});
 
 	function clampStage(x: number, y: number, nextScale: number) {
-		const scaledWidth = WORLD_SIZE.width * nextScale;
-		const scaledHeight = WORLD_SIZE.height * nextScale;
-		const minX = scaledWidth <= viewportWidth ? (viewportWidth - scaledWidth) / 2 : viewportWidth - scaledWidth;
-		const maxX = scaledWidth <= viewportWidth ? minX : 0;
-		const minY =
-			scaledHeight <= viewportHeight ? (viewportHeight - scaledHeight) / 2 : viewportHeight - scaledHeight;
-		const maxY = scaledHeight <= viewportHeight ? minY : 0;
+		const minX = viewportWidth - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxX * nextScale;
+		const maxX = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minX * nextScale;
+		const minY = viewportHeight - CONTENT_EDGE_PADDING - CONTENT_BOUNDS.maxY * nextScale;
+		const maxY = CONTENT_EDGE_PADDING - CONTENT_BOUNDS.minY * nextScale;
+
+		const boundedX = minX > maxX ? (minX + maxX) / 2 : Math.min(maxX, Math.max(minX, x));
+		const boundedY = minY > maxY ? (minY + maxY) / 2 : Math.min(maxY, Math.max(minY, y));
 
 		return {
-			x: Math.min(maxX, Math.max(minX, x)),
-			y: Math.min(maxY, Math.max(minY, y))
+			x: boundedX,
+			y: boundedY
 		};
 	}
 
 	function getInitialStagePosition(width: number, height: number, nextScale: number) {
-		const scaledWidth = WORLD_SIZE.width * nextScale;
-		const scaledHeight = WORLD_SIZE.height * nextScale;
+		const contentWidth = CONTENT_WIDTH * nextScale;
+		const contentHeight = CONTENT_HEIGHT * nextScale;
 
 		return {
-			x: scaledWidth <= width ? (width - scaledWidth) / 2 : 0,
-			y: scaledHeight <= height ? (height - scaledHeight) / 2 : 0
+			x: width / 2 - (CONTENT_BOUNDS.minX * nextScale + contentWidth / 2),
+			y: height / 2 - (CONTENT_BOUNDS.minY * nextScale + contentHeight / 2)
 		};
 	}
 
@@ -185,6 +191,31 @@
 	function handleSelect(interest: InterestDefinition) {
 		onInterestSelect(interest);
 	}
+
+	function getContentBounds() {
+		return INTERESTS.reduce(
+			(bounds, interest) => {
+				const checkOffset = interest.enabled ? 54 : 0;
+				const left = interest.x - interest.width / 2 - checkOffset;
+				const top = interest.y - interest.height / 2 - checkOffset;
+				const right = interest.x + interest.width / 2;
+				const bottom = interest.y + interest.height / 2;
+
+				return {
+					minX: Math.min(bounds.minX, left),
+					minY: Math.min(bounds.minY, top),
+					maxX: Math.max(bounds.maxX, right),
+					maxY: Math.max(bounds.maxY, bottom)
+				};
+			},
+			{
+				minX: Number.POSITIVE_INFINITY,
+				minY: Number.POSITIVE_INFINITY,
+				maxX: Number.NEGATIVE_INFINITY,
+				maxY: Number.NEGATIVE_INFINITY
+			}
+		);
+	}
 </script>
 
 <div
@@ -214,19 +245,13 @@
 			ondragmove={handleDragMove}
 		>
 			<Layer>
-				<Rect
-					x={0}
-					y={0}
-					width={WORLD_SIZE.width}
-					height={WORLD_SIZE.height}
-					fill="#252525"
-				/>
+				<Rect x={0} y={0} width={WORLD_SIZE.width} height={WORLD_SIZE.height} fill="#252525" />
 			</Layer>
 
 			<Layer>
 				{#each dimmed as interest (interest.id)}
 					<InterestBubble
-						interest={interest}
+						{interest}
 						selected={false}
 						muted={true}
 						onselect={() => handleSelect(interest)}
@@ -235,7 +260,7 @@
 
 				{#each highlighted as interest (interest.id)}
 					<InterestBubble
-						interest={interest}
+						{interest}
 						selected={true}
 						muted={false}
 						onselect={() => handleSelect(interest)}
