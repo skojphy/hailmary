@@ -40,9 +40,21 @@
 	});
 
 	const pathData = $derived(createInterestPath(interest.shape, interest.width, interest.height));
-	const badgeWidth = $derived(getBadgeWidth(interest.badge));
-	const titleFontSize = $derived(interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36));
-	const emojiFontSize = $derived(Math.max(20, titleFontSize - 9));
+	const titleWidth = $derived(Math.max(132, interest.width - 68));
+	const badgeWidth = $derived(Math.min(getBadgeWidth(interest.badge), interest.width - 56));
+	const titleFontSize = $derived(
+		getTitleFontSize(
+			interest.labelFontSize ?? (interest.label.length > 5 ? 30 : 36),
+			interest.label,
+			titleWidth
+		)
+	);
+	const badgeFontSize = $derived(badgeWidth < getBadgeWidth(interest.badge) ? 13 : 15);
+	const badgeHeight = 40;
+	const titleY = $derived(Math.max(-16, -interest.height * 0.12));
+	const badgeY = $derived(
+		Math.min(interest.height / 2 - badgeHeight - 18, titleY + titleFontSize + 14)
+	);
 	const opacity = $derived(interest.enabled ? (muted ? 0.8 : 1) : 0.92);
 	const titleColor = $derived(interest.enabled ? '#fff8f4' : '#f2f2f2');
 	const badgeFill = $derived(
@@ -129,6 +141,11 @@
 			enabled: interest.enabled
 		});
 	}
+
+	function getTitleFontSize(base: number, label: string, width: number) {
+		const estimated = Math.floor(width / Math.max(label.length * 0.92, 1));
+		return Math.max(20, Math.min(base, estimated));
+	}
 </script>
 
 <Group
@@ -155,54 +172,43 @@
 	/>
 
 	<Text
-		x={-interest.width / 2 + 28}
-		y={-interest.height / 2 + 34}
-		width={interest.width - 56}
-		align="center"
-		text={interest.emoji}
-		fontSize={emojiFontSize}
-		fontStyle="700"
-		fill="#ffffff"
-	/>
-
-	<Text
-		x={-interest.width / 2 + 30}
-		y={-10}
-		width={interest.width - 60}
+		x={-titleWidth / 2}
+		y={titleY}
+		width={titleWidth}
 		align="center"
 		text={interest.label}
 		fontFamily="RomanticGumi"
 		fontSize={titleFontSize}
 		fontStyle="900"
 		fill={titleColor}
-		lineHeight={1.04}
+		lineHeight={0.98}
 		letterSpacing={-1.4}
 	/>
 
 	<Rect
 		x={-badgeWidth / 2}
-		y={interest.height / 2 - 58}
+		y={badgeY}
 		width={badgeWidth}
-		height={44}
+		height={badgeHeight}
 		cornerRadius={999}
 		fill={badgeFill}
 	/>
 
 	<Text
 		x={-badgeWidth / 2}
-		y={interest.height / 2 - 46}
+		y={badgeY + 9}
 		width={badgeWidth}
 		align="center"
 		text={interest.badge}
-		fontSize={15}
+		fontSize={badgeFontSize}
 		fontStyle="700"
 		fill="#ffffff"
 	/>
 
 	{#if selected}
 		<Circle
-			x={interest.width / 2 - 34}
-			y={-interest.height / 2 + 36}
+			x={-interest.width / 2 + 26}
+			y={-interest.height / 2 + 24}
 			radius={28}
 			fill="#ffffff"
 			shadowColor="#00000055"
@@ -211,12 +217,12 @@
 		/>
 		<Line
 			points={[
-				interest.width / 2 - 46,
+				-interest.width / 2 + 14,
+				-interest.height / 2 + 24,
+				-interest.width / 2 + 24,
 				-interest.height / 2 + 36,
-				interest.width / 2 - 36,
-				-interest.height / 2 + 48,
-				interest.width / 2 - 20,
-				-interest.height / 2 + 22
+				-interest.width / 2 + 40,
+				-interest.height / 2 + 10
 			]}
 			stroke="#111111"
 			strokeWidth={6}
