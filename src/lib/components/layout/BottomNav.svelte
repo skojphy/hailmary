@@ -1,10 +1,7 @@
 <script lang="ts">
   import { Home, LayoutGrid, Heart, User } from 'lucide-svelte';
-  import { currentInterest, themeColors } from '$lib/stores/interest';
+  import { currentInterest } from '$lib/stores/interest';
   import { page } from '$app/state';
-
-  // page store in svelte 5 might be imported from '$app/state' or we can pass active states.
-  // For simplicity, we assume we check the current path.
 </script>
 
 <nav class="fixed bottom-0 left-0 right-0 w-full max-w-md mx-auto bg-white pb-safe z-50">
@@ -29,9 +26,14 @@
     <button class="flex items-center justify-center w-full h-full text-gray-800 hover:text-gray-900 transition-colors">
       <Heart size={32} />
     </button>
-    <button class="flex items-center justify-center w-full h-full text-gray-800 hover:text-gray-900 transition-colors">
-      <User size={32} />
-    </button>
+    <a
+      href="/profile"
+      class="flex items-center justify-center w-full h-full transition-colors"
+      class:text-blue-600={page.url.pathname === '/profile'}
+      class:text-gray-800={page.url.pathname !== '/profile'}
+    >
+      <User size={32} fill={page.url.pathname === '/profile' ? 'currentColor' : 'none'} />
+    </a>
   </div>
 </nav>
 
