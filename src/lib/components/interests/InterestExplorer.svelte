@@ -119,7 +119,7 @@
 <style>
 	.interest-explorer {
 		position: relative;
-		height: 100dvh;
+		height: 100vh;
 		overflow: hidden;
 		background: #252525;
 		color: #fff7f0;
