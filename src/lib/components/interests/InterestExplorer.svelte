@@ -3,11 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
 	import { setSelectedInterests } from '$lib/stores/interest';
-	import {
-		INTERESTS,
-		MAX_SELECTIONS,
-		type InterestDefinition
-	} from '$lib/data/interests';
+	import { INTERESTS, MAX_SELECTIONS, type InterestDefinition } from '$lib/data/interests';
 
 	let selectedIds = $state(new Set<string>());
 	let titleOffsetX = $state(0);
@@ -186,9 +182,7 @@
 		z-index: 4;
 		display: flex;
 		justify-content: center;
-		padding:
-			0 24px
-			calc(24px + env(safe-area-inset-bottom, 0px) + 28px);
+		padding: 0 24px 52px;
 	}
 
 	.interest-explorer__footer button {
@@ -231,9 +225,7 @@
 		}
 
 		.interest-explorer__footer {
-			padding:
-				0 18px
-				calc(24px + env(safe-area-inset-bottom, 0px) + 32px);
+			padding: 0 18px calc(24px + env(safe-area-inset-bottom, 0px) + 32px);
 		}
 
 		.interest-explorer__header h1 {
