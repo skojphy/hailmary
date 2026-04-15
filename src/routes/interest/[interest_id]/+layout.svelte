@@ -2,6 +2,7 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import BottomNav from '$lib/components/layout/BottomNav.svelte';
 	import { interestHeaderMeta } from '$lib/data/interest-home';
+	import { INTERESTS } from '$lib/data/interests';
 	import { currentInterest, type InterestArea } from '$lib/stores/interest';
 	import { page as pageStore } from '$app/stores';
 	import { onDestroy } from 'svelte';
@@ -25,7 +26,7 @@
 		if ($pageStore.params.interest_id) {
 			const interest = $pageStore.params.interest_id as InterestArea;
 
-			if (['running', 'makeup', 'tech'].includes(interest) && $currentInterest !== interest) {
+			if (INTERESTS.some((item) => item.id === interest) && $currentInterest !== interest) {
 				currentInterest.set(interest);
 			}
 		}

@@ -1,12 +1,11 @@
 import type { PageServerLoad } from './$types';
-import { commerceData } from '$lib/data/mock/commerce';
-import type { InterestArea } from '$lib/stores/interest';
+import { getCommerceItems } from '$lib/data/mock';
 
 export const load: PageServerLoad = async ({ params }) => {
-  const interest = params.interest_id as InterestArea;
+  const interest = params.interest_id;
   
   return {
     interest,
-    commerceItems: commerceData[interest] || []
+    commerceItems: getCommerceItems(interest)
   };
 };

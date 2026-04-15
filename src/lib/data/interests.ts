@@ -24,16 +24,14 @@ export type InterestDefinition = {
 	fillEnd: string;
 };
 
-export const MAX_SELECTIONS = 3;
+export const MAX_SELECTIONS = 10;
 
 export const WORLD_SIZE = {
 	width: 760,
 	height: 3240
 };
 
-export const SELECTABLE_IDS = ['makeup', 'running', 'tech'] as const;
-
-export const INTERESTS: InterestDefinition[] = [
+const INTERESTS_BASE: InterestDefinition[] = [
 	{
 		id: 'makeup',
 		label: '메이크업',
@@ -611,3 +609,10 @@ export const INTERESTS: InterestDefinition[] = [
 		fillEnd: '#347cc3'
 	}
 ];
+
+export const INTERESTS: InterestDefinition[] = INTERESTS_BASE.map((interest) => ({
+	...interest,
+	enabled: true
+}));
+
+export const SELECTABLE_IDS: string[] = [];

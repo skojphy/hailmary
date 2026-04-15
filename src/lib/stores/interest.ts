@@ -1,9 +1,50 @@
+import { browser } from '$app/environment';
 import { writable, derived } from 'svelte/store';
+import { INTERESTS, MAX_SELECTIONS } from '$lib/data/interests';
 
-export type InterestArea = 'running' | 'makeup' | 'tech';
+export type InterestArea = string;
+
+const SELECTED_INTERESTS_STORAGE_KEY = 'hailmary:selected-interests';
+const validInterestIds = new Set(INTERESTS.map((interest) => interest.id));
+
+function sanitizeSelectedInterests(interests: string[]) {
+	return interests.filter((interest, index, items) => {
+		return validInterestIds.has(interest) && items.indexOf(interest) === index && index < MAX_SELECTIONS;
+	});
+}
+
+function readSelectedInterests() {
+	if (!browser) return [];
+
+	try {
+		const raw = window.localStorage.getItem(SELECTED_INTERESTS_STORAGE_KEY);
+
+		if (!raw) return [];
+
+		const parsed = JSON.parse(raw);
+
+		return Array.isArray(parsed) ? sanitizeSelectedInterests(parsed) : [];
+	} catch {
+		return [];
+	}
+}
 
 // 현재 사용자의 관심사
 export const currentInterest = writable<InterestArea>('running');
+export const selectedInterests = writable<InterestArea[]>(readSelectedInterests());
+
+if (browser) {
+	selectedInterests.subscribe((value) => {
+		window.localStorage.setItem(
+			SELECTED_INTERESTS_STORAGE_KEY,
+			JSON.stringify(sanitizeSelectedInterests(value))
+		);
+	});
+}
+
+export function setSelectedInterests(interests: string[]) {
+	selectedInterests.set(sanitizeSelectedInterests(interests));
+}
 
 // 관심사에 따른 테마 색상 (예시)
 export const themeColors = derived(currentInterest, ($target) => {
