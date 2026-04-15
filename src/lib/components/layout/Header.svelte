@@ -110,7 +110,7 @@
 <style>
 	.interest-header {
 		position: relative;
-		z-index: 40;
+		z-index: 120;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -175,7 +175,7 @@
 		position: fixed;
 		inset: 0;
 		left: 50%;
-		z-index: 100;
+		z-index: 220;
 		width: 100%;
 		max-width: 28rem;
 		transform: translateX(-50%);
@@ -192,6 +192,7 @@
 		position: absolute;
 		top: 0.95rem;
 		left: 1.1rem;
+		z-index: 221;
 		display: flex;
 		flex-direction: column;
 		gap: 0.15rem;
