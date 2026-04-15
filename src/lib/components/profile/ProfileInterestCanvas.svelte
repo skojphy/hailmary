@@ -4,16 +4,35 @@
 	import InterestBubble from '$lib/components/interests/InterestBubble.svelte';
 	import { INTERESTS, type InterestDefinition } from '$lib/data/interests';
 
+	const DESIGN_WIDTH = 416;
+	const DESIGN_HEIGHT = 168;
+
 	let viewportWidth = $state(0);
 	let viewportHeight = $state(0);
 
 	const sourceMap = new Map(INTERESTS.map((interest) => [interest.id, interest]));
 
-	const bubbles: InterestDefinition[] = [
-		createBubble('makeup', { x: 88, y: 92, scale: 0.46 }),
-		createBubble('tech', { x: 206, y: 116, scale: 0.48 }),
-		createBubble('running', { x: 320, y: 80, scale: 0.45 })
-	];
+	const bubbleSpecs = [
+		{ id: 'makeup', x: 88, y: 92, scale: 0.46 },
+		{ id: 'tech', x: 206, y: 116, scale: 0.48 },
+		{ id: 'running', x: 320, y: 80, scale: 0.45 }
+	] as const;
+
+	const layoutScale = $derived(
+		viewportWidth > 0 && viewportHeight > 0
+			? Math.min(viewportWidth / DESIGN_WIDTH, viewportHeight / DESIGN_HEIGHT, 1)
+			: 1
+	);
+
+	const bubbles = $derived(
+		bubbleSpecs.map((bubble) =>
+			createBubble(bubble.id, {
+				x: bubble.x * layoutScale,
+				y: bubble.y * layoutScale,
+				scale: bubble.scale * layoutScale
+			})
+		)
+	);
 
 	function createBubble(
 		id: string,

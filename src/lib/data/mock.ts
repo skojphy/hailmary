@@ -8,6 +8,10 @@ export interface WidgetData {
   type: 'commerce' | 'community' | 'shorts' | 'following' | 'banner';
   title?: string;
   data: any;
+  styles?: {
+    pillText?: string;
+    pillColor?: string;
+  };
 }
 
 const bannerData: Record<InterestArea, WidgetData[]> = {

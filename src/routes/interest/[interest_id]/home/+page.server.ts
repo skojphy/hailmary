@@ -1,19 +1,18 @@
+import { interestHomeThemes } from '$lib/data/interest-home';
 import { mockWidgets } from '$lib/data/mock';
 import type { InterestArea } from '$lib/stores/interest';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
-  const interest = params.interest_id as InterestArea;
-  
-  if (!['running', 'makeup', 'tech'].includes(interest)) {
-    throw error(404, 'Interest not found');
-  }
+	const interest = params.interest_id as InterestArea;
 
-  // Pre-fetch the vertical specific widgets
-  const widgets = mockWidgets[interest] || [];
+	if (!['running', 'makeup', 'tech'].includes(interest)) {
+		throw error(404, 'Interest not found');
+	}
 
-  return {
-    interest,
-    widgets
-  };
+	return {
+		interest,
+		theme: interestHomeThemes[interest],
+		widgets: mockWidgets[interest] || []
+	};
 }
