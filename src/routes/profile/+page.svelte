@@ -649,7 +649,7 @@
 	}
 
 	.badge-card h3 {
-		margin: 12px 0 0;
+		margin: 8px 0 0;
 		font-size: 0.88rem;
 		line-height: 1.32;
 		letter-spacing: -0.03em;
