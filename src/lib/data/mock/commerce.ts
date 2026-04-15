@@ -14,7 +14,7 @@ export const commerceData: Record<InterestArea, WidgetData[]> = {
 				discountRate: 40,
 				currentParticipants: 85,
 				targetParticipants: 100,
-				imageUrl: '/images/items/lipstick.png'
+				imageUrl: '/images/items/sneakers.png'
 			}
 		},
 		{

@@ -8,7 +8,8 @@
 		BarChart2,
 		BadgeCheck,
 		VolumeX,
-		Volume2
+		Volume2,
+		PictureInPicture
 	} from 'lucide-svelte';
 	import BottomSheet from '$lib/components/widgets/BottomSheet.svelte';
 	import { onMount } from 'svelte';
@@ -64,7 +65,7 @@
 >
 	<!-- Global Top Overlays (Badges & Close) -->
 	<div
-		class="fixed top-0 inset-x-0 p-4 pt-12 z-[70] flex items-center justify-between pointer-events-none max-w-md mx-auto"
+		class="fixed top-0 inset-x-0 p-4 pt-6 z-[70] flex items-center justify-between pointer-events-none max-w-md mx-auto"
 	>
 		<!-- Left: Badges -->
 		<div class="bg-black/30 rounded-sm flex items-center pointer-events-auto">
@@ -81,10 +82,10 @@
 		<!-- Right: Utility Icons -->
 		<div class="flex items-center pointer-events-auto text-white">
 			<button class="p-2 active:scale-95 transition-transform drop-shadow-lg">
-				<PictureInPicture2 size={28} strokeWidth={2.5} />
+				<img src="/images/pictureinpicture.png" width="32px" height="32px" alt="PIP" />
 			</button>
 			<a href="../contents/shorts" class="p-2 active:scale-95 transition-transform drop-shadow-lg">
-				<X size={32} strokeWidth={2.5} />
+				<X size={32} />
 			</a>
 		</div>
 	</div>
