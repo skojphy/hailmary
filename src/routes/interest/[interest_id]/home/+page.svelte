@@ -110,7 +110,8 @@
 						</div>
 						{@const action = getActionLabelParts(story.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'product'}
 						{@const product = card as ProductCard}
@@ -142,7 +143,8 @@
 						</div>
 						{@const action = getActionLabelParts(product.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'live'}
 						{@const live = card as LiveCard}
@@ -170,7 +172,8 @@
 						</div>
 						{@const action = getActionLabelParts(live.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'following'}
 						{@const following = card as FollowingCard}
@@ -189,7 +192,8 @@
 						</div>
 						{@const action = getActionLabelParts(following.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{/if}
 				</article>
@@ -226,12 +230,13 @@
 						</div>
 						{@const action = getActionLabelParts(product.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'shorts'}
 						{@const shorts = card as ShortsCard}
 						<div class={badgeClass(shorts.badge)}>{shorts.badge.text}</div>
-						<a href="./shorts" class="home-card__link">
+						<a href="./contents/shorts" class="home-card__link">
 							<div class="home-card__media home-card__media--shorts">
 								<img src={shorts.image} alt="" />
 								<div class="home-card__duration">
@@ -251,7 +256,8 @@
 						</div>
 						{@const action = getActionLabelParts(shorts.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'gallery'}
 						{@const gallery = card as GalleryCard}
@@ -270,7 +276,8 @@
 						</div>
 						{@const action = getActionLabelParts(gallery.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{:else if card.type === 'ranking'}
 						{@const ranking = card as RankingCard}
@@ -291,7 +298,8 @@
 						</div>
 						{@const action = getActionLabelParts(ranking.buttonLabel)}
 						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
 						</button>
 					{/if}
 				</article>
