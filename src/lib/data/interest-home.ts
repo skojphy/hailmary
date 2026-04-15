@@ -347,26 +347,22 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 					{
 						name: '덕키비키',
 						followers: '49,241명',
-						image:
-							'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/lucky.png'
 					},
 					{
 						name: '썸머',
 						followers: '12,913명',
-						image:
-							'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/summer.png'
 					},
 					{
 						name: '뚜비',
 						followers: '89,483명',
-						image:
-							'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/toobi.png'
 					},
 					{
-						name: '아기명수',
+						name: '나주배',
 						followers: '1,512명',
-						image:
-							'https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/naju.png'
 					}
 				],
 				buttonLabel: '더 많은 인플루언서 보기'
@@ -509,28 +505,24 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				badge: { kind: 'text', text: '💘 TOP 인플루언서' },
 				people: [
 					{
-						name: '기안84',
+						name: '런혜인',
 						followers: '49,241명',
-						image:
-							'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/runhyein.jpg'
 					},
 					{
 						name: '션',
 						followers: '12,913명',
-						image:
-							'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/sean.png'
+					},
+					{
+						name: '기안84',
+						followers: '89,483명',
+						image: '/images/people/gian84.png'
 					},
 					{
 						name: '박보검나웃겨',
-						followers: '89,483명',
-						image:
-							'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80'
-					},
-					{
-						name: '운동 많이된다',
-						followers: '1,512명',
-						image:
-							'https://images.unsplash.com/photo-1566753323558-f4e0952af115?auto=format&fit=crop&w=240&q=80'
+						followers: '10,512명',
+						image: '/images/people/bbg.png'
 					}
 				],
 				buttonLabel: '더 많은 인플루언서 보기'
@@ -675,26 +667,22 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 					{
 						name: '잇섭',
 						followers: '49,241명',
-						image:
-							'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/itsub.webp'
 					},
 					{
 						name: '귀곰',
 						followers: '12,913명',
-						image:
-							'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?auto=format&fit=crop&w=240&q=80'
+						image: '/images/people/guigom.webp'
 					},
 					{
-						name: '젠슨황',
-						followers: '428,948명',
-						image:
-							'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80'
+						name: '눈쟁이',
+						followers: '4,289,483명',
+						image: '/images/people/nunjangi.webp'
 					},
 					{
 						name: '팀쿡',
-						followers: '982,151명',
-						image:
-							'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80'
+						followers: '9,821,512명',
+						image: '/images/people/timcook.webp'
 					}
 				],
 				buttonLabel: '더 많은 인플루언서 보기'

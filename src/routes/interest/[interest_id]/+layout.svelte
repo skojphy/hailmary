@@ -18,6 +18,7 @@
 			}
 		}
 	});
+	let isShortsView = $derived(/shorts\/\w+$/.test($pageStore.url.pathname));
 </script>
 
 <div
@@ -34,7 +35,9 @@
 		{@render children()}
 	</main>
 
-	<BottomNav />
+	{#if !isShortsView}
+		<BottomNav />
+	{/if}
 </div>
 
 <style>
