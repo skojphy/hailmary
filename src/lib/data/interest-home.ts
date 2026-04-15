@@ -2,6 +2,7 @@ import type { InterestArea } from '$lib/stores/interest';
 
 export type HomePalette = {
 	background: string;
+	backgroundGradient: string;
 	headerText: string;
 	headerPillBg: string;
 	headerPillText: string;
@@ -152,6 +153,7 @@ export type InterestHomeTheme = {
 
 const makeupPalette: HomePalette = {
 	background: '#ffd6eb',
+	backgroundGradient: 'linear-gradient(180deg, #f4bee5 0%, #f6adc9 58%, #f8eef2 100%)',
 	headerText: '#111111',
 	headerPillBg: '#ffe8f4',
 	headerPillText: '#ff5b8f',
@@ -172,6 +174,7 @@ const makeupPalette: HomePalette = {
 
 const runningPalette: HomePalette = {
 	background: '#ccecff',
+	backgroundGradient: 'linear-gradient(180deg, #7eb8ea 0%, #94c7ef 52%, #c7e1f3 100%)',
 	headerText: '#111111',
 	headerPillBg: '#e8f5ff',
 	headerPillText: '#ff6065',
@@ -192,6 +195,7 @@ const runningPalette: HomePalette = {
 
 const techPalette: HomePalette = {
 	background: '#dce5f6',
+	backgroundGradient: 'linear-gradient(180deg, #cad3e6 0%, #d2dcef 54%, #edf2f9 100%)',
 	headerText: '#111111',
 	headerPillBg: '#eef2fa',
 	headerPillText: '#ff6065',

@@ -5,6 +5,7 @@
 
 	const tabs = ['나의 활동', '주문 내역', '미션 · 보상'] as const;
 	let activeTab = $state<(typeof tabs)[number]>('나의 활동');
+	const badgeSampleImage = '/profile/badges/badge-sample.png';
 
 	const savedShorts = [
 		{
@@ -52,21 +53,21 @@
 			title: '스마일 유니버스',
 			description: '이제 나도 스클 멤버',
 			reward: '+5,000P',
-			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'recent-2',
 			title: '스마일 유니버스',
 			description: '이제 나도 스클 멤버',
 			reward: '+5,000P',
-			image: 'https://placehold.co/200x200/a8d8ff/a8d8ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'recent-3',
 			title: '스마일 유니버스',
 			description: '이제 나도 스클 멤버',
 			reward: '+5,000P',
-			image: 'https://placehold.co/200x200/99ccff/99ccff.png'
+			image: badgeSampleImage
 		}
 	];
 
@@ -76,84 +77,84 @@
 			title: '혼자보다 같이',
 			reward: '+100',
 			earned: true,
-			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-2',
 			title: '공유는 사랑',
 			reward: '+100',
 			earned: true,
-			image: 'https://placehold.co/200x200/a8d8ff/a8d8ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-3',
 			title: '리액션 부자',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-4',
 			title: '경험 나눔러',
 			reward: '+100',
 			earned: true,
-			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-5',
 			title: '오늘의 출석왕',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-6',
 			title: '취향 마스터',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-7',
 			title: '기록 수집가',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-8',
 			title: '찜하기 전문가',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-9',
 			title: '발견의 즐거움',
 			reward: '+100',
 			earned: true,
-			image: 'https://placehold.co/200x200/9fd3ff/9fd3ff.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-10',
 			title: '리스트 수집가',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-11',
 			title: '취향 레벨업',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		},
 		{
 			id: 'owned-12',
 			title: '정보 나눔꾼',
 			reward: '+5,000P',
 			earned: false,
-			image: 'https://placehold.co/200x200/e5e7eb/e5e7eb.png'
+			image: badgeSampleImage
 		}
 	];
 </script>
@@ -640,10 +641,11 @@
 
 	.badge-card__image {
 		width: 100%;
+		max-width: 96px;
 		aspect-ratio: 1;
-		border-radius: 999px;
-		object-fit: cover;
-		background: #dfefff;
+		border-radius: 0;
+		object-fit: contain;
+		background: transparent;
 	}
 
 	.badge-card h3 {
@@ -682,8 +684,8 @@
 	}
 
 	.badge-card--owned:not(.earned) .badge-card__image {
-		filter: grayscale(1);
-		background: #e5e7eb;
+		filter: grayscale(1) saturate(0.15);
+		opacity: 0.42;
 	}
 
 	.badge-card--owned:not(.earned) h3,

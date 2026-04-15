@@ -37,6 +37,24 @@
 		if (badge.tone === 'shorts') return 'home-card__badge home-card__badge--shorts';
 		return 'home-card__badge';
 	}
+
+	function getActionLabelParts(label: string) {
+		const match = label.match(/^(더 많은 )(.+?)( 보기)$/);
+
+		if (!match) {
+			return {
+				prefix: label,
+				focus: '',
+				suffix: ''
+			};
+		}
+
+		return {
+			prefix: match[1],
+			focus: match[2],
+			suffix: match[3]
+		};
+	}
 </script>
 
 <svelte:head>
@@ -47,6 +65,7 @@
 	class="interest-home"
 	style={`
 		--home-bg: ${data.theme.palette.background};
+		--home-bg-gradient: ${data.theme.palette.backgroundGradient};
 		--home-notice-bg: ${data.theme.palette.noticeBg};
 		--home-notice-border: ${data.theme.palette.noticeBorder};
 		--home-notice-accent: ${data.theme.palette.noticeAccent};
@@ -66,8 +85,8 @@
 		<div class="home-notice__text">
 			<span class="home-notice__icon">{data.theme.notice.icon}</span>
 			<span>{data.theme.notice.text}</span>
-			<strong>{data.theme.notice.highlight}</strong>
-			<span>의 잇템 모아봤어요!</span>
+			<strong>초보 러너</strong>
+			<span>의 잇템 모아 봤어요!</span>
 		</div>
 		<button type="button">{data.theme.notice.cta}</button>
 	</div>
@@ -89,11 +108,17 @@
 							</div>
 							<span>{story.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{story.buttonLabel}</button>
+						{@const action = getActionLabelParts(story.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'product'}
 						{@const product = card as ProductCard}
 						{#if product.badge.kind === 'logo'}
-							<div class:home-card__chip={product.chipStyle === 'highlight'} class="home-card__badge-logo">
+							<div
+								class:home-card__chip={product.chipStyle === 'highlight'}
+								class="home-card__badge-logo"
+							>
 								<img src={product.badge.image} alt={product.badge.alt} />
 							</div>
 						{:else}
@@ -115,7 +140,10 @@
 							</div>
 							<span>{product.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{product.buttonLabel}</button>
+						{@const action = getActionLabelParts(product.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'live'}
 						{@const live = card as LiveCard}
 						<div class="home-card__badge-live">
@@ -140,7 +168,10 @@
 							</div>
 							<span>{live.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{live.buttonLabel}</button>
+						{@const action = getActionLabelParts(live.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'following'}
 						{@const following = card as FollowingCard}
 						<div class={badgeClass(following.badge)}>{following.badge.text}</div>
@@ -156,7 +187,10 @@
 								</div>
 							{/each}
 						</div>
-						<button type="button" class="home-card__action">{following.buttonLabel}</button>
+						{@const action = getActionLabelParts(following.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{/if}
 				</article>
 			{/each}
@@ -190,7 +224,10 @@
 							</div>
 							<span>{product.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{product.buttonLabel}</button>
+						{@const action = getActionLabelParts(product.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'shorts'}
 						{@const shorts = card as ShortsCard}
 						<div class={badgeClass(shorts.badge)}>{shorts.badge.text}</div>
@@ -212,7 +249,10 @@
 							</div>
 							<span>{shorts.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{shorts.buttonLabel}</button>
+						{@const action = getActionLabelParts(shorts.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'gallery'}
 						{@const gallery = card as GalleryCard}
 						<div class={badgeClass(gallery.badge)}>{gallery.badge.text}</div>
@@ -228,7 +268,10 @@
 							</div>
 							<span>{gallery.meta}</span>
 						</div>
-						<button type="button" class="home-card__action">{gallery.buttonLabel}</button>
+						{@const action = getActionLabelParts(gallery.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{:else if card.type === 'ranking'}
 						{@const ranking = card as RankingCard}
 						<div class={badgeClass(ranking.badge)}>{ranking.badge.text}</div>
@@ -246,7 +289,10 @@
 								</div>
 							{/each}
 						</div>
-						<button type="button" class="home-card__action">{ranking.buttonLabel}</button>
+						{@const action = getActionLabelParts(ranking.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span>
+						</button>
 					{/if}
 				</article>
 			{/each}
@@ -262,9 +308,7 @@
 	.interest-home {
 		min-height: 100%;
 		padding: 0 1rem calc(2rem + env(safe-area-inset-bottom));
-		background:
-			radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.42) 0%, transparent 32%),
-			var(--home-bg);
+		background: transparent;
 	}
 
 	.home-notice {
@@ -273,7 +317,7 @@
 		justify-content: space-between;
 		gap: 0.65rem;
 		margin: 0.15rem 0 1rem;
-		padding: 0.72rem 0.7rem 0.72rem 0.9rem;
+		padding: 0.52rem 0.56rem 0.52rem 0.8rem;
 		border: 2px solid var(--home-notice-border);
 		border-radius: 999px;
 		background: var(--home-notice-bg);
@@ -286,14 +330,16 @@
 		flex-wrap: wrap;
 		gap: 0.14rem;
 		min-width: 0;
-		font-size: 0.88rem;
-		font-weight: 800;
+		font-size: 0.84rem;
+		line-height: 1.1;
+		font-weight: 500;
 		letter-spacing: -0.02em;
 		color: var(--home-card-text);
 	}
 
 	.home-notice__text strong {
 		color: var(--home-notice-accent);
+		font-weight: 700;
 	}
 
 	.home-notice__icon {
@@ -307,10 +353,11 @@
 		border: none;
 		border-radius: 999px;
 		background: linear-gradient(135deg, #8d20ff 0%, #406fff 100%);
-		padding: 0.76rem 1rem;
+		padding: 0.62rem 0.92rem;
 		color: #ffffff;
-		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 0.95rem;
+		font-family: 'Pretendard', sans-serif;
+		font-size: 0.8rem;
+		font-weight: 700;
 		line-height: 1;
 	}
 
@@ -574,12 +621,21 @@
 		border: none;
 		border-radius: 0.86rem;
 		background: rgba(255, 255, 255, 0.95);
-		padding: 0.86rem 0.7rem;
+		padding: 0.68rem 0.7rem;
 		color: #9f9aa3;
-		font-size: 0.93rem;
-		font-weight: 700;
+		font-size: 0.86rem;
+		font-weight: 500;
 		letter-spacing: -0.02em;
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.82);
+	}
+
+	.home-card__action span {
+		color: #9f9aa3;
+	}
+
+	.home-card__action strong {
+		color: #1b1b1b;
+		font-weight: 700;
 	}
 
 	.home-card__link {
@@ -692,16 +748,16 @@
 		}
 
 		.home-notice {
-			padding-inline: 0.82rem 0.64rem;
+			padding: 0.48rem 0.5rem 0.48rem 0.72rem;
 		}
 
 		.home-notice__text {
-			font-size: 0.84rem;
+			font-size: 0.8rem;
 		}
 
 		.home-notice button {
-			padding-inline: 0.92rem;
-			font-size: 0.89rem;
+			padding: 0.56rem 0.82rem;
+			font-size: 0.76rem;
 		}
 
 		.home-card {
