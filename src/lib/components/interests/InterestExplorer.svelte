@@ -178,11 +178,11 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 0;
+		bottom: 52px;
 		z-index: 4;
 		display: flex;
 		justify-content: center;
-		padding: 0 24px 52px;
+		padding: 0 24px;
 	}
 
 	.interest-explorer__footer button {
