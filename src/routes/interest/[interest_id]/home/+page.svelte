@@ -55,6 +55,7 @@
 			suffix: match[3]
 		};
 	}
+
 </script>
 
 <svelte:head>
@@ -85,7 +86,7 @@
 		<div class="home-notice__text">
 			<span class="home-notice__icon">{data.theme.notice.icon}</span>
 			<span>{data.theme.notice.text}</span>
-			<strong>초보 러너</strong>
+			<strong>{data.theme.notice.highlight}</strong>
 			<span>의 잇템 모아 봤어요!</span>
 		</div>
 		<button type="button">{data.theme.notice.cta}</button>

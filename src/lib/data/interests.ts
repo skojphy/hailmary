@@ -24,16 +24,14 @@ export type InterestDefinition = {
 	fillEnd: string;
 };
 
-export const MAX_SELECTIONS = 3;
+export const MAX_SELECTIONS = 10;
 
 export const WORLD_SIZE = {
 	width: 760,
 	height: 3240
 };
 
-export const SELECTABLE_IDS = ['makeup', 'running', 'tech'] as const;
-
-export const INTERESTS: InterestDefinition[] = [
+const INTERESTS_BASE: InterestDefinition[] = [
 	{
 		id: 'makeup',
 		label: '메이크업',
@@ -41,8 +39,8 @@ export const INTERESTS: InterestDefinition[] = [
 		badge: '12.2K 참여 중',
 		labelFontSize: 28,
 		shape: 'clover',
-		x: 122,
-		y: 274,
+		x: 360,
+		y: 516,
 		width: 250,
 		height: 232,
 		rotation: -11,
@@ -105,8 +103,8 @@ export const INTERESTS: InterestDefinition[] = [
 		badge: '12.2K 참여 중',
 		labelFontSize: 30,
 		shape: 'hex',
-		x: 360,
-		y: 516,
+		x: 234,
+		y: 753,
 		width: 250,
 		height: 228,
 		rotation: 12,
@@ -137,8 +135,8 @@ export const INTERESTS: InterestDefinition[] = [
 		badge: '12.2K 참여 중',
 		labelFontSize: 30,
 		shape: 'orb',
-		x: 234,
-		y: 753,
+		x: 122,
+		y: 274,
 		width: 260,
 		height: 228,
 		rotation: 4,
@@ -611,3 +609,10 @@ export const INTERESTS: InterestDefinition[] = [
 		fillEnd: '#347cc3'
 	}
 ];
+
+export const INTERESTS: InterestDefinition[] = INTERESTS_BASE.map((interest) => ({
+	...interest,
+	enabled: true
+}));
+
+export const SELECTABLE_IDS: string[] = [];

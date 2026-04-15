@@ -1,17 +1,24 @@
 <script lang="ts">
 	import { ChevronDown, ChevronUp, Heart } from 'lucide-svelte';
 	import { interestHeaderMeta } from '$lib/data/interest-home';
-	import { currentInterest, type InterestArea } from '$lib/stores/interest';
+	import { currentInterest, selectedInterests, type InterestArea } from '$lib/stores/interest';
 	import { fade, scale } from 'svelte/transition';
 
 	let showDropdown = $state(false);
 
-	const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
+	const displayInterests = $derived.by(() => {
+		const chosen = $selectedInterests.length ? $selectedInterests : [$currentInterest];
+		const uniqueChosen = chosen.filter((interest, index, items) => items.indexOf(interest) === index);
 
-	const displayInterests = $derived([
-		$currentInterest,
-		...availableInterests.filter((interest) => interest !== $currentInterest)
-	]);
+		if (uniqueChosen.includes($currentInterest)) {
+			return [
+				$currentInterest,
+				...uniqueChosen.filter((interest) => interest !== $currentInterest)
+			].slice(0, 10);
+		}
+
+		return [$currentInterest, ...uniqueChosen].slice(0, 10);
+	});
 
 	const activeMeta = $derived(interestHeaderMeta[$currentInterest]);
 
@@ -110,7 +117,7 @@
 <style>
 	.interest-header {
 		position: relative;
-		z-index: 40;
+		z-index: 120;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -175,7 +182,7 @@
 		position: fixed;
 		inset: 0;
 		left: 50%;
-		z-index: 100;
+		z-index: 220;
 		width: 100%;
 		max-width: 28rem;
 		transform: translateX(-50%);
@@ -192,6 +199,7 @@
 		position: absolute;
 		top: 0.95rem;
 		left: 1.1rem;
+		z-index: 221;
 		display: flex;
 		flex-direction: column;
 		gap: 0.15rem;
