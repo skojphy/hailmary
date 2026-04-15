@@ -93,7 +93,7 @@
 	<title>관심사 선택</title>
 </svelte:head>
 
-<section class="interest-explorer min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl">
+<section class="interest-explorer flex flex-col mx-auto w-full max-w-md shadow-2xl">
 	<div class="interest-explorer__canvas">
 		<InterestCanvas
 			{selectedIds}
@@ -119,7 +119,7 @@
 <style>
 	.interest-explorer {
 		position: relative;
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		background: #252525;
 		color: #fff7f0;
