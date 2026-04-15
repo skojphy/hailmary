@@ -12,6 +12,7 @@
 		ShortsCard,
 		StoryCard
 	} from '$lib/data/interest-home';
+	import { fly } from 'svelte/transition';
 
 	let { data } = $props<{
 		data: {
@@ -55,7 +56,6 @@
 			suffix: match[3]
 		};
 	}
-
 </script>
 
 <svelte:head>
@@ -94,8 +94,8 @@
 
 	<div class="home-columns">
 		<div class="home-column">
-			{#each leftCards as card (cardKey(card))}
-				<article class="home-card">
+			{#each leftCards as card, index (cardKey(card))}
+				<article in:fly={{ y: 20, duration: 600, delay: 50 + index * 150 }} class="home-card">
 					{#if card.type === 'story'}
 						{@const story = card as StoryCard}
 						<div class={badgeClass(story.badge)}>{story.badge.text}</div>
@@ -202,8 +202,8 @@
 		</div>
 
 		<div class="home-column">
-			{#each rightCards as card (cardKey(card))}
-				<article class="home-card">
+			{#each rightCards as card, index (cardKey(card))}
+				<article in:fly={{ y: 40, duration: 600, delay: 50 + index * 150 }} class="home-card">
 					{#if card.type === 'product'}
 						{@const product = card as ProductCard}
 						{#if product.badge.kind === 'logo'}

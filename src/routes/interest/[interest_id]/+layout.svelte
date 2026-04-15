@@ -6,6 +6,7 @@
 	import { currentInterest, type InterestArea } from '$lib/stores/interest';
 	import { page as pageStore } from '$app/stores';
 	import { onDestroy } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	let { children } = $props();
 
@@ -121,7 +122,7 @@
 			class:interest-shell__hero-intro--shrink={techIntroShrinking}
 			class:interest-shell__hero-intro--fade={techIntroFading}
 			class="interest-shell__hero-intro"
-			style={`--tech-hero-height: ${techHeroHeight}px;`}
+			style={`--tech-hero-height: ${techHeroHeight}px; z-index: 0`}
 		>
 			<video
 				class="interest-shell__hero-intro-video"
@@ -130,6 +131,7 @@
 				playsinline
 				preload="auto"
 				onended={finishTechIntro}
+				style="z-index: 0;"
 			>
 				<source src="/interest-home/galaxy_movie.webm" type="video/webm" />
 				<source src="/interest-home/galaxy_movie.mp4" type="video/mp4" />
@@ -137,9 +139,19 @@
 		</div>
 	{/if}
 
-	<main class:interest-shell__main--with-hero={showTechHero} class="interest-shell__main">
-		{@render children()}
-	</main>
+	{#if showTechIntro}
+		<main
+			class:interest-shell__main--with-hero={showTechHero}
+			class="interest-shell__main"
+			in:fly={{ y: 150, duration: 1000, delay: 2000, opacity: 1 }}
+		>
+			{@render children()}
+		</main>
+	{:else}
+		<main class:interest-shell__main--with-hero={showTechHero} class="interest-shell__main">
+			{@render children()}
+		</main>
+	{/if}
 
 	{#if !isShortsView}
 		<BottomNav />
