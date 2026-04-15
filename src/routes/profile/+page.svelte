@@ -196,7 +196,6 @@
 					src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=240&q=80"
 					alt="김다미 프로필 이미지"
 				/>
-				<span class="profile-badge">B</span>
 			</div>
 
 			<h1>김다미</h1>
@@ -365,23 +364,6 @@
 		height: 92px;
 		border-radius: 999px;
 		object-fit: cover;
-	}
-
-	.profile-badge {
-		position: absolute;
-		top: -8px;
-		left: 50%;
-		transform: translateX(-50%);
-		display: grid;
-		place-items: center;
-		width: 34px;
-		height: 34px;
-		border: 4px solid #242424;
-		border-radius: 14px;
-		background: #2563ff;
-		box-shadow: 0 10px 18px rgba(37, 99, 255, 0.35);
-		font-size: 1.1rem;
-		font-weight: 800;
 	}
 
 	.profile-hero h1 {
