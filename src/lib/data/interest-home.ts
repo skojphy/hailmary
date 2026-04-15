@@ -268,7 +268,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'mk-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80',
 				title: '구달 청귤비타C잡티케어...',
@@ -282,7 +282,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'mk-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1625772452859-1c03d5bf1137?auto=format&fit=crop&w=600&q=80',
 				title: '미니 실리콘 립 브러쉬 컨...',
@@ -312,7 +312,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -432,7 +432,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'rn-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
 				title: 'LightSpray Cloudmonst...',
@@ -446,7 +446,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'rn-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80',
 				title: '아디다스 스트랩 무릎 보...',
@@ -476,7 +476,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -575,7 +575,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 		},
 		notice: {
 			icon: '✦',
-			text: '준호님, 요즘',
+			text: '유진님, 요즘',
 			highlight: '데스크 셋업템',
 			cta: '구경하기'
 		},
@@ -596,7 +596,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'te-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80',
 				title: 'LG 32G600A 32인치 게...',
@@ -610,7 +610,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'te-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
 				title: '무선 마우스 충전식 마우...',
@@ -640,7 +640,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -686,13 +686,13 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 					},
 					{
 						name: '젠슨황',
-						followers: '4,289,483명',
+						followers: '428,948명',
 						image:
 							'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80'
 					},
 					{
 						name: '팀쿡',
-						followers: '9,821,512명',
+						followers: '982,151명',
 						image:
 							'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80'
 					}

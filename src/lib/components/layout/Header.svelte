@@ -153,13 +153,14 @@
 		gap: 0.34rem;
 		border: none;
 		border-radius: 10px;
-		background: rgba(255, 234, 244, 0.78);
+		background: rgba(255, 255, 255, 0.34);
 		padding: 0.58rem 0.72rem;
 		color: #ff5a63;
 		font-size: 0.79rem;
 		font-weight: 800;
 		letter-spacing: -0.02em;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+		backdrop-filter: blur(6px);
 	}
 
 	.interest-header__pill-count {

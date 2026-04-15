@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Play } from 'lucide-svelte';
+	import { Play, UserRound } from 'lucide-svelte';
 	import type {
 		CardBadge,
 		FollowingCard,
@@ -117,7 +117,7 @@
 						{@const product = card as ProductCard}
 						{#if product.badge.kind === 'logo'}
 							<div
-								class:home-card__chip={product.chipStyle === 'highlight'}
+								class:home-card__badge-logo--selecti={product.badge.alt === 'Selecti'}
 								class="home-card__badge-logo"
 							>
 								<img src={product.badge.image} alt={product.badge.alt} />
@@ -186,7 +186,7 @@
 										<span>+</span>
 									</div>
 									<strong>{person.name}</strong>
-									<small>{person.followers}</small>
+									<small><UserRound size={12} /> {person.followers}</small>
 								</div>
 							{/each}
 						</div>
@@ -415,37 +415,41 @@
 	.home-card__badge-logo {
 		display: inline-flex;
 		align-items: center;
-		margin-bottom: 0.82rem;
+		margin-bottom: 0.72rem;
 	}
 
 	.home-card__badge-logo img {
 		display: block;
-		height: 1.8rem;
+		height: 1.12rem;
 		width: auto;
+	}
+
+	.home-card__badge-logo--selecti img {
+		height: 1.28rem;
 	}
 
 	.home-card__badge-live {
 		display: flex;
 		align-items: center;
-		gap: 0.45rem;
-		margin-bottom: 0.82rem;
+		gap: 0.34rem;
+		margin-bottom: 0.72rem;
 	}
 
 	.home-card__badge-live img {
 		display: block;
-		height: 1.75rem;
+		height: 1.24rem;
 		width: auto;
 	}
 
 	.home-card__badge-live span {
 		color: #ff6a00;
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 1rem;
+		font-size: 0.92rem;
 	}
 
 	.home-card__chip {
-		padding: 0.3rem 0.58rem;
-		border-radius: 0.55rem;
+		padding: 0.22rem 0.44rem;
+		border-radius: 0.46rem;
 		background: #f6ef58;
 		color: #111111;
 		box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.04);
@@ -454,17 +458,26 @@
 	.home-card__story-title,
 	.home-card__title {
 		margin: 0;
-		font-size: 1.02rem;
-		line-height: 1.32;
+		font-size: 0.9rem;
+		line-height: 1.28;
 		letter-spacing: -0.03em;
-		font-weight: 800;
 		word-break: keep-all;
+	}
+
+	.home-card__story-title {
+		font-size: 0.96rem;
+		line-height: 1.3;
+		font-weight: 700;
+	}
+
+	.home-card__title {
+		font-weight: 400;
 	}
 
 	.home-card__story-body {
 		margin: 0.52rem 0 0;
-		font-size: 0.8rem;
-		line-height: 1.42;
+		font-size: 0.74rem;
+		line-height: 1.4;
 		color: var(--home-card-muted);
 		display: -webkit-box;
 		overflow: hidden;
@@ -526,9 +539,9 @@
 		z-index: 1;
 		text-align: center;
 		color: #ffffff;
-		font-size: 0.9rem;
-		line-height: 1.25;
-		font-weight: 800;
+		font-size: 0.84rem;
+		line-height: 1.22;
+		font-weight: 700;
 		white-space: pre-line;
 		text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 	}
@@ -555,9 +568,9 @@
 		left: 0.82rem;
 		z-index: 1;
 		color: #ffffff;
-		font-size: 0.84rem;
-		line-height: 1.36;
-		font-weight: 700;
+		font-size: 0.78rem;
+		line-height: 1.3;
+		font-weight: 600;
 		text-shadow: 0 1px 8px rgba(0, 0, 0, 0.28);
 	}
 
@@ -587,15 +600,16 @@
 	}
 
 	.home-card__price span {
-		font-size: 1.02rem;
-		font-weight: 900;
+		font-size: 0.94rem;
+		font-weight: 300;
 		color: var(--home-accent-strong);
 	}
 
 	.home-card__price strong {
-		font-size: 1.08rem;
+		font-size: 0.98rem;
 		line-height: 1;
 		color: #2c2c2c;
+		font-weight: 700;
 	}
 
 	.home-card__meta {
@@ -603,8 +617,8 @@
 		align-items: center;
 		gap: 0.45rem;
 		margin-top: 0.64rem;
-		font-size: 0.79rem;
-		font-weight: 700;
+		font-size: 0.76rem;
+		font-weight: 600;
 		color: var(--home-accent-text);
 	}
 
@@ -631,7 +645,7 @@
 		background: rgba(255, 255, 255, 0.95);
 		padding: 0.68rem 0.7rem;
 		color: #9f9aa3;
-		font-size: 0.86rem;
+		font-size: 0.8rem;
 		font-weight: 500;
 		letter-spacing: -0.02em;
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.82);
@@ -643,7 +657,7 @@
 
 	.home-card__action strong {
 		color: #1b1b1b;
-		font-weight: 700;
+		font-weight: 600;
 	}
 
 	.home-card__link {
@@ -696,12 +710,22 @@
 
 	.following-person strong {
 		font-size: 0.84rem;
+		font-weight: 400;
 	}
 
 	.following-person small {
 		margin-top: 0.16rem;
 		font-size: 0.7rem;
 		color: var(--home-card-muted);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.2rem;
+	}
+
+	.following-person small :global(svg) {
+		width: 0.78rem;
+		height: 0.78rem;
+		opacity: 0.75;
 	}
 
 	.ranking-list {
@@ -735,19 +759,22 @@
 		font-size: 1.55rem;
 		line-height: 1;
 		color: var(--home-ranking-accent);
+		font-weight: 300;
 	}
 
 	.ranking-item h4 {
 		margin: 0;
-		font-size: 1rem;
+		font-size: 0.9rem;
 		line-height: 1.15;
-		font-weight: 800;
+		font-weight: 500;
+		color: #4a4a4a;
 	}
 
 	.ranking-item p {
 		margin: 0.2rem 0 0;
 		font-size: 0.78rem;
 		color: var(--home-card-muted);
+		font-weight: 300;
 	}
 
 	@media (max-width: 390px) {
