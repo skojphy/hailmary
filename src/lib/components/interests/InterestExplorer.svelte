@@ -224,10 +224,6 @@
 			padding-block: 1.28rem;
 		}
 
-		.interest-explorer__footer {
-			padding: 0 18px calc(24px + env(safe-area-inset-bottom, 0px) + 32px);
-		}
-
 		.interest-explorer__header h1 {
 			font-size: clamp(1.18rem, 5.3vw, 1.48rem);
 		}
