@@ -535,8 +535,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				type: 'shorts',
 				column: 'right',
 				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
-				image:
-					'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80',
+				image: '/images/shorts/makeup1.gif',
 				title: '유리숍 공동개발! 바닐라코 틴트 라이브🔥',
 				duration: '00:28',
 				avatars: makeupAvatars,
@@ -695,9 +694,8 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				type: 'shorts',
 				column: 'right',
 				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
-				image:
-					'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80',
-				title: '레이싱 경기장 달리기, 본노의 질주',
+				image: '/images/shorts/run1.gif',
+				title: '레이싱 경기장 달리기, 분노의 질주',
 				duration: '00:24',
 				avatars: runningAvatars,
 				meta: '1,215명이 봄',
@@ -855,8 +853,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				type: 'shorts',
 				column: 'right',
 				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
-				image:
-					'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80',
+				image: '/images/shorts/tech1.gif',
 				title: '닌텐도 스위치2, 케이스 하나로 분위기 전환',
 				duration: '00:31',
 				avatars: techAvatars,

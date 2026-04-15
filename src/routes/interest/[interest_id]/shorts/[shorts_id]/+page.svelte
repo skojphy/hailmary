@@ -169,7 +169,9 @@
 						<BadgeCheck size={18} fill="#0085CC" class="text-white" />
 					</div>
 					<div class="flex flex-col text-[15px] leading-tight opacity-95">
-						<span>{short.title}</span>
+						{#each short.title.split('\n') as line (line)}
+							<p>{line}</p>
+						{/each}
 					</div>
 				</div>
 

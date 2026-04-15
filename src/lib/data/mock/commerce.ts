@@ -72,7 +72,7 @@ export const commerceData: Record<InterestArea, WidgetData[]> = {
 				discountRate: 35,
 				currentParticipants: 140,
 				targetParticipants: 200,
-				imageUrl: 'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?w=400&q=80'
+				imageUrl: '/images/items/makeup1.webp'
 			}
 		},
 		{

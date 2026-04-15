@@ -106,7 +106,9 @@
 		--interest-shell-surface: ${shellMeta.palette.cardBg};
 	`}
 >
-	<Header />
+	{#if !isShortsView}
+		<Header />
+	{/if}
 
 	{#if showTechHero}
 		<div bind:clientHeight={techHeroHeight} class="interest-shell__hero">

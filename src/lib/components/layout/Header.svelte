@@ -8,7 +8,9 @@
 
 	const displayInterests = $derived.by(() => {
 		const chosen = $selectedInterests.length ? $selectedInterests : [$currentInterest];
-		const uniqueChosen = chosen.filter((interest, index, items) => items.indexOf(interest) === index);
+		const uniqueChosen = chosen.filter(
+			(interest, index, items) => items.indexOf(interest) === index
+		);
 
 		if (uniqueChosen.includes($currentInterest)) {
 			return [

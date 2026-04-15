@@ -25,12 +25,9 @@
 				fill={page.url.pathname.includes('/contents/') ? 'currentColor' : 'none'}
 			/>
 		</a>
-		<button
-			type="button"
-			class="flex items-center justify-center w-full h-full text-gray-800 hover:text-gray-900 transition-colors"
-		>
-			<Heart size={32} />
-		</button>
+		<a href="/" class="flex items-center justify-center w-full h-full transition-colors">
+			<Heart size={32} fill="none" />
+		</a>
 		<a
 			href="/profile"
 			class="flex items-center justify-center w-full h-full transition-colors"
@@ -43,6 +40,10 @@
 </nav>
 
 <style>
+	a.text-blue-600 {
+		color: #1b38e7;
+	}
+
 	/* iOS Safe Area */
 	.pb-safe {
 		padding-bottom: env(safe-area-inset-bottom);

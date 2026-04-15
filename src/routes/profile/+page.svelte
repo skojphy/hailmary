@@ -271,13 +271,18 @@
 		{:else}
 			<section class="profile-section badge-section">
 				<h2>최근 획득 뱃지</h2>
-				<div class="recent-badge-row">
-					{#each recentBadges as badge}
-						<article class="badge-card badge-card--recent" style="background-color: {badge.color}">
-							<span class="gumi mb-3" style="color: #fff; font-weight: 500;">{badge.title}</span>
-							<img class="badge-card__image" src={badge.image} alt="" />
-						</article>
-					{/each}
+				<div style="width: 100%; overflow-x: scroll">
+					<div class="recent-badge-row">
+						{#each recentBadges as badge}
+							<article
+								class="badge-card badge-card--recent"
+								style="background-color: {badge.color}"
+							>
+								<span class="gumi mb-3" style="color: #fff; font-weight: 500;">{badge.title}</span>
+								<img class="badge-card__image" src={badge.image} alt="" />
+							</article>
+						{/each}
+					</div>
 				</div>
 			</section>
 
