@@ -263,8 +263,15 @@
 		{:else if activeTab === '주문 내역'}
 			<section class="profile-section">
 				<div class="profile-empty-card">
-					<h3>주문 내역이 아직 없어요</h3>
-					<p>다음 공구나 쇼핑 활동이 생기면 이곳에서 바로 확인할 수 있어요.</p>
+					<div class="profile-empty-card__image-wrap">
+						<img
+							class="profile-empty-card__image"
+							src="/images/camel.png"
+							alt="주문 내역이 없는 상태를 보여주는 카멜레온 일러스트"
+						/>
+					</div>
+					<h3>주문한 내역이 없어요</h3>
+					<p>마음에 드는 상품을 주문하면 여기에 모아둘게요.</p>
 				</div>
 			</section>
 		{:else}
@@ -585,24 +592,43 @@
 	}
 
 	.profile-empty-card {
-		padding: 22px 18px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 30px 20px 26px;
 		border: 1px solid #eef1f5;
-		border-radius: 24px;
-		background: #ffffff;
-		box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+		border-radius: 28px;
+		background: linear-gradient(180deg, #fffef7 0%, #ffffff 100%);
+		box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+		text-align: center;
+	}
+
+	.profile-empty-card__image-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		padding: 6px 0 2px;
+	}
+
+	.profile-empty-card__image {
+		width: min(220px, 72%);
+		height: auto;
+		object-fit: contain;
 	}
 
 	.profile-empty-card h3 {
-		margin: 0;
-		font-size: 1rem;
+		margin: 10px 0 0;
+		font-size: 1.02rem;
 		font-weight: 800;
 		color: #1f2937;
 	}
 
 	.profile-empty-card p {
 		margin: 10px 0 0;
+		max-width: 18rem;
 		font-size: 0.88rem;
-		line-height: 1.5;
+		line-height: 1.6;
 		color: #8b93a1;
 	}
 
