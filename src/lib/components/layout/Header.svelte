@@ -7,6 +7,7 @@
 	let showDropdown = $state(false);
 
 	const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
+	const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
 
 	const displayInterests = $derived([
 		$currentInterest,
