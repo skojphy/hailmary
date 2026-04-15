@@ -99,3 +99,7 @@ body {
 a {
     color: inherit;
 }
+
+.gumi {
+    font-family: 'RomanticGumi', sans-serif;
+}

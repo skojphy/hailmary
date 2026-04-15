@@ -1,41 +1,43 @@
 <script lang="ts">
-  import { User } from 'lucide-svelte';
-  import { following } from '$lib/stores/interest';
+	import { User } from 'lucide-svelte';
+	import { following } from '$lib/stores/interest';
 </script>
 
-<div class="pt-6 pb-2 w-full bg-white/40 mt-4 rounded-t-3xl backdrop-blur-md border-t border-white/60">
-  <div class="px-5 mb-4 flex items-center gap-1.5">
-    <h3 class="font-black text-[19px] text-gray-900 flex items-center">
-      💘 나의 팔로잉 
-      <span class="text-blue-500 ml-2">12</span>
-    </h3>
-  </div>
-  
-  <ul class="flex gap-4 overflow-x-auto px-5 pb-4 snap-x scrollbar-hide">
-    {#each $following as user}
-      <li class="snap-start flex flex-col items-center gap-2 w-[72px] flex-shrink-0">
-        <button class="relative rounded-full transition-transform active:scale-95 shadow-md border-2 border-transparent hover:border-gray-300">
-          <div class="w-[72px] h-[72px] rounded-full overflow-hidden bg-gray-100">
-            <img src={user.imageUrl} alt={user.name} class="w-full h-full object-cover" />
-          </div>
-        </button>
-        <div class="flex flex-col items-center">
-          <span class="text-[13px] font-bold text-gray-900 w-full truncate text-center">{user.name}</span>
-          <span class="text-[9px] font-semibold text-gray-400 mt-0.5 flex items-center gap-[2px]">
-            <User size={9} strokeWidth={3} /> {user.followers}
-          </span>
-        </div>
-      </li>
-    {/each}
-  </ul>
-</div>
+<div class="px-3 pb-8 mt-2">
+	<div class="bg-[#FFEDF2] rounded-[32px] p-6 shadow-sm border border-pink-100/50">
+		<div class="mb-6 flex items-center justify-center">
+			<h3 class="font-black text-[28px] text-gray-900 flex items-center gap-2 gumi">
+				💘 나의 팔로잉
+			</h3>
+		</div>
 
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
+		<div class="grid grid-cols-2 gap-x-4 gap-y-8 mb-8">
+			{#each $following as user}
+				<div class="flex flex-col items-center">
+					<div class="relative mb-3">
+						<div
+							class="w-[110px] h-[110px] rounded-full overflow-hidden border-4 border-white shadow-sm bg-white"
+						>
+							<img src={user.imageUrl} alt={user.name} class="w-full h-full object-cover" />
+						</div>
+					</div>
+					<div class="flex flex-col items-center gap-0.5">
+						<span class="text-[17px] font-black text-gray-900">{user.name}</span>
+						<div class="flex items-center gap-1 text-gray-400 font-bold text-[13px]">
+							<User size={14} strokeWidth={3} class="text-gray-300" />
+							<span>{user.followers}</span>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+
+		<button
+			class="w-full bg-white py-4 rounded-[20px] shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-1"
+		>
+			<span class="text-[16px] text-gray-400 font-medium tracking-tight">
+				더 많은 <span class="text-gray-900 font-black">인플루언서</span> 보기
+			</span>
+		</button>
+	</div>
+</div>

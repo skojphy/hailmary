@@ -136,8 +136,7 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 				creator: '@covernote',
 				liked: false,
 				overlayPosition: 'bottom',
-				thumbnail:
-					'https://plus.unsplash.com/premium_photo-1661664157140-52e673baaea2?w=700&q=80'
+				thumbnail: 'https://plus.unsplash.com/premium_photo-1661664157140-52e673baaea2?w=700&q=80'
 			},
 			{
 				id: 'v16',
@@ -194,8 +193,7 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 				creator: '@techhack',
 				liked: true,
 				overlayPosition: 'bottom',
-				thumbnail:
-					'https://plus.unsplash.com/premium_photo-1681228414571-3312c3b88b78?w=700&q=80'
+				thumbnail: 'https://plus.unsplash.com/premium_photo-1681228414571-3312c3b88b78?w=700&q=80'
 			},
 			{
 				id: 't_v5',

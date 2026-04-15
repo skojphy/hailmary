@@ -23,7 +23,7 @@
 	{#if shorts.length > 0}
 		<!-- svelte-ignore a11y_invalid_attribute -->
 		<a
-			href={`./shorts`}
+			href={`../contents/shorts`}
 			class="relative w-full aspect-[3/4] rounded-[14px] overflow-hidden group block"
 		>
 			<img
