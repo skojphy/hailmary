@@ -5,7 +5,6 @@
 
 	const tabs = ['나의 활동', '주문 내역', '미션 · 보상'] as const;
 	let activeTab = $state<(typeof tabs)[number]>('나의 활동');
-	const badgeSampleImage = '/profile/badges/badge-sample.png';
 
 	const savedShorts = [
 		{
@@ -50,111 +49,123 @@
 	const recentBadges = [
 		{
 			id: 'recent-1',
-			title: '스마일 유니버스',
-			description: '이제 나도 스클 멤버',
+			title: '경험 나눔러',
 			reward: '+5,000P',
-			image: badgeSampleImage
+			image: '/images/badges/Badge8.png',
+			color: '#2F3652'
 		},
 		{
 			id: 'recent-2',
-			title: '스마일 유니버스',
-			description: '이제 나도 스클 멤버',
+			title: '공유는 사랑',
 			reward: '+5,000P',
-			image: badgeSampleImage
+			image: '/images/badges/Badge5.png',
+			color: '#E66A75'
 		},
 		{
 			id: 'recent-3',
-			title: '스마일 유니버스',
-			description: '이제 나도 스클 멤버',
+			title: '취향 마스터',
 			reward: '+5,000P',
-			image: badgeSampleImage
+			image: '/images/badges/Badge6.png',
+			color: '#F58974'
 		}
 	];
 
 	const ownedBadges = [
 		{
 			id: 'owned-1',
-			title: '혼자보다 같이',
-			reward: '+100',
+			title: '취향 레벨업',
+			reward: '+5,000P',
 			earned: true,
-			image: badgeSampleImage
+			image: '/images/badges/Badge1.png',
+			color: '#702F7F'
 		},
 		{
 			id: 'owned-2',
-			title: '공유는 사랑',
-			reward: '+100',
+			title: '리스트 수집가',
+			reward: '+5,000P',
 			earned: true,
-			image: badgeSampleImage
+			image: '/images/badges/Badge2.png',
+			color: '#307FC8'
 		},
 		{
 			id: 'owned-3',
-			title: '리액션 부자',
-			reward: '+5,000P',
-			earned: false,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-4',
-			title: '경험 나눔러',
-			reward: '+100',
-			earned: true,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-5',
-			title: '오늘의 출석왕',
-			reward: '+5,000P',
-			earned: false,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-6',
-			title: '취향 마스터',
-			reward: '+5,000P',
-			earned: false,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-7',
-			title: '기록 수집가',
-			reward: '+5,000P',
-			earned: false,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-8',
 			title: '찜하기 전문가',
 			reward: '+5,000P',
 			earned: false,
-			image: badgeSampleImage
+			image: '/images/badges/Badge3.png',
+			color: '#EA7F8D'
+		},
+		{
+			id: 'owned-4',
+			title: '기록 수집가',
+			reward: '+5,000P',
+			earned: true,
+			image: '/images/badges/Badge4.png',
+			color: '#AB9C69'
+		},
+		{
+			id: 'owned-5',
+			title: '공유는 사랑',
+			reward: '+5,000P',
+			earned: false,
+			image: '/images/badges/Badge5.png',
+			color: '#E66A75'
+		},
+		{
+			id: 'owned-6',
+			title: '혼자보다 같이',
+			reward: '+5,000P',
+			earned: false,
+			image: '/images/badges/Badge6.png',
+			color: '#F58974'
+		},
+		{
+			id: 'owned-7',
+			title: '리액션 부자',
+			reward: '+5,000P',
+			earned: false,
+			image: '/images/badges/Badge7.png',
+			color: '#FECF39'
+		},
+		{
+			id: 'owned-8',
+			title: '경험 나눔꾼',
+			reward: '+5,000P',
+			earned: false,
+			image: '/images/badges/Badge8.png',
+			color: '#2F3652'
 		},
 		{
 			id: 'owned-9',
 			title: '발견의 즐거움',
 			reward: '+100',
 			earned: true,
-			image: badgeSampleImage
+			image: '/images/badges/Badge9.png',
+			color: '#4B8558'
 		},
 		{
 			id: 'owned-10',
-			title: '리스트 수집가',
+			title: '취향 마스터',
 			reward: '+5,000P',
 			earned: false,
-			image: badgeSampleImage
+			image: '/images/badges/Badge10.png',
+			color: '#2563FF'
 		},
 		{
 			id: 'owned-11',
-			title: '취향 레벨업',
-			reward: '+5,000P',
-			earned: false,
-			image: badgeSampleImage
-		},
-		{
-			id: 'owned-12',
 			title: '정보 나눔꾼',
 			reward: '+5,000P',
 			earned: false,
-			image: badgeSampleImage
+			image: '/images/badges/Badge11.png',
+			color: '#307FC8'
+		},
+		{
+			id: 'owned-12',
+			title: '오늘의 출석왕',
+			reward: '+5,000P',
+			earned: false,
+			image: '/images/badges/Badge12.png',
+			color: '#BB9137'
 		}
 	];
 </script>
@@ -262,11 +273,9 @@
 				<h2>최근 획득 뱃지</h2>
 				<div class="recent-badge-row">
 					{#each recentBadges as badge}
-						<article class="badge-card badge-card--recent">
+						<article class="badge-card badge-card--recent" style="background-color: {badge.color}">
+							<span class="gumi mb-3" style="color: #fff; font-weight: 500;">{badge.title}</span>
 							<img class="badge-card__image" src={badge.image} alt="" />
-							<h3>{badge.title}</h3>
-							<p>{badge.description}</p>
-							<span class="badge-card__reward">{badge.reward}</span>
 						</article>
 					{/each}
 				</div>
@@ -611,11 +620,10 @@
 	}
 
 	.recent-badge-row {
-		display: grid;
-		grid-auto-flow: column;
-		grid-auto-columns: 34%;
-		gap: 18px;
-		overflow-x: auto;
+		display: flex;
+		flex-direction: row;
+		width: fit-content;
+		gap: 24px;
 		padding-bottom: 6px;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
@@ -675,17 +683,17 @@
 	}
 
 	.badge-card--recent {
-		align-items: flex-start;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		text-align: left;
-	}
-
-	.badge-card--recent .badge-card__reward {
-		align-self: flex-start;
+		width: 145px;
+		height: 185px;
+		border-radius: 10px;
 	}
 
 	.badge-card--owned:not(.earned) .badge-card__image {
-		filter: grayscale(1) saturate(0.15);
-		opacity: 0.42;
+		opacity: 0.2;
 	}
 
 	.badge-card--owned:not(.earned) h3,
