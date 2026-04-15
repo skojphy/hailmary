@@ -9,8 +9,8 @@ export async function load({ params }) {
 		throw error(404, 'Not found');
 	}
 
-	const shortsWidget = mockWidgets[interest_id]?.find((w) => w.type === 'shorts');
-	const commerceWidget = mockWidgets[interest_id]?.find((w) => w.type === 'commerce');
+	const shortsWidget = getShortsWidget(interest_id);
+	const commerceWidget = getCommerceItems(interest_id);
 
 	const shorts = shortsWidget ? shortsWidget.data : [];
 	const initialIndex = shorts.findIndex((s) => s.id === shorts_id);
@@ -23,6 +23,6 @@ export async function load({ params }) {
 		interest: interest_id,
 		shorts,
 		initialIndex,
-		relatedItem: commerceItems[0]?.data
+		relatedItem: commerceWidget[0]?.data
 	};
 }
