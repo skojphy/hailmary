@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Play, UserRound } from 'lucide-svelte';
+	import { onDestroy } from 'svelte';
 	import type {
 		CardBadge,
 		FollowingCard,
@@ -26,6 +27,11 @@
 	const rightCards = $derived(
 		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'right')
 	);
+	let showTechIntro = $state(false);
+	let techIntroFading = $state(false);
+	let techIntroPlayed = $state(false);
+	let introTimeout: ReturnType<typeof setTimeout> | null = null;
+	let introFadeTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	function cardKey(card: InterestHomeCard) {
 		return `${card.type}-${card.id}`;
@@ -55,11 +61,65 @@
 			suffix: match[3]
 		};
 	}
+
+	function clearTechIntroTimers() {
+		if (introTimeout) {
+			clearTimeout(introTimeout);
+			introTimeout = null;
+		}
+
+		if (introFadeTimeout) {
+			clearTimeout(introFadeTimeout);
+			introFadeTimeout = null;
+		}
+	}
+
+	function closeTechIntro() {
+		if (!showTechIntro || techIntroFading) return;
+
+		clearTechIntroTimers();
+		techIntroPlayed = true;
+		techIntroFading = true;
+
+		introFadeTimeout = setTimeout(() => {
+			showTechIntro = false;
+		}, 480);
+	}
+
+	$effect(() => {
+		clearTechIntroTimers();
+		if (data.interest !== 'tech') {
+			techIntroPlayed = false;
+		}
+
+		const shouldShowTechIntro = data.interest === 'tech' && !techIntroPlayed;
+		techIntroFading = false;
+		showTechIntro = shouldShowTechIntro;
+
+		if (!shouldShowTechIntro) return;
+
+		introTimeout = setTimeout(() => {
+			closeTechIntro();
+		}, 3000);
+	});
+
+	onDestroy(() => {
+		clearTechIntroTimers();
+	});
 </script>
 
 <svelte:head>
 	<title>{data.theme.header.label} 홈</title>
 </svelte:head>
+
+{#if showTechIntro}
+	<div class:tech-intro--fade={techIntroFading} class="tech-intro">
+		<video class="tech-intro__video" autoplay muted playsinline preload="auto" onended={closeTechIntro}>
+			<source src="/interest-home/galaxy_movie.webm" type="video/webm" />
+			<source src="/interest-home/galaxy_movie.mp4" type="video/mp4" />
+		</video>
+	</div>
+{/if}
 
 <section
 	class="interest-home"
@@ -309,6 +369,29 @@
 </section>
 
 <style>
+	.tech-intro {
+		position: fixed;
+		inset: 0 auto 0 50%;
+		z-index: 90;
+		width: min(100vw, 28rem);
+		transform: translateX(-50%);
+		background: #000000;
+		opacity: 1;
+		transition: opacity 480ms ease;
+		pointer-events: none;
+	}
+
+	.tech-intro--fade {
+		opacity: 0;
+	}
+
+	.tech-intro__video {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	:global(body) {
 		background: #f4f4f8;
 	}

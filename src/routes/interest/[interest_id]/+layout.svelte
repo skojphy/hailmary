@@ -8,6 +8,9 @@
 	let { children } = $props();
 
 	const shellMeta = $derived(interestHeaderMeta[$currentInterest]);
+	const showTechHero = $derived(
+		$pageStore.params.interest_id === 'tech' && $pageStore.url.pathname === '/interest/tech/home'
+	);
 
 	$effect(() => {
 		if ($pageStore.params.interest_id) {
@@ -30,7 +33,13 @@
 >
 	<Header />
 
-	<main class="interest-shell__main">
+	{#if showTechHero}
+		<div class="interest-shell__hero">
+			<img src="/interest-home/galaxy_banner_img.png" alt="Galaxy S26 Series 프로모션 배너" />
+		</div>
+	{/if}
+
+	<main class:interest-shell__main--with-hero={showTechHero} class="interest-shell__main">
 		{@render children()}
 	</main>
 
@@ -67,6 +76,29 @@
 		position: relative;
 		padding-bottom: 5rem;
 		overflow-x: hidden;
+	}
+
+	.interest-shell__hero {
+		position: relative;
+		z-index: 0;
+		margin-top: calc(-1 * (5.7rem + env(safe-area-inset-top)));
+		pointer-events: none;
+	}
+
+	.interest-shell__hero img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.interest-shell__main--with-hero {
+		z-index: 1;
+		margin-top: -2.35rem;
+		padding-top: 1.15rem;
+		background: rgba(244, 246, 252, 0.96);
+		border-top-left-radius: 2.2rem;
+		border-top-right-radius: 2.2rem;
+		box-shadow: 0 -8px 28px rgba(148, 156, 196, 0.08);
 	}
 
 	:global(body) {
