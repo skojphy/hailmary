@@ -686,13 +686,13 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 					},
 					{
 						name: '젠슨황',
-						followers: '4,289,483명',
+						followers: '428,948명',
 						image:
 							'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80'
 					},
 					{
 						name: '팀쿡',
-						followers: '9,821,512명',
+						followers: '982,151명',
 						image:
 							'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80'
 					}

@@ -756,9 +756,10 @@
 
 	.ranking-item h4 {
 		margin: 0;
-		font-size: 1rem;
+		font-size: 0.9rem;
 		line-height: 1.15;
 		font-weight: 500;
+		color: #4a4a4a;
 	}
 
 	.ranking-item p {

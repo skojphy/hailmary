@@ -25,15 +25,23 @@
 
 	const interest = $derived(data.interest as InterestArea);
 	const theme = $derived(interestHeaderMeta[interest]);
-	const chips = [
-		{ id: 'shorts', label: 'Shorts', active: true, italic: true },
-		{ id: 'gallery', label: '📸 갤러리' },
-		{ id: 'popular', label: '🏆 인기글' },
-		{ id: 'following', label: '💘 나의 팔로잉' }
-	];
+	let likedById = $state<Record<string, boolean>>({});
 
-	function linesOf(text: string) {
-		return text.split('\n');
+	$effect(() => {
+		likedById = Object.fromEntries(
+			data.shorts.map((short: ShortsItem) => [short.id, short.liked ?? false])
+		);
+	});
+
+	function isLiked(short: ShortsItem) {
+		return likedById[short.id] ?? false;
+	}
+
+	function toggleLike(id: string) {
+		likedById = {
+			...likedById,
+			[id]: !likedById[id]
+		};
 	}
 </script>
 
@@ -53,21 +61,9 @@
 		--shorts-muted: ${theme.palette.cardMuted};
 	`}
 >
-	<div class="shorts-feed__chips">
-		{#each chips as chip}
-			<button
-				type="button"
-				class:shorts-feed__chip--active={chip.active}
-				class="shorts-feed__chip"
-			>
-				<span class:shorts-feed__chip-italic={chip.italic}>{chip.label}</span>
-			</button>
-		{/each}
-	</div>
-
 	<div class="shorts-feed__grid">
 		{#each data.shorts as short (short.id)}
-			<button type="button" class="shorts-card">
+			<article class="shorts-card">
 				<img class="shorts-card__image" src={short.thumbnail} alt={short.title} loading="lazy" />
 				<div class="shorts-card__top-fade"></div>
 				<div class="shorts-card__bottom-fade"></div>
@@ -83,74 +79,29 @@
 					</div>
 				</div>
 
-				{#if short.overlayLabel}
-					<div
-						class:shorts-card__label--highlight={short.overlayTone === 'highlight'}
-						class="shorts-card__label"
-					>
-						{short.overlayLabel}
-					</div>
-				{/if}
-
-				<div class={`shorts-card__copy shorts-card__copy--${short.overlayPosition ?? 'bottom'} shorts-card__copy--${short.overlayTone ?? 'default'}`}>
-					{#each linesOf(short.title) as line}
-						<span>{line}</span>
-					{/each}
-				</div>
-
 				<div class="shorts-card__footer">
 					<span>{short.creator}</span>
-					<Heart
-						size={28}
-						fill={short.liked ? 'currentColor' : 'none'}
-						strokeWidth={2.1}
-						class={short.liked ? 'shorts-card__heart shorts-card__heart--liked' : 'shorts-card__heart'}
-					/>
+					<button
+						type="button"
+						class={isLiked(short) ? 'shorts-card__heart shorts-card__heart--liked' : 'shorts-card__heart'}
+						aria-label={isLiked(short) ? '좋아요 취소' : '좋아요'}
+						onclick={() => toggleLike(short.id)}
+					>
+						<Heart
+							size={28}
+							fill={isLiked(short) ? 'currentColor' : 'none'}
+							strokeWidth={1.75}
+						/>
+					</button>
 				</div>
-			</button>
+			</article>
 		{/each}
 	</div>
 </section>
 
 <style>
 	.shorts-feed {
-		padding: 0.4rem 0.85rem 6.4rem;
-	}
-
-	.shorts-feed__chips {
-		display: flex;
-		gap: 0.7rem;
-		overflow-x: auto;
-		padding: 0.15rem 0 1.1rem;
-		scrollbar-width: none;
-	}
-
-	.shorts-feed__chips::-webkit-scrollbar {
-		display: none;
-	}
-
-	.shorts-feed__chip {
-		border: none;
-		flex: 0 0 auto;
-		border-radius: 999px;
-		padding: 0.88rem 1.48rem;
-		background: var(--shorts-pill-muted-bg);
-		color: var(--shorts-pill-text);
-		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 1.02rem;
-		line-height: 1;
-		box-shadow: 0 10px 22px rgba(70, 96, 140, 0.08);
-		backdrop-filter: blur(6px);
-	}
-
-	.shorts-feed__chip--active {
-		background: linear-gradient(135deg, var(--shorts-pill-start), var(--shorts-pill-end));
-		color: #ffffff;
-		box-shadow: 0 14px 24px rgba(73, 102, 212, 0.24);
-	}
-
-	.shorts-feed__chip-italic {
-		font-style: italic;
+		padding: 0 0.85rem 6.4rem;
 	}
 
 	.shorts-feed__grid {
@@ -195,8 +146,6 @@
 	}
 
 	.shorts-card__meta-top,
-	.shorts-card__label,
-	.shorts-card__copy,
 	.shorts-card__footer {
 		position: absolute;
 		z-index: 1;
@@ -210,7 +159,7 @@
 		align-items: center;
 		justify-content: space-between;
 		font-size: 0.78rem;
-		font-weight: 500;
+		font-weight: 300;
 		text-shadow: 0 1px 8px rgba(0, 0, 0, 0.34);
 	}
 
@@ -220,108 +169,46 @@
 		gap: 0.26rem;
 	}
 
-	.shorts-card__label {
-		top: 3rem;
-		left: 0.72rem;
-		padding: 0.18rem 0.42rem;
-		border-radius: 0.35rem;
-		background: rgba(255, 255, 255, 0.82);
-		color: #555151;
-		font-size: 0.63rem;
-		font-weight: 600;
-		line-height: 1.15;
-	}
-
-	.shorts-card__label--highlight {
-		background: rgba(255, 210, 74, 0.94);
-		color: #6f4a00;
-	}
-
-	.shorts-card__copy {
-		left: 0.82rem;
-		right: 0.82rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.08rem;
-		font-family: 'Pretendard', sans-serif;
-		font-weight: 800;
-		line-height: 1.12;
-		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.34);
-	}
-
-	.shorts-card__copy span {
-		display: block;
-	}
-
-	.shorts-card__copy--top {
-		top: 3.45rem;
-		font-size: 0.82rem;
-	}
-
-	.shorts-card__copy--middle {
-		top: 42%;
-		transform: translateY(-50%);
-		font-size: 0.9rem;
-	}
-
-	.shorts-card__copy--bottom {
-		bottom: 2.8rem;
-		font-size: 0.78rem;
-	}
-
-	.shorts-card__copy--highlight {
-		top: 2.8rem;
-		font-size: 0.84rem;
-	}
-
-	.shorts-card__copy--stats {
-		top: 42%;
-		transform: translateY(-50%);
-		gap: 0.02rem;
-		font-size: 0.72rem;
-		font-weight: 700;
-		letter-spacing: 0.01em;
-	}
-
-	.shorts-card__copy--stats span:nth-child(2),
-	.shorts-card__copy--stats span:nth-child(4),
-	.shorts-card__copy--stats span:nth-child(6) {
-		font-size: 0.98rem;
-	}
-
 	.shorts-card__footer {
 		left: 0.76rem;
 		right: 0.76rem;
-		bottom: 0.72rem;
+		bottom: 0.52rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: 0.72rem;
+		font-size: 0.86rem;
 		font-weight: 500;
 		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.34);
 	}
 
 	.shorts-card__footer span {
-		font-size: 0.72rem;
+		font-size: 0.86rem;
 	}
 
 	.shorts-card__heart {
-		color: #ffffff;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		border: none;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.66);
 		filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.32));
+		cursor: pointer;
 	}
 
 	.shorts-card__heart--liked {
 		color: #ff5e8d;
+		filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.22));
+	}
+
+	.shorts-card__heart--liked :global(svg) {
+		stroke: rgba(255, 255, 255, 0.36);
 	}
 
 	@media (max-width: 420px) {
 		.shorts-feed {
-			padding: 0.28rem 0.78rem 6.2rem;
-		}
-
-		.shorts-feed__chip {
-			padding: 0.82rem 1.32rem;
-			font-size: 0.98rem;
+			padding: 0 0.78rem 6.2rem;
 		}
 
 		.shorts-feed__grid {
@@ -330,10 +217,6 @@
 
 		.shorts-card {
 			border-radius: 1.2rem;
-		}
-
-		.shorts-card__copy--middle {
-			font-size: 0.84rem;
 		}
 	}
 </style>
