@@ -270,7 +270,7 @@
 		{:else}
 			<section class="profile-section badge-section">
 				<h2>최근 획득 뱃지</h2>
-				<div style="width: 100%; overflow-x: scroll">
+				<div class="recent-badge-scroll">
 					<div class="recent-badge-row">
 						{#each recentBadges as badge}
 							<article
@@ -609,15 +609,22 @@
 	.recent-badge-row {
 		display: flex;
 		flex-direction: row;
-		width: fit-content;
 		gap: 24px;
+		width: max-content;
 		padding-bottom: 6px;
+	}
+
+	.recent-badge-scroll {
+		width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
 		-ms-overflow-style: none;
+		touch-action: pan-x;
 	}
 
-	.recent-badge-row::-webkit-scrollbar {
+	.recent-badge-scroll::-webkit-scrollbar {
 		display: none;
 	}
 
@@ -652,13 +659,6 @@
 		color: #111827;
 	}
 
-	.badge-card p {
-		margin: 4px 0 0;
-		font-size: 0.72rem;
-		line-height: 1.35;
-		color: #6b7280;
-	}
-
 	.badge-card__reward {
 		margin-top: 10px;
 		padding: 0.45rem 0.9rem;
@@ -670,6 +670,7 @@
 	}
 
 	.badge-card--recent {
+		flex: 0 0 auto;
 		display: flex;
 		justify-content: center;
 		align-items: center;
