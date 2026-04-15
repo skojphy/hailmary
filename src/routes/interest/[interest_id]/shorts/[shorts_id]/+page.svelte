@@ -4,12 +4,10 @@
 		Share2,
 		MessageCircle,
 		X,
-		PictureInPicture2,
 		BarChart2,
 		BadgeCheck,
 		VolumeX,
-		Volume2,
-		PictureInPicture
+		Volume2
 	} from 'lucide-svelte';
 	import BottomSheet from '$lib/components/widgets/BottomSheet.svelte';
 	import { onMount } from 'svelte';
@@ -171,7 +169,9 @@
 						<BadgeCheck size={18} fill="#0085CC" class="text-white" />
 					</div>
 					<div class="flex flex-col text-[15px] leading-tight opacity-95">
-						<span>{short.title}</span>
+						{#each short.title.split('\n') as line (line)}
+							<p>{line}</p>
+						{/each}
 					</div>
 				</div>
 

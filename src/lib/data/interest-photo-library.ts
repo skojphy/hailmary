@@ -46,7 +46,7 @@ const techPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=900&q=80',
-		'https://plus.unsplash.com/premium_photo-1664112002342-6eccc54bce53?auto=format&fit=crop&w=900&q=80',
+		'/images/baseball.webp',
 		'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&q=80'
 	],
 	shortsImages: [

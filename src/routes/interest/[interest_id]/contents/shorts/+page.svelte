@@ -63,38 +63,38 @@
 >
 	<div class="shorts-feed__grid">
 		{#each data.shorts as short (short.id)}
-			<article class="shorts-card">
-				<img class="shorts-card__image" src={short.thumbnail} alt={short.title} loading="lazy" />
-				<div class="shorts-card__top-fade"></div>
-				<div class="shorts-card__bottom-fade"></div>
+			<a href={`../shorts/${short.id}`}>
+				<article class="shorts-card">
+					<img class="shorts-card__image" src={short.thumbnail} alt={short.title} loading="lazy" />
+					<div class="shorts-card__top-fade"></div>
+					<div class="shorts-card__bottom-fade"></div>
 
-				<div class="shorts-card__meta-top">
-					<div class="shorts-card__icon-copy">
-						<Play size={11} fill="currentColor" />
-						<span>{short.duration}</span>
+					<div class="shorts-card__meta-top">
+						<div class="shorts-card__icon-copy">
+							<Play size={11} fill="currentColor" />
+							<span>{short.duration}</span>
+						</div>
+						<div class="shorts-card__icon-copy">
+							<Eye size={14} />
+							<span>{short.views}</span>
+						</div>
 					</div>
-					<div class="shorts-card__icon-copy">
-						<Eye size={14} />
-						<span>{short.views}</span>
-					</div>
-				</div>
 
-				<div class="shorts-card__footer">
-					<span>{short.creator}</span>
-					<button
-						type="button"
-						class={isLiked(short) ? 'shorts-card__heart shorts-card__heart--liked' : 'shorts-card__heart'}
-						aria-label={isLiked(short) ? '좋아요 취소' : '좋아요'}
-						onclick={() => toggleLike(short.id)}
-					>
-						<Heart
-							size={28}
-							fill={isLiked(short) ? 'currentColor' : 'none'}
-							strokeWidth={1.75}
-						/>
-					</button>
-				</div>
-			</article>
+					<div class="shorts-card__footer">
+						<span>{short.creator}</span>
+						<button
+							type="button"
+							class={isLiked(short)
+								? 'shorts-card__heart shorts-card__heart--liked'
+								: 'shorts-card__heart'}
+							aria-label={isLiked(short) ? '좋아요 취소' : '좋아요'}
+							onclick={() => toggleLike(short.id)}
+						>
+							<Heart size={28} fill={isLiked(short) ? 'currentColor' : 'none'} strokeWidth={1.75} />
+						</button>
+					</div>
+				</article></a
+			>
 		{/each}
 	</div>
 </section>
@@ -138,11 +138,21 @@
 	}
 
 	.shorts-card__top-fade {
-		background: linear-gradient(180deg, rgba(13, 16, 28, 0.52) 0%, rgba(13, 16, 28, 0.12) 24%, rgba(13, 16, 28, 0) 42%);
+		background: linear-gradient(
+			180deg,
+			rgba(13, 16, 28, 0.52) 0%,
+			rgba(13, 16, 28, 0.12) 24%,
+			rgba(13, 16, 28, 0) 42%
+		);
 	}
 
 	.shorts-card__bottom-fade {
-		background: linear-gradient(180deg, rgba(13, 16, 28, 0) 46%, rgba(13, 16, 28, 0.2) 62%, rgba(13, 16, 28, 0.86) 100%);
+		background: linear-gradient(
+			180deg,
+			rgba(13, 16, 28, 0) 46%,
+			rgba(13, 16, 28, 0.2) 62%,
+			rgba(13, 16, 28, 0.86) 100%
+		);
 	}
 
 	.shorts-card__meta-top,

@@ -68,8 +68,6 @@
     font-display: swap;
 }
 
-@import "tailwindcss";
-
 :root {
     font-family:
         'Pretendard',
@@ -103,3 +101,5 @@ a {
 .gumi {
     font-family: 'RomanticGumi', sans-serif;
 }
+
+@import "tailwindcss";

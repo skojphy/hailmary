@@ -3,11 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
 	import { setSelectedInterests } from '$lib/stores/interest';
-	import {
-		INTERESTS,
-		MAX_SELECTIONS,
-		type InterestDefinition
-	} from '$lib/data/interests';
+	import { INTERESTS, MAX_SELECTIONS, type InterestDefinition } from '$lib/data/interests';
 
 	let selectedIds = $state(new Set<string>());
 	let titleOffsetX = $state(0);
@@ -97,7 +93,7 @@
 	<title>관심사 선택</title>
 </svelte:head>
 
-<section class="interest-explorer min-h-screen flex flex-col mx-auto w-full max-w-md shadow-2xl">
+<section class="interest-explorer flex flex-col mx-auto w-full max-w-md shadow-2xl">
 	<div class="interest-explorer__canvas">
 		<InterestCanvas
 			{selectedIds}
@@ -182,13 +178,11 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 0;
+		bottom: 52px;
 		z-index: 4;
 		display: flex;
 		justify-content: center;
-		padding:
-			0 24px
-			calc(24px + env(safe-area-inset-bottom, 0px) + 28px);
+		padding: 0 24px;
 	}
 
 	.interest-explorer__footer button {
@@ -228,12 +222,6 @@
 		.interest-explorer__footer button {
 			min-width: 100%;
 			padding-block: 1.28rem;
-		}
-
-		.interest-explorer__footer {
-			padding:
-				0 18px
-				calc(24px + env(safe-area-inset-bottom, 0px) + 32px);
 		}
 
 		.interest-explorer__header h1 {

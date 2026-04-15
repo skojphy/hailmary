@@ -15,18 +15,18 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 				creator: '@Nike Run',
 				liked: false,
 				overlayPosition: 'top',
-				thumbnail: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=900&q=80'
+				thumbnail: '/images/shorts/run1.gif'
 			},
 			{
 				id: 'v2',
-				title: '공복유산소 8km\n5km 걷기 + 3km 러닝',
+				title: 'NIKE 알파플라이 3 Running is Mental\n새로운 에디션 출시✨',
 				views: '2.4K',
 				duration: '00:32',
 				creator: '@daeyoon',
 				liked: false,
 				overlayLabel: '직장인 주말 운동',
 				overlayPosition: 'middle',
-				thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&q=80'
+				thumbnail: '/images/shorts/run2.gif'
 			},
 			{
 				id: 'v3',
@@ -80,23 +80,23 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 		data: [
 			{
 				id: 'v10',
-				title: '5분 컷! 출근 메이크업',
+				title: '유리숍 공동개발!\n바닐라코 틴트 라이브🔥',
 				views: '50K',
 				duration: '00:18',
 				creator: '@dailybeauty',
 				liked: false,
 				overlayPosition: 'bottom',
-				thumbnail: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=700&q=80'
+				thumbnail: '/images/shorts/makeup1.gif'
 			},
 			{
 				id: 'v11',
-				title: '워터프루프 아이라이너\n절대 안 번지는 법',
+				title: '팔레트 하나로 완성하는 봄 메이크업🌸',
 				views: '21K',
 				duration: '00:29',
 				creator: '@linerzip',
 				liked: false,
 				overlayPosition: 'bottom',
-				thumbnail: 'https://images.unsplash.com/photo-1631214500115-598fc2cb8d2d?w=700&q=80'
+				thumbnail: '/images/shorts/makeup2.gif'
 			},
 			{
 				id: 'v12',
@@ -157,13 +157,13 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 		data: [
 			{
 				id: 't_v1',
-				title: '아이패드 에어 M2\n하루 사용기',
+				title: '닌텐도 스위치2\n케이스 하나로 분위기 전환',
 				views: '95K',
 				duration: '00:21',
 				creator: '@itdaily',
 				liked: false,
 				overlayPosition: 'bottom',
-				thumbnail: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=700&q=80'
+				thumbnail: '/images/shorts/tech1.gif'
 			},
 			{
 				id: 't_v2',
