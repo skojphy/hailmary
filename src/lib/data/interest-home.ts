@@ -871,7 +871,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 					suffix: '공구 · 경매'
 				},
 				image:
-					'https://images.unsplash.com/photo-1516321310764-8d2e29b0f9f1?auto=format&fit=crop&w=900&q=80',
+					'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
 				title: '[잇섭의 힛IT슈] 최고의 W...',
 				discount: '14%',
 				price: '466,500원',
@@ -886,7 +886,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				column: 'right',
 				badge: { kind: 'text', text: '📸 갤러리' },
 				image:
-					'https://images.unsplash.com/photo-1616588589676-62b3bd2f190f?auto=format&fit=crop&w=900&q=80',
+					'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80',
 				title: '내가 직접 꾸민 게이밍룸과 데스크테리어',
 				avatars: techAvatars,
 				meta: '1,990명이 봄',

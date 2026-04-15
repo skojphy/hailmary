@@ -214,7 +214,7 @@
 
 	<section class="profile-content">
 		<div class="profile-tabs">
-			{#each tabs as tab, index}
+			{#each tabs as tab (tab)}
 				<button type="button" class:active={activeTab === tab} onclick={() => (activeTab = tab)}>
 					{tab}
 				</button>
@@ -225,7 +225,7 @@
 			<section class="profile-section">
 				<h2>내가 저장한 쇼츠</h2>
 				<div class="shorts-grid">
-					{#each savedShorts as item}
+					{#each savedShorts as item (item.id)}
 						<article class="short-card">
 							<img src={item.image} alt="" />
 							<div class="short-card__overlay">
@@ -243,7 +243,7 @@
 			<section class="profile-section">
 				<h2>내가 쓴 글</h2>
 				<div class="post-grid">
-					{#each posts as post}
+					{#each posts as post (post.id)}
 						<article class="post-card">
 							<div class="post-card__header">
 								<img src={post.image} alt="" />
@@ -270,9 +270,9 @@
 		{:else}
 			<section class="profile-section badge-section">
 				<h2>최근 획득 뱃지</h2>
-				<div style="width: 100%; overflow-x: scroll">
+				<div class="recent-badge-scroll">
 					<div class="recent-badge-row">
-						{#each recentBadges as badge}
+						{#each recentBadges as badge (badge.id)}
 							<article
 								class="badge-card badge-card--recent"
 								style="background-color: {badge.color}"
@@ -288,7 +288,7 @@
 			<section class="profile-section badge-section">
 				<h2>보유뱃지 5</h2>
 				<div class="badge-grid">
-					{#each ownedBadges as badge}
+					{#each ownedBadges as badge (badge.id)}
 						<article class:earned={badge.earned} class="badge-card badge-card--owned">
 							<img class="badge-card__image" src={badge.image} alt="" />
 							<h3>{badge.title}</h3>
@@ -609,15 +609,22 @@
 	.recent-badge-row {
 		display: flex;
 		flex-direction: row;
-		width: fit-content;
 		gap: 24px;
+		width: max-content;
 		padding-bottom: 6px;
+	}
+
+	.recent-badge-scroll {
+		width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
 		-ms-overflow-style: none;
+		touch-action: pan-x;
 	}
 
-	.recent-badge-row::-webkit-scrollbar {
+	.recent-badge-scroll::-webkit-scrollbar {
 		display: none;
 	}
 
@@ -652,13 +659,6 @@
 		color: #111827;
 	}
 
-	.badge-card p {
-		margin: 4px 0 0;
-		font-size: 0.72rem;
-		line-height: 1.35;
-		color: #6b7280;
-	}
-
 	.badge-card__reward {
 		margin-top: 10px;
 		padding: 0.45rem 0.9rem;
@@ -670,6 +670,7 @@
 	}
 
 	.badge-card--recent {
+		flex: 0 0 auto;
 		display: flex;
 		justify-content: center;
 		align-items: center;
