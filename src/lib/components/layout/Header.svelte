@@ -2,7 +2,7 @@
 	import { ChevronDown, ChevronUp, Heart } from 'lucide-svelte';
 	import { interestHeaderMeta } from '$lib/data/interest-home';
 	import { currentInterest, selectedInterests, type InterestArea } from '$lib/stores/interest';
-	import { fade, scale } from 'svelte/transition';
+	import { fade, fly, scale } from 'svelte/transition';
 
 	let showDropdown = $state(false);
 
@@ -105,6 +105,7 @@
 					<a
 						class="interest-header__item"
 						href={`/interest/${interest}/home`}
+						in:fly|global={{ y: 10, duration: 200, delay: index * 50 }}
 						onclick={() => selectInterest(interest)}
 					>
 						<span>{meta.emoji}</span>
