@@ -1,17 +1,24 @@
 <script lang="ts">
 	import { ChevronDown, ChevronUp, Heart } from 'lucide-svelte';
 	import { interestHeaderMeta } from '$lib/data/interest-home';
-	import { currentInterest, type InterestArea } from '$lib/stores/interest';
+	import { currentInterest, selectedInterests, type InterestArea } from '$lib/stores/interest';
 	import { fade, scale } from 'svelte/transition';
 
 	let showDropdown = $state(false);
 
-	const availableInterests: InterestArea[] = ['running', 'makeup', 'tech'];
+	const displayInterests = $derived.by(() => {
+		const chosen = $selectedInterests.length ? $selectedInterests : [$currentInterest];
+		const uniqueChosen = chosen.filter((interest, index, items) => items.indexOf(interest) === index);
 
-	const displayInterests = $derived([
-		$currentInterest,
-		...availableInterests.filter((interest) => interest !== $currentInterest)
-	]);
+		if (uniqueChosen.includes($currentInterest)) {
+			return [
+				$currentInterest,
+				...uniqueChosen.filter((interest) => interest !== $currentInterest)
+			].slice(0, 10);
+		}
+
+		return [$currentInterest, ...uniqueChosen].slice(0, 10);
+	});
 
 	const activeMeta = $derived(interestHeaderMeta[$currentInterest]);
 
@@ -110,7 +117,7 @@
 <style>
 	.interest-header {
 		position: relative;
-		z-index: 40;
+		z-index: 120;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -153,13 +160,14 @@
 		gap: 0.34rem;
 		border: none;
 		border-radius: 10px;
-		background: rgba(255, 234, 244, 0.78);
+		background: rgba(255, 255, 255, 0.34);
 		padding: 0.58rem 0.72rem;
 		color: #ff5a63;
 		font-size: 0.79rem;
 		font-weight: 800;
 		letter-spacing: -0.02em;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+		backdrop-filter: blur(6px);
 	}
 
 	.interest-header__pill-count {
@@ -174,7 +182,7 @@
 		position: fixed;
 		inset: 0;
 		left: 50%;
-		z-index: 100;
+		z-index: 220;
 		width: 100%;
 		max-width: 28rem;
 		transform: translateX(-50%);
@@ -191,6 +199,7 @@
 		position: absolute;
 		top: 0.95rem;
 		left: 1.1rem;
+		z-index: 221;
 		display: flex;
 		flex-direction: column;
 		gap: 0.15rem;

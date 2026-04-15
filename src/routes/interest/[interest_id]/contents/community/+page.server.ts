@@ -1,12 +1,11 @@
 import type { PageServerLoad } from './$types';
-import { communityData } from '$lib/data/mock/community';
-import type { InterestArea } from '$lib/stores/interest';
+import { getCommunityWidget } from '$lib/data/mock';
 
 export const load: PageServerLoad = async ({ params }) => {
-  const interest = params.interest_id as InterestArea;
+  const interest = params.interest_id;
   
   return {
     interest,
-    communityItems: communityData[interest]?.data || []
+    communityItems: getCommunityWidget(interest).data
   };
 };

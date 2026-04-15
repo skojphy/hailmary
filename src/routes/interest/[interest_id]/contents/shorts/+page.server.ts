@@ -1,15 +1,13 @@
-import { mockWidgets } from '$lib/data/mock';
-import { error } from '@sveltejs/kit';
+import { getCommerceItems, getShortsWidget } from '$lib/data/mock';
 
 export async function load({ params }) {
   const interest = params.interest_id;
-  
-  const shortsWidget = mockWidgets[interest as keyof typeof mockWidgets]?.find(w => w.type === 'shorts');
-  const commerceWidget = mockWidgets[interest as keyof typeof mockWidgets]?.find(w => w.type === 'commerce');
+  const shortsWidget = getShortsWidget(interest);
+  const commerceItems = getCommerceItems(interest);
 
   return {
     interest,
-    shorts: shortsWidget ? shortsWidget.data : [],
-    relatedItem: commerceWidget?.data
+    shorts: shortsWidget.data,
+    relatedItem: commerceItems[0]?.data
   };
 }

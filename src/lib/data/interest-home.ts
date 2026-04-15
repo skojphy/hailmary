@@ -1,4 +1,5 @@
-import type { InterestArea } from '$lib/stores/interest';
+import { INTERESTS, type InterestDefinition } from './interests';
+import { getInterestPhotoSet } from './interest-photo-library';
 
 export type HomePalette = {
 	background: string;
@@ -214,12 +215,6 @@ const techPalette: HomePalette = {
 	rankingAccent: '#2b7cff'
 };
 
-const avatars = [
-	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80'
-];
-
 const makeupAvatars = [
 	'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
 	'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=120&q=80',
@@ -238,7 +233,249 @@ const runningAvatars = [
 	'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80'
 ];
 
-export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
+function hashString(input: string) {
+	return Array.from(input).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+}
+
+function clamp(value: number, min: number, max: number) {
+	return Math.min(Math.max(value, min), max);
+}
+
+function hexToRgb(hex: string) {
+	const normalized = hex.replace('#', '');
+	const source =
+		normalized.length === 3
+			? normalized
+					.split('')
+					.map((char) => `${char}${char}`)
+					.join('')
+			: normalized;
+
+	return {
+		r: Number.parseInt(source.slice(0, 2), 16),
+		g: Number.parseInt(source.slice(2, 4), 16),
+		b: Number.parseInt(source.slice(4, 6), 16)
+	};
+}
+
+function rgbToHex(r: number, g: number, b: number) {
+	return `#${[r, g, b]
+		.map((value) => clamp(Math.round(value), 0, 255).toString(16).padStart(2, '0'))
+		.join('')}`;
+}
+
+function mixHex(first: string, second: string, weight: number) {
+	const a = hexToRgb(first);
+	const b = hexToRgb(second);
+
+	return rgbToHex(
+		a.r + (b.r - a.r) * weight,
+		a.g + (b.g - a.g) * weight,
+		a.b + (b.b - a.b) * weight
+	);
+}
+
+function alphaHex(hex: string, opacity: number) {
+	const { r, g, b } = hexToRgb(hex);
+	return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
+function pick<T>(items: T[], seed: number) {
+	return items[seed % items.length];
+}
+
+function createInterestCount(seed: number) {
+	return `${(seed * 1379).toLocaleString('ko-KR')}명 관심`;
+}
+
+function createMetric(seed: number, unit: '봄' | '구매') {
+	return `${(seed * 73).toLocaleString('ko-KR')}명이 ${unit}`;
+}
+
+function createPrice(seed: number) {
+	return `${(seed * 1800).toLocaleString('ko-KR')}원`;
+}
+
+function createPaletteForInterest(interest: InterestDefinition): HomePalette {
+	const backgroundTop = mixHex(interest.fillStart, '#ffffff', 0.72);
+	const backgroundBottom = mixHex(interest.fillEnd, '#ffffff', 0.9);
+	const accent = mixHex(interest.fillStart, '#ffffff', 0.16);
+	const accentStrong = '#ff5b43';
+	const accentText = mixHex(interest.fillEnd, '#5c6f94', 0.4);
+
+	return {
+		background: backgroundBottom,
+		backgroundGradient: `linear-gradient(180deg, ${backgroundTop} 0%, ${backgroundBottom} 100%)`,
+		headerText: '#111111',
+		headerPillBg: alphaHex('#ffffff', 0.34),
+		headerPillText: '#ff6065',
+		noticeBg: alphaHex('#ffffff', 0.78),
+		noticeBorder: accent,
+		noticeAccent: mixHex(interest.fillEnd, '#435fff', 0.32),
+		cardBg: alphaHex('#ffffff', 0.9),
+		cardBorder: alphaHex('#ffffff', 0.82),
+		cardShadow: `0 14px 28px ${alphaHex(interest.fillEnd, 0.14)}`,
+		cardText: '#191919',
+		cardMuted: '#76727b',
+		accent,
+		accentStrong,
+		accentSoft: alphaHex(interest.fillStart, 0.12),
+		accentText,
+		rankingAccent: mixHex(interest.fillEnd, '#286dff', 0.34)
+	};
+}
+
+function createGenericTheme(interest: InterestDefinition, index: number): InterestHomeTheme {
+	const seed = hashString(interest.id) + index * 11;
+	const palette = createPaletteForInterest(interest);
+	const photoSet = getInterestPhotoSet(interest.id);
+	const avatars = [
+		pick(photoSet.peopleImages, seed),
+		pick(photoSet.peopleImages, seed + 1),
+		pick(photoSet.peopleImages, seed + 2)
+	];
+	const productImage = pick(photoSet.productImages, seed);
+	const galleryImage = pick(photoSet.galleryImages, seed + 1);
+	const shortsImage = pick(photoSet.shortsImages, seed + 2);
+	const influencerPeople = Array.from({ length: 4 }, (_, personIndex) => ({
+		name: `${interest.label}${pick(photoSet.influencerNames, seed + personIndex).slice(0, 1)}`,
+		followers: `${(seed * (personIndex + 9) * 37).toLocaleString('ko-KR')}명`,
+		image: pick(photoSet.peopleImages, seed + personIndex)
+	}));
+
+	return {
+		header: {
+			emoji: interest.emoji.split(' ')[0] ?? '✨',
+			label: interest.label,
+			interestCount: createInterestCount(seed + 30)
+		},
+		notice: {
+			icon: '✦',
+			text: '유진님, 요즘',
+			highlight: `${interest.label} 잇템`,
+			cta: '구경하기'
+		},
+		palette,
+		cards: [
+			{
+				id: `${interest.id}-story`,
+				type: 'story',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 인기글' },
+				title: `${interest.label} 좋아한다면\n먼저 보는 추천 리스트`,
+				body: `${interest.label} 좋아하는 사람들이 저장해두는 입문 가이드와 요즘 반응 좋은 이야기를 모아봤어요.`,
+				avatars,
+				meta: createMetric(seed + 12, '봄'),
+				buttonLabel: '더 많은 인기글 보기'
+			},
+			{
+				id: `${interest.id}-superdeal`,
+				type: 'product',
+				column: 'right',
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
+				image: productImage,
+				title: `${interest.label} 좋아하면 눈여겨볼 추천 아이템`,
+				discount: `${12 + (seed % 18)}%`,
+				price: createPrice(seed + 55),
+				avatars,
+				meta: createMetric(seed + 3, '구매'),
+				buttonLabel: '더 많은 슈퍼딜 보기'
+			},
+			{
+				id: `${interest.id}-selecti`,
+				type: 'product',
+				column: 'left',
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
+				image: pick(photoSet.productImages, seed + 1),
+				title: `${interest.label} 무드에 어울리는 오늘의 셀렉트`,
+				discount: `${10 + (seed % 14)}%`,
+				price: createPrice(seed + 41),
+				avatars,
+				meta: createMetric(seed + 7, '구매'),
+				buttonLabel: '더 많은 셀렉티 보기'
+			},
+			{
+				id: `${interest.id}-shorts`,
+				type: 'shorts',
+				column: 'right',
+				badge: { kind: 'text', text: 'Shorts', tone: 'shorts' },
+				image: shortsImage,
+				title: `${interest.label} 좋아하는 사람들이\n저장한 요즘 숏폼 모음`,
+				duration: '00:28',
+				avatars,
+				meta: createMetric(seed + 19, '봄'),
+				buttonLabel: '더 많은 숏츠 보기'
+			},
+			{
+				id: `${interest.id}-live`,
+				type: 'live',
+				column: 'left',
+				badge: {
+					kind: 'live',
+					image: '/interest-home/live.png',
+					alt: 'LIVE',
+					suffix: '공구 · 경매'
+				},
+				image: pick(photoSet.galleryImages, seed + 3),
+				title: `${interest.label} 라이브 특가 모아보기`,
+				discount: `${18 + (seed % 12)}%`,
+				price: createPrice(seed + 70),
+				avatars,
+				meta: createMetric(seed + 5, '구매'),
+				mediaCaption: `500개 한정\n공동구매`,
+				buttonLabel: '더 많은 라이브 보기'
+			},
+			{
+				id: `${interest.id}-gallery`,
+				type: 'gallery',
+				column: 'right',
+				badge: { kind: 'text', text: '📸 갤러리' },
+				image: galleryImage,
+				title: `${interest.label} 좋아하는 사람들이 저장한 무드 이미지`,
+				avatars,
+				meta: createMetric(seed + 13, '봄'),
+				buttonLabel: '더 많은 사진 보기'
+			},
+			{
+				id: `${interest.id}-following`,
+				type: 'following',
+				column: 'left',
+				badge: { kind: 'text', text: '💘 TOP 인플루언서' },
+				people: influencerPeople,
+				buttonLabel: '더 많은 인플루언서 보기'
+			},
+			{
+				id: `${interest.id}-ranking`,
+				type: 'ranking',
+				column: 'right',
+				badge: { kind: 'text', text: '🔥 Hot 키워드' },
+				items: [
+					{
+						rank: 1,
+						label: `${interest.label} 입문`,
+						views: '2.9K 조회',
+						image: pick(photoSet.rankingImages, seed)
+					},
+					{
+						rank: 2,
+						label: `${interest.label} 꿀팁`,
+						views: '1.1K 조회',
+						image: pick(photoSet.rankingImages, seed + 1)
+					},
+					{
+						rank: 3,
+						label: `${interest.label} 추천`,
+						views: '0.6K 조회',
+						image: pick(photoSet.rankingImages, seed + 2)
+					}
+				],
+				buttonLabel: '더 많은 키워드 보기'
+			}
+		]
+	};
+}
+
+const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 	makeup: {
 		header: {
 			emoji: '💄',
@@ -268,7 +505,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'mk-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80',
 				title: '구달 청귤비타C잡티케어...',
@@ -282,7 +519,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'mk-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1625772452859-1c03d5bf1137?auto=format&fit=crop&w=600&q=80',
 				title: '미니 실리콘 립 브러쉬 컨...',
@@ -312,7 +549,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -428,7 +665,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'rn-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
 				title: 'LightSpray Cloudmonst...',
@@ -442,7 +679,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'rn-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80',
 				title: '아디다스 스트랩 무릎 보...',
@@ -472,7 +709,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -567,7 +804,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 		},
 		notice: {
 			icon: '✦',
-			text: '준호님, 요즘',
+			text: '유진님, 요즘',
 			highlight: '데스크 셋업템',
 			cta: '구경하기'
 		},
@@ -588,7 +825,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'te-super',
 				type: 'product',
 				column: 'right',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-superdeal.svg', alt: '슈퍼딜' },
+				badge: { kind: 'logo', image: '/interest-home/super.png', alt: '슈퍼딜' },
 				image:
 					'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80',
 				title: 'LG 32G600A 32인치 게...',
@@ -602,7 +839,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				id: 'te-select',
 				type: 'product',
 				column: 'left',
-				badge: { kind: 'logo', image: '/interest-home/makeup/badge-selecti.svg', alt: 'Selecti' },
+				badge: { kind: 'logo', image: '/interest-home/selecti.png', alt: 'Selecti' },
 				image:
 					'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
 				title: '무선 마우스 충전식 마우...',
@@ -632,7 +869,7 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 				column: 'left',
 				badge: {
 					kind: 'live',
-					image: '/interest-home/makeup/badge-live.svg',
+					image: '/interest-home/live.png',
 					alt: 'LIVE',
 					suffix: '공구 · 경매'
 				},
@@ -721,6 +958,13 @@ export const interestHomeThemes: Record<InterestArea, InterestHomeTheme> = {
 	}
 };
 
+export const interestHomeThemes: Record<string, InterestHomeTheme> = Object.fromEntries(
+	INTERESTS.map((interest, index) => [
+		interest.id,
+		curatedInterestHomeThemes[interest.id] ?? createGenericTheme(interest, index)
+	])
+);
+
 export const interestHeaderMeta = Object.fromEntries(
 	Object.entries(interestHomeThemes).map(([key, value]) => [
 		key,
@@ -732,7 +976,7 @@ export const interestHeaderMeta = Object.fromEntries(
 		}
 	])
 ) as Record<
-	InterestArea,
+	string,
 	{
 		emoji: string;
 		label: string;

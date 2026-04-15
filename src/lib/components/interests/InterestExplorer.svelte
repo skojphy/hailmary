@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { onDestroy, onMount } from 'svelte';
 	import InterestCanvas from '$lib/components/interests/InterestCanvas.svelte';
+	import { setSelectedInterests } from '$lib/stores/interest';
 	import {
 		INTERESTS,
 		MAX_SELECTIONS,
-		SELECTABLE_IDS,
 		type InterestDefinition
 	} from '$lib/data/interests';
 
-	let selectedIds = $state(new Set<string>(SELECTABLE_IDS));
+	let selectedIds = $state(new Set<string>());
 	let titleOffsetX = $state(0);
 	let titleOffsetY = $state(0);
 	let previousHtmlOverflow = '';
@@ -20,14 +20,11 @@
 
 	const selectedCount = $derived(selectedIds.size);
 	const firstSelectedId = $derived(Array.from(selectedIds)[0] ?? null);
-	const completionLabel = $derived(`나의 관심사 ${selectedCount}개 선택 완료`);
+	const completionLabel = $derived(
+		selectedCount > 0 ? `나의 관심사 ${selectedCount}개 선택 완료` : '관심사를 선택해 주세요'
+	);
 
 	function handleInterestSelect(interest: InterestDefinition) {
-		if (!interest.enabled) {
-			window.alert('comming soon');
-			return;
-		}
-
 		const next = new Set(selectedIds);
 
 		if (next.has(interest.id)) {
@@ -78,10 +75,12 @@
 	});
 
 	async function finishSelection() {
-		if (selectedCount !== MAX_SELECTIONS) {
-			window.alert(`메이크업, 러닝, 테크까지 ${MAX_SELECTIONS}개를 모두 선택해 주세요.`);
+		if (selectedCount < 1) {
+			window.alert('최소 1개의 관심사를 선택해 주세요.');
 			return;
 		}
+
+		setSelectedInterests(Array.from(selectedIds));
 
 		const nextRoute = firstSelectedId ? `/interest/${firstSelectedId}/home` : null;
 
@@ -115,7 +114,7 @@
 	</header>
 
 	<footer class="interest-explorer__footer">
-		<button type="button" class:ready={selectedCount === MAX_SELECTIONS} onclick={finishSelection}>
+		<button type="button" class:ready={selectedCount > 0} onclick={finishSelection}>
 			{completionLabel}
 		</button>
 	</footer>
