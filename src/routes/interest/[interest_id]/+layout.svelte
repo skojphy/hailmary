@@ -32,7 +32,7 @@
 			}
 		}
 	});
-	let isShortsView = $derived(/shorts\/\w+$/.test($pageStore.url.pathname));
+	let isShortsView = $derived(/shorts\/[\w-]+$/.test($pageStore.url.pathname));
 
 	function clearTechIntroTimers() {
 		if (introShrinkTimeout) {
@@ -143,7 +143,7 @@
 		<main
 			class:interest-shell__main--with-hero={showTechHero}
 			class="interest-shell__main"
-			in:fly={{ y: 150, duration: 1000, delay: 2000, opacity: 1 }}
+			in:fly={{ y: 150, duration: 1000, delay: 2200, opacity: 1 }}
 		>
 			{@render children()}
 		</main>
