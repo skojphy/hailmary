@@ -7,7 +7,7 @@
 
 	const tabs = [
 		{ id: 'shorts', label: 'Shorts', path: 'shorts', italic: true },
-		{ id: 'commerce', label: '📸 갤러리', path: 'commerce' },
+		{ id: 'commerce', label: '🛒 공동구매', path: 'commerce' },
 		{ id: 'community', label: '🏆 인기글', path: 'community' }
 	];
 
