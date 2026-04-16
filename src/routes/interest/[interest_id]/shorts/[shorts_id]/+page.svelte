@@ -112,7 +112,7 @@
 					class="w-12 h-12 rounded-full border-2 border-white overflow-hidden shadow-xl active:scale-90 transition-transform mb-2"
 				>
 					<img
-						src="https://i.pravatar.cc/100?u=author"
+						src="https://images.unsplash.com/photo-1577807002746-2aa23cf2d134?auto=format&fit=crop&w=120&q=80"
 						alt="Author"
 						class="w-full h-full object-cover"
 					/>

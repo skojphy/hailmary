@@ -32,7 +32,7 @@
 				'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=300&q=80',
 			author: '@dami',
 			avatar:
-				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80'
+				'https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?auto=format&fit=crop&w=120&q=80'
 		},
 		{
 			id: '2',
@@ -42,7 +42,7 @@
 				'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=80',
 			author: '@dami',
 			avatar:
-				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80'
+				'https://images.unsplash.com/photo-1514355315815-2b64b0216b14?auto=format&fit=crop&w=120&q=80'
 		}
 	];
 
@@ -193,7 +193,7 @@
 			<div class="profile-avatar-wrap">
 				<img
 					class="profile-avatar"
-					src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=240&q=80"
+					src="https://images.unsplash.com/photo-1564564360647-684f24ae3e1c?auto=format&fit=crop&w=240&q=80"
 					alt="김다미 프로필 이미지"
 				/>
 			</div>
