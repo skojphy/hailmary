@@ -9,7 +9,9 @@ const validInterestIds = new Set(INTERESTS.map((interest) => interest.id));
 
 function sanitizeSelectedInterests(interests: string[]) {
 	return interests.filter((interest, index, items) => {
-		return validInterestIds.has(interest) && items.indexOf(interest) === index && index < MAX_SELECTIONS;
+		return (
+			validInterestIds.has(interest) && items.indexOf(interest) === index && index < MAX_SELECTIONS
+		);
 	});
 }
 
@@ -48,42 +50,66 @@ export function setSelectedInterests(interests: string[]) {
 
 // 관심사에 따른 테마 색상 (예시)
 export const themeColors = derived(currentInterest, ($target) => {
-  switch ($target) {
-    case 'running':
-      return { 
-        primary: '#0072B4', 
-        name: 'Blue', 
-        background: 'bg-blue-50',
-        gradient: 'linear-gradient(90deg, #0072B4 0%, #83CAFF 100%)'
-      };
-    case 'makeup':
-      return { 
-        primary: '#DA009F', 
-        name: 'Pink', 
-        background: 'bg-pink-50',
-        gradient: 'linear-gradient(90deg, #DA009F 0%, #FF61ED 100%)'
-      };
-    case 'tech':
-      return { 
-        primary: '#333333', 
-        name: 'DarkGray', 
-        background: 'bg-gray-50',
-        gradient: 'linear-gradient(90deg, #333333 61%, #999999 100%)'
-      };
-    default:
-      return { 
-        primary: '#14B8A6', 
-        name: 'Teal', 
-        background: 'bg-teal-50',
-        gradient: 'linear-gradient(90deg, #14B8A6 0%, #5EEAD4 100%)'
-      };
-  }
+	switch ($target) {
+		case 'running':
+			return {
+				primary: '#0072B4',
+				name: 'Blue',
+				background: 'bg-blue-50',
+				gradient: 'linear-gradient(90deg, #0072B4 0%, #83CAFF 100%)'
+			};
+		case 'makeup':
+			return {
+				primary: '#DA009F',
+				name: 'Pink',
+				background: 'bg-pink-50',
+				gradient: 'linear-gradient(90deg, #DA009F 0%, #FF61ED 100%)'
+			};
+		case 'tech':
+			return {
+				primary: '#333333',
+				name: 'DarkGray',
+				background: 'bg-gray-50',
+				gradient: 'linear-gradient(90deg, #333333 61%, #999999 100%)'
+			};
+		default:
+			return {
+				primary: '#14B8A6',
+				name: 'Teal',
+				background: 'bg-teal-50',
+				gradient: 'linear-gradient(90deg, #14B8A6 0%, #5EEAD4 100%)'
+			};
+	}
 });
 
 // 사용자의 팔로잉 목록 스토어
 export const following = writable([
-  { id: '1', name: '맛피자', followers: '49,241명', imageUrl: 'https://i.pravatar.cc/150?u=12' },
-  { id: '2', name: '윤남노', followers: '12,913명', imageUrl: 'https://i.pravatar.cc/150?u=15' },
-  { id: '3', name: '손종원', followers: '89,483명', imageUrl: 'https://i.pravatar.cc/150?u=16' },
-  { id: '4', name: '아기맹수', followers: '1,512명', imageUrl: 'https://i.pravatar.cc/150?u=19' },
+	{
+		id: '1',
+		name: '맛피자',
+		followers: '49,241명',
+		imageUrl:
+			'https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?auto=format&fit=crop&w=240&q=80'
+	},
+	{
+		id: '2',
+		name: '윤남노',
+		followers: '12,913명',
+		imageUrl:
+			'https://images.unsplash.com/photo-1577807002746-2aa23cf2d134?auto=format&fit=crop&w=240&q=80'
+	},
+	{
+		id: '3',
+		name: '손종원',
+		followers: '89,483명',
+		imageUrl:
+			'https://images.unsplash.com/photo-1612766959025-ac18e2b3bb96?auto=format&fit=crop&w=240&q=80'
+	},
+	{
+		id: '4',
+		name: '아기맹수',
+		followers: '1,512명',
+		imageUrl:
+			'https://images.unsplash.com/photo-1564564360647-684f24ae3e1c?auto=format&fit=crop&w=240&q=80'
+	}
 ]);

@@ -1,5 +1,10 @@
 import { INTERESTS, type InterestDefinition } from './interests';
-import { getInterestPhotoSet } from './interest-photo-library';
+import {
+	beautyAvatarImages,
+	getInterestPhotoSet,
+	sportsAvatarImages,
+	techAvatarImages
+} from './interest-photo-library';
 
 export type HomePalette = {
 	background: string;
@@ -215,23 +220,9 @@ const techPalette: HomePalette = {
 	rankingAccent: '#2b7cff'
 };
 
-const makeupAvatars = [
-	'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=120&q=80'
-];
-
-const techAvatars = [
-	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&q=80'
-];
-
-const runningAvatars = [
-	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=120&q=80',
-	'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80'
-];
+const makeupAvatars = beautyAvatarImages;
+const techAvatars = techAvatarImages;
+const runningAvatars = sportsAvatarImages;
 
 function hashString(input: string) {
 	return Array.from(input).reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -296,6 +287,12 @@ function createPrice(seed: number) {
 	return `${(seed * 1800).toLocaleString('ko-KR')}원`;
 }
 
+function createHotKeywordLabels(label: string) {
+	const compact = Array.from(label.replace(/\s+/g, '')).slice(0, 4).join('');
+
+	return [compact, `${compact}팁`, `${compact}추천`];
+}
+
 function createPaletteForInterest(interest: InterestDefinition): HomePalette {
 	const backgroundTop = mixHex(interest.fillStart, '#ffffff', 0.72);
 	const backgroundBottom = mixHex(interest.fillEnd, '#ffffff', 0.9);
@@ -337,8 +334,9 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 	const productImage = pick(photoSet.productImages, seed);
 	const galleryImage = pick(photoSet.galleryImages, seed + 1);
 	const shortsImage = pick(photoSet.shortsImages, seed + 2);
+	const [firstKeyword, secondKeyword, thirdKeyword] = createHotKeywordLabels(interest.label);
 	const influencerPeople = Array.from({ length: 4 }, (_, personIndex) => ({
-		name: `${interest.label}${pick(photoSet.influencerNames, seed + personIndex).slice(0, 1)}`,
+		name: pick(photoSet.influencerNames, seed + personIndex),
 		followers: `${(seed * (personIndex + 9) * 37).toLocaleString('ko-KR')}명`,
 		image: pick(photoSet.peopleImages, seed + personIndex)
 	}));
@@ -452,19 +450,19 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 				items: [
 					{
 						rank: 1,
-						label: `${interest.label} 입문`,
+						label: firstKeyword,
 						views: '2.9K 조회',
 						image: pick(photoSet.rankingImages, seed)
 					},
 					{
 						rank: 2,
-						label: `${interest.label} 꿀팁`,
+						label: secondKeyword,
 						views: '1.1K 조회',
 						image: pick(photoSet.rankingImages, seed + 1)
 					},
 					{
 						rank: 3,
-						label: `${interest.label} 추천`,
+						label: thirdKeyword,
 						views: '0.6K 조회',
 						image: pick(photoSet.rankingImages, seed + 2)
 					}
@@ -618,17 +616,17 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 					},
 					{
 						rank: 2,
-						label: '맥북 프로',
+						label: '물광 쿠션',
 						views: '1.1K 조회',
 						image:
-							'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=180&q=80'
+							'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=180&q=80'
 					},
 					{
 						rank: 3,
-						label: '로지텍',
+						label: '립 브러쉬',
 						views: '0.6K 조회',
 						image:
-							'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=180&q=80'
+							'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=180&q=80'
 					}
 				],
 				buttonLabel: '더 많은 키워드 보기'
@@ -745,7 +743,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 						image: '/images/people/runhyein.jpg'
 					},
 					{
-						name: '션',
+						name: '러닝캐리',
 						followers: '12,913명',
 						image: '/images/people/sean.png'
 					},
@@ -899,12 +897,12 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				badge: { kind: 'text', text: '💘 TOP 인플루언서' },
 				people: [
 					{
-						name: '잇섭',
+						name: '기어노트',
 						followers: '49,241명',
 						image: '/images/people/itsub.webp'
 					},
 					{
-						name: '귀곰',
+						name: '셋업메이트',
 						followers: '12,913명',
 						image: '/images/people/guigom.webp'
 					},

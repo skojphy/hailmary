@@ -7,6 +7,39 @@ type InterestPhotoSet = {
 	influencerNames: string[];
 };
 
+const koreanWomenPortraits = [
+	'https://images.unsplash.com/photo-1526413232644-8a40f03cc03b?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1542996966-2e31c00bae31?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1514355315815-2b64b0216b14?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1624091844772-554661d10173?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1564564360647-684f24ae3e1c?auto=format&fit=crop&w=900&q=80'
+];
+
+const koreanMenPortraits = [
+	'https://images.unsplash.com/photo-1577807002746-2aa23cf2d134?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1741675122554-586b770395a8?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1612766959025-ac18e2b3bb96?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1692048098453-109979b87e10?auto=format&fit=crop&w=900&q=80',
+	'https://images.unsplash.com/photo-1580171542477-451bb1c67267?auto=format&fit=crop&w=900&q=80'
+];
+
+export const beautyAvatarImages = koreanWomenPortraits.slice(0, 3);
+export const techAvatarImages = [
+	koreanMenPortraits[0],
+	koreanMenPortraits[1],
+	koreanWomenPortraits[2]
+];
+export const sportsAvatarImages = [
+	koreanMenPortraits[2],
+	koreanWomenPortraits[1],
+	koreanMenPortraits[3]
+];
+
+const mixedKoreanPortraits = [
+	...koreanWomenPortraits.slice(0, 3),
+	...koreanMenPortraits.slice(0, 3)
+];
+
 const beautyPhotos: InterestPhotoSet = {
 	productImages: [
 		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=900&q=80',
@@ -27,18 +60,13 @@ const beautyPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...koreanWomenPortraits],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1586495777744-4413f21b72a0?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1596704017254-9db1944358aa?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['수아', '하늘', '예린', '나연', '민서', '서윤']
+	influencerNames: ['톤업노트', '유리파우치', '립밤로그', '쿨톤수집가', '뷰티모먼트', '메컵살롱']
 };
 
 const techPhotos: InterestPhotoSet = {
@@ -61,18 +89,20 @@ const techPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...techAvatarImages, koreanWomenPortraits[0], koreanMenPortraits[4]],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['현우', '도윤', '준호', '민재', '서준', '윤호']
+	influencerNames: [
+		'기어로그',
+		'데스크셋업러',
+		'픽셀노트',
+		'테크만물상',
+		'키보드취향',
+		'리뷰하는준'
+	]
 };
 
 const sportsPhotos: InterestPhotoSet = {
@@ -95,18 +125,56 @@ const sportsPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...sportsAvatarImages, koreanWomenPortraits[3], koreanMenPortraits[4]],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['태오', '도현', '지호', '예준', '가은', '시우']
+	influencerNames: [
+		'러닝픽',
+		'페이스메이커J',
+		'무브먼트로그',
+		'액티브도감',
+		'스포츠캐리어',
+		'아웃도어메이트'
+	]
+};
+
+const baseballPhotos: InterestPhotoSet = {
+	productImages: [
+		'https://images.unsplash.com/photo-1620740528428-59fb523a484a?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1749559995884-a3731177edf7?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1653681407587-a4add187ba81?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1705847470742-80f5140c53a2?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1551306667-f32e7af055f2?auto=format&fit=crop&w=900&q=80'
+	],
+	shortsImages: [
+		'https://images.unsplash.com/photo-1554591203-d6433caa8495?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1653681441421-831baa165bbf?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1553270040-8e90b62a94f8?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1686256856775-9218a0edf3c7?auto=format&fit=crop&w=900&q=80'
+	],
+	galleryImages: [
+		'https://images.unsplash.com/photo-1534095199036-ba4fd1eed616?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1464701116432-f476204d6c45?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1512631737701-737916001362?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1587565221090-7b8497f86d9e?auto=format&fit=crop&w=900&q=80'
+	],
+	peopleImages: [...sportsAvatarImages, koreanWomenPortraits[4], koreanMenPortraits[1]],
+	rankingImages: [
+		'https://images.unsplash.com/photo-1620740528428-59fb523a484a?auto=format&fit=crop&w=240&q=80',
+		'https://images.unsplash.com/photo-1653681407587-a4add187ba81?auto=format&fit=crop&w=240&q=80',
+		'https://images.unsplash.com/photo-1551306683-9e7cf1661af1?auto=format&fit=crop&w=240&q=80'
+	],
+	influencerNames: [
+		'야구수집가',
+		'더그아웃노트',
+		'글러브룸',
+		'직관메모',
+		'베이스라인랩',
+		'배트앤볼'
+	]
 };
 
 const foodPhotos: InterestPhotoSet = {
@@ -129,18 +197,20 @@ const foodPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1523293836414-f04e712e1dac?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...mixedKoreanPortraits],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['민지', '서윤', '지훈', '연우', '다온', '현아']
+	influencerNames: [
+		'빵순이레이더',
+		'집밥연구소',
+		'마켓장바구니',
+		'한입로그',
+		'미식보드',
+		'오늘의식탁'
+	]
 };
 
 const homeTravelPhotos: InterestPhotoSet = {
@@ -163,18 +233,13 @@ const homeTravelPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...mixedKoreanPortraits],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['유진', '지아', '태희', '서후', '민우', '라윤']
+	influencerNames: ['룸앤로드', '살림메모', '홈무드집', '트립캐리어', '주말도감', '소도시수집가']
 };
 
 const culturePhotos: InterestPhotoSet = {
@@ -197,18 +262,20 @@ const culturePhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=900&q=80'
 	],
-	peopleImages: [
-		'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80',
-		'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80'
-	],
+	peopleImages: [...mixedKoreanPortraits],
 	rankingImages: [
 		'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=240&q=80'
 	],
-	influencerNames: ['유나', '민석', '주원', '아린', '도겸', '채린']
+	influencerNames: [
+		'무드수집가',
+		'플레이리스트룸',
+		'영감노트',
+		'취향편집샵',
+		'전시산책',
+		'소란한취향'
+	]
 };
 
 function getInterestCategory(interestId: string) {
@@ -216,7 +283,11 @@ function getInterestCategory(interestId: string) {
 		return 'beauty';
 	}
 
-	if (['tech', 'early-adopter', 'phone', 'streaming', 'gaming'].includes(interestId)) {
+	if (['early-adopter'].includes(interestId)) {
+		return 'baseball';
+	}
+
+	if (['tech', 'phone', 'streaming', 'gaming'].includes(interestId)) {
 		return 'tech';
 	}
 
@@ -251,6 +322,8 @@ export function getInterestPhotoSet(interestId: string): InterestPhotoSet {
 			return beautyPhotos;
 		case 'tech':
 			return techPhotos;
+		case 'baseball':
+			return baseballPhotos;
 		case 'sports':
 			return sportsPhotos;
 		case 'food':
