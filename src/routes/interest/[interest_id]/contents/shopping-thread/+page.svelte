@@ -1049,8 +1049,8 @@
 		display: flex;
 		gap: 0.74rem;
 		overflow-x: auto;
-		margin: 0 -1rem;
-		padding: 0 1rem 0.25rem;
+		margin: 0 -1rem 0 0;
+		padding: 0 1rem 0.25rem 0;
 		scroll-snap-type: x mandatory;
 		-webkit-overflow-scrolling: touch;
 	}
@@ -1265,8 +1265,9 @@
 		}
 
 		.product-row {
-			margin-inline: -0.88rem;
-			padding-inline: 0.88rem;
+			margin: 0 -0.88rem 0 0;
+			padding-right: 0.88rem;
+			padding-left: 0;
 		}
 	}
 </style>
