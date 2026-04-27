@@ -141,6 +141,15 @@ export type FollowingCard = BaseCard & {
 	}>;
 };
 
+export type ThreadCard = BaseCard & {
+	type: 'thread';
+	badge: TextBadge;
+	title: string;
+	body: string;
+	query: string;
+	images: string[];
+};
+
 export type InterestHomeCard =
 	| StoryCard
 	| ProductCard
@@ -148,7 +157,8 @@ export type InterestHomeCard =
 	| LiveCard
 	| GalleryCard
 	| RankingCard
-	| FollowingCard;
+	| FollowingCard
+	| ThreadCard;
 
 export type InterestHomeTheme = {
 	header: HomeHeader;
@@ -223,6 +233,139 @@ const techPalette: HomePalette = {
 const makeupAvatars = beautyAvatarImages;
 const techAvatars = techAvatarImages;
 const runningAvatars = sportsAvatarImages;
+
+const threadCardConfigs: Record<
+	string,
+	{
+		title: string;
+		body: string;
+		query: string;
+		images: string[];
+		buttonLabel: string;
+	}
+> = {
+	'living-alone': {
+		title: '조명부터 침구,\n수납까지 한 번에',
+		body: '첫 자취방에 바로 필요한 것만 AI가 골라 번들로 묶어드려요.',
+		query: '자취 필수템',
+		images: [
+			'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1616627561839-074385245ff6?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '딱 스레드 보기'
+	},
+	'early-adopter-2': {
+		title: '항공권부터 투어,\n여행템까지 한 번에',
+		body: '스페인 여행에 필요한 예약과 준비물을 AI가 묶어드려요.',
+		query: '스페인 여행 가고 싶어',
+		images: [
+			'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '스페인 스레드 보기'
+	},
+	running: {
+		title: '러닝화부터 보급템,\n회복템까지 한 번에',
+		body: '페이스와 목표 거리만 맞추면 러닝 입문 번들을 AI가 구성해요.',
+		query: '10km 러닝 준비템 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '러닝 스레드 보기'
+	},
+	'running-crew-2': {
+		title: '식단부터 운동템,\n간식까지 한 번에',
+		body: '목표 체중과 생활패턴에 맞춰 다이어트 루틴템을 묶어드려요.',
+		query: '다이어트 시작템 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '다이어트 스레드 보기'
+	},
+	'idol-2': {
+		title: '모래부터 급식기,\n장난감까지 한 번에',
+		body: '냥집사 생활에 필요한 기본템과 업그레이드템을 AI가 골라요.',
+		query: '초보 냥집사 필수템 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1545249390-6bdfa286032f?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1547955922-26be0c1600c4?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '냥집사 스레드 보기'
+	},
+	'beauty-2': {
+		title: '산책템부터 간식,\n케어템까지 한 번에',
+		body: '강아지 나이와 산책 습관에 맞춰 댕댕이 번들을 구성해요.',
+		query: '댕댕이 산책 필수템 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '댕댕이 스레드 보기'
+	},
+	whiskey: {
+		title: '입문 위스키부터\n글라스와 안주까지',
+		body: '취향과 예산에 맞춰 홈바 스타터 세트를 AI가 묶어드려요.',
+		query: '위스키 입문 세트 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '위스키 스레드 보기'
+	},
+	'home-cafe': {
+		title: '오븐틀부터 재료,\n포장템까지 한 번에',
+		body: '처음 홈베이킹을 시작하기 좋은 도구와 재료를 골라드려요.',
+		query: '홈베이킹 입문템 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '홈베이킹 스레드 보기'
+	},
+	fashion: {
+		title: '아우터부터 신발,\n포인트템까지 한 번에',
+		body: '원하는 무드와 예산에 맞춰 데일리룩 번들을 AI가 구성해요.',
+		query: '봄 데일리룩 세트 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '패션 스레드 보기'
+	},
+	swimming: {
+		title: '수경부터 수영복,\n방수템까지 한 번에',
+		body: '실내수영 입문에 필요한 준비물을 AI가 빠짐없이 묶어요.',
+		query: '수영 입문 준비물 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '수영 스레드 보기'
+	},
+	gaming: {
+		title: '키보드부터 헤드셋,\n책상 셋업까지 한 번에',
+		body: '플레이 장르와 예산에 맞춰 게이밍 셋업을 AI가 맞춰드려요.',
+		query: '게이밍 셋업 추천해줘',
+		images: [
+			'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=240&q=80',
+			'https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=240&q=80'
+		],
+		buttonLabel: '게임 스레드 보기'
+	}
+};
 
 function hashString(input: string) {
 	return Array.from(input).reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -366,6 +509,17 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 				meta: createMetric(seed + 12, '봄'),
 				buttonLabel: '더 많은 인기글 보기'
 			},
+			...(threadCardConfigs[interest.id]
+				? [
+						{
+							id: `${interest.id}-thread`,
+							type: 'thread' as const,
+							column: 'right' as const,
+							badge: { kind: 'text' as const, text: '딱 스레드', tone: 'accent' as const },
+							...threadCardConfigs[interest.id]
+						}
+					]
+				: []),
 			{
 				id: `${interest.id}-superdeal`,
 				type: 'product',

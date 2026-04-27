@@ -11,7 +11,8 @@
 		ProductCard,
 		RankingCard,
 		ShortsCard,
-		StoryCard
+		StoryCard,
+		ThreadCard
 	} from '$lib/data/interest-home';
 	import { fly } from 'svelte/transition';
 
@@ -22,7 +23,26 @@
 		};
 	}>();
 
-	let aiPrompt = $state('자취 필수템');
+	const promptExamples: Record<string, string> = {
+		'living-alone': '자취 필수템',
+		'early-adopter-2': '스페인 여행에 필요한거 알려줘',
+		running: '10km 러닝 준비템 추천해줘',
+		'running-crew-2': '다이어트 시작템 추천해줘',
+		'idol-2': '댕댕이 산책 필수템 추천해줘',
+		'beauty-2': '초보 냥집사 필수템 추천해줘',
+		whiskey: '홈베이킹 입문템 추천해줘',
+		'home-cafe': '위스키 입문 세트 추천해줘',
+		fashion: '봄 데일리룩 세트 추천해줘',
+		swimming: '게이밍 셋업 추천해줘',
+		gaming: '수영 입문 준비물 추천해줘'
+	};
+
+	const defaultAiPrompt = $derived(promptExamples[data.interest] ?? '자취 필수템');
+	let aiPrompt = $state('');
+
+	$effect(() => {
+		aiPrompt = defaultAiPrompt;
+	});
 
 	const leftCards = $derived(
 		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'left')
@@ -63,7 +83,7 @@
 	function submitAiRequest(event: SubmitEvent) {
 		event.preventDefault();
 
-		const query = aiPrompt.trim() || '자취 필수템';
+		const query = aiPrompt.trim() || defaultAiPrompt;
 		goto(
 			`/ai-interest-routing?q=${encodeURIComponent(query)}&from=${encodeURIComponent(data.interest)}`
 		);
@@ -104,7 +124,7 @@
 			<input
 				id="home-ai-prompt"
 				bind:value={aiPrompt}
-				placeholder="예: 자취 필수템"
+				placeholder={`예: ${defaultAiPrompt}`}
 				aria-label="AI에게 요청하기"
 			/>
 			<button type="submit">요청</button>
@@ -215,6 +235,25 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
+					{:else if card.type === 'thread'}
+						{@const thread = card as ThreadCard}
+						<div class="home-card__thread-badge">
+							<Sparkles size={15} fill="currentColor" />
+							<span>{thread.badge.text}</span>
+						</div>
+						<div class="home-card__thread-media">
+							{#each thread.images as image}
+								<img src={image} alt="" />
+							{/each}
+						</div>
+						<h3 class="home-card__story-title">{thread.title}</h3>
+						<p class="home-card__story-body">{thread.body}</p>
+						<a
+							class="home-card__action home-card__action--thread"
+							href={`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(thread.query)}`}
+						>
+							<strong>{thread.buttonLabel}</strong>
+						</a>
 					{/if}
 				</article>
 			{/each}
@@ -321,6 +360,25 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
+					{:else if card.type === 'thread'}
+						{@const thread = card as ThreadCard}
+						<div class="home-card__thread-badge">
+							<Sparkles size={15} fill="currentColor" />
+							<span>{thread.badge.text}</span>
+						</div>
+						<div class="home-card__thread-media">
+							{#each thread.images as image}
+								<img src={image} alt="" />
+							{/each}
+						</div>
+						<h3 class="home-card__story-title">{thread.title}</h3>
+						<p class="home-card__story-body">{thread.body}</p>
+						<a
+							class="home-card__action home-card__action--thread"
+							href={`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(thread.query)}`}
+						>
+							<strong>{thread.buttonLabel}</strong>
+						</a>
 					{/if}
 				</article>
 			{/each}
@@ -501,6 +559,43 @@
 		color: #ff6a00;
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
 		font-size: 0.92rem;
+	}
+
+	.home-card__thread-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
+		margin-bottom: 0.82rem;
+		color: #4f46e5;
+		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
+		font-size: 1rem;
+		line-height: 1;
+	}
+
+	.home-card__thread-badge :global(svg) {
+		width: 0.92rem;
+		height: 0.92rem;
+	}
+
+	.home-card__thread-media {
+		display: grid;
+		grid-template-columns: 1fr 0.72fr;
+		grid-template-rows: repeat(2, 2.35rem);
+		gap: 0.28rem;
+		overflow: hidden;
+		margin-bottom: 0.72rem;
+		border-radius: 0.92rem;
+		background: #eef2f7;
+	}
+
+	.home-card__thread-media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.home-card__thread-media img:first-child {
+		grid-row: 1 / 3;
 	}
 
 	.home-card__chip {
@@ -714,6 +809,19 @@
 	.home-card__action strong {
 		color: #1b1b1b;
 		font-weight: 600;
+	}
+
+	.home-card__action--thread {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		background: #111827;
+	}
+
+	.home-card__action--thread strong {
+		color: #ffffff;
+		font-weight: 800;
 	}
 
 	.home-card__link {

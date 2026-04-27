@@ -2,14 +2,54 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { Home, Sparkles } from 'lucide-svelte';
+	import { Home, Plane, Sparkles } from 'lucide-svelte';
 
 	const query = $derived(page.url.searchParams.get('q') || '자취 필수템');
-	const targetInterest = 'living-alone';
+	const target = $derived.by(() => {
+		const text = query.toLowerCase();
+
+		if (/스페인|여행|항공|투어/.test(text)) {
+			return { id: 'early-adopter-2', label: '여행', kind: 'travel' };
+		}
+		if (/댕댕|강아지|산책/.test(text)) {
+			return { id: 'beauty-2', label: '댕댕이', kind: 'home' };
+		}
+		if (/냥|고양이|집사/.test(text)) {
+			return { id: 'idol-2', label: '냥집사', kind: 'home' };
+		}
+		if (/러닝|10km|마라톤|페이스/.test(text)) {
+			return { id: 'running', label: '러닝', kind: 'home' };
+		}
+		if (/다이어트|식단|체중/.test(text)) {
+			return { id: 'running-crew-2', label: '다이어트', kind: 'home' };
+		}
+		if (/위스키|홈바|글라스/.test(text)) {
+			return { id: 'whiskey', label: '위스키', kind: 'home' };
+		}
+		if (/홈베이킹|베이킹|오븐|빵/.test(text)) {
+			return { id: 'home-cafe', label: '홈베이킹', kind: 'home' };
+		}
+		if (/패션|데일리룩|패셔니스타|아우터/.test(text)) {
+			return { id: 'fashion', label: '패셔니스타', kind: 'home' };
+		}
+		if (/수영|수경|수영복/.test(text)) {
+			return { id: 'swimming', label: '수영', kind: 'home' };
+		}
+		if (/게임|게이밍|키보드|헤드셋/.test(text)) {
+			return { id: 'gaming', label: '게임', kind: 'home' };
+		}
+
+		return { id: 'living-alone', label: '자취', kind: 'home' };
+	});
+	const targetCopy = $derived(
+		target.kind === 'travel'
+			? '여행 준비 흐름에 더 잘 맞아요. 잠시 후 여행 홈으로 이동할게요.'
+			: `${target.label} 관심사 흐름에 더 잘 맞아요. 잠시 후 해당 홈으로 이동할게요.`
+	);
 
 	onMount(() => {
 		const timer = window.setTimeout(() => {
-			goto(`/interest/${targetInterest}/contents/shopping-thread?q=${encodeURIComponent(query)}`, {
+			goto(`/interest/${target.id}/contents/shopping-thread?q=${encodeURIComponent(query)}`, {
 				replaceState: true
 			});
 		}, 1500);
@@ -29,14 +69,16 @@
 		</div>
 		<div class="routing-card__copy">
 			<span>AI가 요청을 읽는 중</span>
-			<h1>자취 관심사로 이동할게요</h1>
-			<p>
-				<strong>{query}</strong> 요청은 자취 시작 흐름에 더 잘 맞아요. 잠시 후 딱 맞는 쇼핑스레드를 열어드릴게요.
-			</p>
+			<h1>{target.label} 관심사로 이동할게요</h1>
+			<p><strong>{query}</strong> 요청은 {targetCopy}</p>
 		</div>
 		<div class="routing-target">
-			<Home size={17} />
-			<span>자취</span>
+			{#if target.kind === 'travel'}
+				<Plane size={17} />
+			{:else}
+				<Home size={17} />
+			{/if}
+			<span>{target.label}</span>
 			<small>새 관심사 매칭</small>
 		</div>
 		<div class="routing-progress"><span></span></div>
