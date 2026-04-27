@@ -592,6 +592,62 @@
 		}
 	];
 
+	const variantImages = [
+		'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
+		'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=700&q=80',
+		'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=700&q=80',
+		'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80',
+		'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80',
+		'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80'
+	];
+
+	function createVariant(product: Product, index: number): Product {
+		const labels = ['가성비형', '프리미엄형'];
+		const priceRate = index === 1 ? 0.82 : 1.24;
+		const matchOffset = index === 1 ? -3 : -5;
+
+		return {
+			...product,
+			id: `${product.id}-v${index}`,
+			name: `${product.name} ${labels[index - 1]}`,
+			price: Math.max(9900, Math.round((product.price * priceRate) / 100) * 100),
+			image: variantImages[(product.id.length + index) % variantImages.length],
+			tags:
+				index === 1
+					? [...product.tags.slice(0, 2), '가성비']
+					: [...product.tags.slice(0, 2), '업그레이드'],
+			reason:
+				index === 1
+					? '예산을 아끼면서 핵심 기능은 챙기는 대안이에요.'
+					: '조금 더 오래 쓰고 싶은 사람에게 맞는 업그레이드 후보예요.',
+			baseMatch: Math.max(72, product.baseMatch + matchOffset)
+		};
+	}
+
+	function ensureMinimumGroupItems(items: Product[]) {
+		const groups = new Map<string, Product[]>();
+
+		for (const item of items) {
+			const groupItems = groups.get(item.group) ?? [];
+			groupItems.push(item);
+			groups.set(item.group, groupItems);
+		}
+
+		return Array.from(groups.values()).flatMap((groupItems) => {
+			const expanded = [...groupItems];
+			let variantIndex = 1;
+
+			while (expanded.length < 3) {
+				expanded.push(
+					createVariant(groupItems[(variantIndex - 1) % groupItems.length], variantIndex)
+				);
+				variantIndex += 1;
+			}
+
+			return expanded;
+		});
+	}
+
 	const topicProducts: Record<string, Product[]> = {
 		running: [
 			{
@@ -992,7 +1048,9 @@
 	};
 
 	const products = $derived.by((): Product[] =>
-		isTravelThread ? travelProducts : (topicProducts[interestId] ?? livingProducts)
+		ensureMinimumGroupItems(
+			isTravelThread ? travelProducts : (topicProducts[interestId] ?? livingProducts)
+		)
 	);
 
 	const recommendedProducts = $derived.by((): MatchedProduct[] =>
