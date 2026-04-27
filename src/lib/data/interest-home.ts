@@ -376,23 +376,39 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 				meta: createMetric(seed + 12, '봄'),
 				buttonLabel: '더 많은 인기글 보기'
 			},
-			...(interest.id === 'living-alone'
+			...(interest.id === 'living-alone' || interest.id === 'early-adopter-2'
 				? [
-						{
-							id: 'living-alone-thread',
-							type: 'thread' as const,
-							column: 'right' as const,
-							badge: { kind: 'text' as const, text: '딱 스레드', tone: 'accent' as const },
-							title: '조명부터 침구,\n수납까지 한 번에',
-							body: '첫 자취방에 바로 필요한 것만 AI가 골라 번들로 묶어드려요.',
-							query: '자취 필수템',
-							images: [
-								'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=240&q=80',
-								'https://images.unsplash.com/photo-1616627561839-074385245ff6?auto=format&fit=crop&w=240&q=80',
-								'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=240&q=80'
-							],
-							buttonLabel: '딱 스레드 보기'
-						}
+						interest.id === 'early-adopter-2'
+							? {
+									id: 'spain-travel-thread',
+									type: 'thread' as const,
+									column: 'right' as const,
+									badge: { kind: 'text' as const, text: '딱 스레드', tone: 'accent' as const },
+									title: '항공권부터 투어,\n여행템까지 한 번에',
+									body: '스페인 여행에 필요한 예약과 준비물을 AI가 묶어드려요.',
+									query: '스페인 여행 가고 싶어',
+									images: [
+										'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=240&q=80',
+										'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=240&q=80',
+										'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=240&q=80'
+									],
+									buttonLabel: '스페인 스레드 보기'
+								}
+							: {
+									id: 'living-alone-thread',
+									type: 'thread' as const,
+									column: 'right' as const,
+									badge: { kind: 'text' as const, text: '딱 스레드', tone: 'accent' as const },
+									title: '조명부터 침구,\n수납까지 한 번에',
+									body: '첫 자취방에 바로 필요한 것만 AI가 골라 번들로 묶어드려요.',
+									query: '자취 필수템',
+									images: [
+										'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=240&q=80',
+										'https://images.unsplash.com/photo-1616627561839-074385245ff6?auto=format&fit=crop&w=240&q=80',
+										'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=240&q=80'
+									],
+									buttonLabel: '딱 스레드 보기'
+								}
 					]
 				: []),
 			{

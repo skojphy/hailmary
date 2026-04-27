@@ -2,10 +2,17 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { Home, Sparkles } from 'lucide-svelte';
+	import { Home, Plane, Sparkles } from 'lucide-svelte';
 
 	const query = $derived(page.url.searchParams.get('q') || '자취 필수템');
-	const targetInterest = 'living-alone';
+	const isTravelQuery = $derived(/스페인|여행|항공|투어/i.test(query));
+	const targetInterest = $derived(isTravelQuery ? 'early-adopter-2' : 'living-alone');
+	const targetLabel = $derived(isTravelQuery ? '여행' : '자취');
+	const targetCopy = $derived(
+		isTravelQuery
+			? '여행 준비 흐름에 더 잘 맞아요. 잠시 후 스페인 여행 스레드를 열어드릴게요.'
+			: '자취 시작 흐름에 더 잘 맞아요. 잠시 후 딱 맞는 쇼핑스레드를 열어드릴게요.'
+	);
 
 	onMount(() => {
 		const timer = window.setTimeout(() => {
@@ -29,14 +36,16 @@
 		</div>
 		<div class="routing-card__copy">
 			<span>AI가 요청을 읽는 중</span>
-			<h1>자취 관심사로 이동할게요</h1>
-			<p>
-				<strong>{query}</strong> 요청은 자취 시작 흐름에 더 잘 맞아요. 잠시 후 딱 맞는 쇼핑스레드를 열어드릴게요.
-			</p>
+			<h1>{targetLabel} 관심사로 이동할게요</h1>
+			<p><strong>{query}</strong> 요청은 {targetCopy}</p>
 		</div>
 		<div class="routing-target">
-			<Home size={17} />
-			<span>자취</span>
+			{#if isTravelQuery}
+				<Plane size={17} />
+			{:else}
+				<Home size={17} />
+			{/if}
+			<span>{targetLabel}</span>
 			<small>새 관심사 매칭</small>
 		</div>
 		<div class="routing-progress"><span></span></div>

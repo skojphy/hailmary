@@ -23,7 +23,11 @@
 		experienceBoost?: Partial<Record<Experience, number>>;
 	};
 
-	const query = $derived(page.url.searchParams.get('q') || '자취 필수템');
+	const interestId = $derived(page.params.interest_id);
+	const isTravelThread = $derived(interestId === 'early-adopter-2');
+	const query = $derived(
+		page.url.searchParams.get('q') || (isTravelThread ? '스페인 여행 가고 싶어' : '자취 필수템')
+	);
 
 	let roomSize = $state<RoomSize>('small');
 	let budgetAmount = $state(240000);
@@ -36,7 +40,7 @@
 	let showFilters = $state(false);
 	let generatedSignature = $state('');
 
-	const products: Product[] = [
+	const livingProducts: Product[] = [
 		{
 			id: 'folding-dryer',
 			name: '접이식 스테인리스 빨래건조대',
@@ -437,13 +441,153 @@
 	];
 
 	const budget = $derived.by((): Budget => {
+		if (isTravelThread) {
+			if (budgetAmount <= 1600000) return 'starter';
+			if (budgetAmount >= 2300000) return 'premium';
+			return 'balanced';
+		}
+
 		if (budgetAmount <= 180000) return 'starter';
 		if (budgetAmount >= 280000) return 'premium';
 		return 'balanced';
 	});
+	const budgetMin = $derived(isTravelThread ? 1200000 : 120000);
+	const budgetMax = $derived(isTravelThread ? 2800000 : 320000);
+	const budgetStep = $derived(isTravelThread ? 100000 : 10000);
 	const budgetLimit = $derived(budgetAmount);
-	const budgetProgress = $derived(((budgetAmount - 120000) / 200000) * 100);
+	const budgetProgress = $derived(((budgetAmount - budgetMin) / (budgetMax - budgetMin)) * 100);
 	const filterSignature = $derived(`${roomSize}-${budgetAmount}-${appliances}-${experience}`);
+
+	const travelProducts: Product[] = [
+		{
+			id: 'mad-flight',
+			name: '인천-마드리드 왕복 항공권',
+			category: '항공권',
+			group: '항공권',
+			price: 1180000,
+			image:
+				'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=700&q=80',
+			tags: ['직항우선', '위탁수하물', '마드리드'],
+			reason: '스페인 첫 여행이면 마드리드 인아웃 동선이 가장 안정적이에요.',
+			baseMatch: 92,
+			budgetBoost: { balanced: 4, premium: 6 },
+			experienceBoost: { first: 4 }
+		},
+		{
+			id: 'bcn-flight',
+			name: '인천-바르셀로나 왕복 항공권',
+			category: '항공권',
+			group: '항공권',
+			price: 1260000,
+			image:
+				'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=700&q=80',
+			tags: ['바르셀로나', '야간도착', '수하물포함'],
+			reason: '가우디 투어 중심 일정이라면 바르셀로나 인아웃이 편해요.',
+			baseMatch: 89,
+			budgetBoost: { premium: 6, balanced: 3 },
+			experienceBoost: { first: 3, some: 4 }
+		},
+		{
+			id: 'openjaw-flight',
+			name: '마드리드 IN 바르셀로나 OUT 항공권',
+			category: '항공권',
+			group: '항공권',
+			price: 1340000,
+			image:
+				'https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=700&q=80',
+			tags: ['오픈조', '동선절약', '2도시'],
+			reason: '도시간 이동을 줄이고 스페인 핵심 도시를 이어 보기 좋아요.',
+			baseMatch: 87,
+			budgetBoost: { premium: 7 },
+			experienceBoost: { some: 4, pro: 5 }
+		},
+		{
+			id: 'gaudi-tour',
+			name: '바르셀로나 가우디 반일 투어',
+			category: '투어티켓',
+			group: '투어티켓',
+			price: 89000,
+			image:
+				'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=700&q=80',
+			tags: ['사그라다파밀리아', '한국어가이드', '반일'],
+			reason: '처음 가는 스페인 여행에서 만족도가 가장 높은 핵심 투어예요.',
+			baseMatch: 94,
+			budgetBoost: { starter: 3, balanced: 5, premium: 5 },
+			experienceBoost: { first: 6 }
+		},
+		{
+			id: 'prado-ticket',
+			name: '프라도 미술관 패스트트랙 티켓',
+			category: '투어티켓',
+			group: '투어티켓',
+			price: 31000,
+			image:
+				'https://images.unsplash.com/photo-1554907984-15263bfd63bd?auto=format&fit=crop&w=700&q=80',
+			tags: ['마드리드', '미술관', '대기줄패스'],
+			reason: '마드리드 일정에서 날씨와 상관없이 넣기 좋은 대표 티켓이에요.',
+			baseMatch: 85,
+			budgetBoost: { starter: 5, balanced: 4 },
+			experienceBoost: { first: 3, some: 3 }
+		},
+		{
+			id: 'toledo-tour',
+			name: '톨레도 근교 일일 투어',
+			category: '투어티켓',
+			group: '투어티켓',
+			price: 72000,
+			image:
+				'https://images.unsplash.com/photo-1562624475-96c2bc08fab9?auto=format&fit=crop&w=700&q=80',
+			tags: ['근교', '일일투어', '중세도시'],
+			reason: '스페인 도시 풍경을 하루 더 깊게 보고 싶을 때 잘 맞아요.',
+			baseMatch: 82,
+			budgetBoost: { balanced: 4, premium: 5 },
+			experienceBoost: { some: 4, pro: 4 }
+		},
+		{
+			id: 'esim',
+			name: '스페인 10일 eSIM 데이터',
+			category: '여행물품',
+			group: '여행물품',
+			price: 18900,
+			image:
+				'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
+			tags: ['eSIM', '10일', '데이터'],
+			reason: '도착 직후 지도와 교통앱을 바로 쓰려면 가장 먼저 챙겨야 해요.',
+			baseMatch: 93,
+			budgetBoost: { starter: 5, balanced: 5, premium: 5 },
+			experienceBoost: { first: 5, some: 4 }
+		},
+		{
+			id: 'anti-pickpocket-bag',
+			name: '도난방지 크로스백',
+			category: '여행물품',
+			group: '여행물품',
+			price: 42900,
+			image:
+				'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80',
+			tags: ['소매치기방지', '여권', '크로스백'],
+			reason: '바르셀로나와 마드리드 시내 이동에서 체감 안전감이 좋아요.',
+			baseMatch: 90,
+			budgetBoost: { starter: 4, balanced: 5, premium: 5 },
+			experienceBoost: { first: 6 }
+		},
+		{
+			id: 'travel-adapter',
+			name: '유럽형 멀티 어댑터',
+			category: '여행물품',
+			group: '여행물품',
+			price: 15900,
+			image:
+				'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?auto=format&fit=crop&w=700&q=80',
+			tags: ['EU플러그', 'USB-C', '필수템'],
+			reason: '숙소마다 콘센트 위치가 달라 멀티포트 어댑터가 편해요.',
+			baseMatch: 88,
+			budgetBoost: { starter: 5, balanced: 5 },
+			experienceBoost: { first: 5, some: 3 }
+		}
+	];
+
+	const products = $derived(isTravelThread ? travelProducts : livingProducts);
 
 	const recommendedProducts = $derived.by(() =>
 		products
@@ -472,7 +616,10 @@
 		침구: 5,
 		청소: 4,
 		주방: 3,
-		수납: 5
+		수납: 5,
+		항공권: 3,
+		투어티켓: 3,
+		여행물품: 3
 	};
 
 	const recommendedGroups = $derived.by(() => {
@@ -498,14 +645,40 @@
 	});
 
 	const activeFilterLabels = $derived.by(() => ({
-		room: roomSize === 'small' ? '5-7평' : roomSize === 'medium' ? '8-10평' : '11평 이상',
+		room: isTravelThread
+			? roomSize === 'small'
+				? '5-7일'
+				: roomSize === 'medium'
+					? '8-10일'
+					: '11일 이상'
+			: roomSize === 'small'
+				? '5-7평'
+				: roomSize === 'medium'
+					? '8-10평'
+					: '11평 이상',
 		appliances:
 			appliances === 'none'
-				? '가전 거의 없음'
+				? isTravelThread
+					? '항공권부터'
+					: '가전 거의 없음'
 				: appliances === 'partial'
-					? '가전 일부 있음'
-					: '가전 있음',
-		experience: experience === 'first' ? '첫 자취' : experience === 'some' ? '경험 있음' : '익숙함'
+					? isTravelThread
+						? '투어까지'
+						: '가전 일부 있음'
+					: isTravelThread
+						? '준비물까지'
+						: '가전 있음',
+		experience: isTravelThread
+			? experience === 'first'
+				? '첫 유럽여행'
+				: experience === 'some'
+					? '해외여행 경험'
+					: '여행 익숙함'
+			: experience === 'first'
+				? '첫 자취'
+				: experience === 'some'
+					? '경험 있음'
+					: '익숙함'
 	}));
 
 	function getDefaultSelection() {
@@ -537,6 +710,16 @@
 	}
 
 	$effect(() => {
+		if (isTravelThread && budgetAmount < budgetMin) {
+			budgetAmount = 1800000;
+			return;
+		}
+
+		if (!isTravelThread && budgetAmount > budgetMax) {
+			budgetAmount = 240000;
+			return;
+		}
+
 		if (hasGenerated && generatedSignature !== filterSignature) {
 			selectedIds = getDefaultSelection();
 			generatedSignature = filterSignature;
@@ -569,19 +752,28 @@
 		<div>
 			<span class="thread-hero__eyebrow"><Sparkles size={15} fill="currentColor" /> AI 추천</span>
 			<p>
-				기본 조건으로 <strong>{query}</strong> 상품을 먼저 묶어봤어요. 필요하면 조건을 바꿔보세요.
+				{#if isTravelThread}
+					<strong>{query}</strong>에 맞춰 항공권, 투어티켓, 여행물품을 먼저 묶어봤어요.
+				{:else}
+					기본 조건으로 <strong>{query}</strong> 상품을 먼저 묶어봤어요. 필요하면 조건을 바꿔보세요.
+				{/if}
 			</p>
 		</div>
 	</div>
 
 	{#if showFilters && !isGenerating}
-		<div class="thread-form" aria-label="자취 필수템 추천 조건">
+		<div
+			class="thread-form"
+			aria-label={isTravelThread ? '스페인 여행 추천 조건' : '자취 필수템 추천 조건'}
+		>
 			<div class="thread-form__group">
-				<label for="room-size"><Home size={16} /> 원룸 크기</label>
+				<label for="room-size"
+					><Home size={16} /> {isTravelThread ? '여행 기간' : '원룸 크기'}</label
+				>
 				<select id="room-size" bind:value={roomSize}>
-					<option value="small">5-7평</option>
-					<option value="medium">8-10평</option>
-					<option value="large">11평 이상</option>
+					<option value="small">{isTravelThread ? '5-7일' : '5-7평'}</option>
+					<option value="medium">{isTravelThread ? '8-10일' : '8-10평'}</option>
+					<option value="large">{isTravelThread ? '11일 이상' : '11평 이상'}</option>
 				</select>
 			</div>
 			<div class="thread-form__group">
@@ -592,31 +784,31 @@
 				<input
 					id="budget"
 					type="range"
-					min="120000"
-					max="320000"
-					step="10000"
+					min={budgetMin}
+					max={budgetMax}
+					step={budgetStep}
 					bind:value={budgetAmount}
 					style={`--budget-progress: ${budgetProgress}%`}
 				/>
 				<div class="thread-form__range-labels">
-					<span>12만원</span>
-					<span>32만원</span>
+					<span>{isTravelThread ? '120만원' : '12만원'}</span>
+					<span>{isTravelThread ? '280만원' : '32만원'}</span>
 				</div>
 			</div>
 			<div class="thread-form__group">
-				<label for="appliances">기본 가전</label>
+				<label for="appliances">{isTravelThread ? '예약 범위' : '기본 가전'}</label>
 				<select id="appliances" bind:value={appliances}>
-					<option value="none">거의 없음</option>
-					<option value="partial">일부 있음</option>
-					<option value="ready">대부분 있음</option>
+					<option value="none">{isTravelThread ? '항공권부터' : '거의 없음'}</option>
+					<option value="partial">{isTravelThread ? '투어까지' : '일부 있음'}</option>
+					<option value="ready">{isTravelThread ? '준비물까지' : '대부분 있음'}</option>
 				</select>
 			</div>
 			<div class="thread-form__group">
-				<label for="experience">자취 경험</label>
+				<label for="experience">{isTravelThread ? '여행 경험' : '자취 경험'}</label>
 				<select id="experience" bind:value={experience}>
-					<option value="first">첫 자취</option>
-					<option value="some">경험 있음</option>
-					<option value="pro">익숙함</option>
+					<option value="first">{isTravelThread ? '첫 유럽여행' : '첫 자취'}</option>
+					<option value="some">{isTravelThread ? '해외여행 경험' : '경험 있음'}</option>
+					<option value="pro">{isTravelThread ? '여행 익숙함' : '익숙함'}</option>
 				</select>
 			</div>
 		</div>
@@ -655,7 +847,11 @@
 		<div class="thread-summary">
 			<div>
 				<strong>{selectedProducts.length}개 상품 구성</strong>
-				<span>예산 {formatPrice(budgetLimit)} 안에서 카테고리별 대표 상품을 골랐어요.</span>
+				<span
+					>예산 {formatPrice(budgetLimit)} 안에서 {isTravelThread
+						? '예약과 여행물품을'
+						: '카테고리별 대표 상품을'} 골랐어요.</span
+				>
 			</div>
 			<div class="thread-summary__price">
 				<span>{formatPrice(totalPrice)}</span>

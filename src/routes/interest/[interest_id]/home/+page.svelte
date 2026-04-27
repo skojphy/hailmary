@@ -23,7 +23,14 @@
 		};
 	}>();
 
-	let aiPrompt = $state('자취 필수템');
+	const defaultAiPrompt = $derived(
+		data.interest === 'early-adopter-2' ? '스페인 여행에 필요한거 알려줘' : '자취 필수템'
+	);
+	let aiPrompt = $state('');
+
+	$effect(() => {
+		aiPrompt = defaultAiPrompt;
+	});
 
 	const leftCards = $derived(
 		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'left')
@@ -64,7 +71,7 @@
 	function submitAiRequest(event: SubmitEvent) {
 		event.preventDefault();
 
-		const query = aiPrompt.trim() || '자취 필수템';
+		const query = aiPrompt.trim() || defaultAiPrompt;
 		goto(
 			`/ai-interest-routing?q=${encodeURIComponent(query)}&from=${encodeURIComponent(data.interest)}`
 		);
@@ -105,7 +112,7 @@
 			<input
 				id="home-ai-prompt"
 				bind:value={aiPrompt}
-				placeholder="예: 자취 필수템"
+				placeholder={`예: ${defaultAiPrompt}`}
 				aria-label="AI에게 요청하기"
 			/>
 			<button type="submit">요청</button>
