@@ -23,9 +23,21 @@
 		};
 	}>();
 
-	const defaultAiPrompt = $derived(
-		data.interest === 'early-adopter-2' ? '스페인 여행에 필요한거 알려줘' : '자취 필수템'
-	);
+	const promptExamples: Record<string, string> = {
+		'living-alone': '자취 필수템',
+		'early-adopter-2': '스페인 여행에 필요한거 알려줘',
+		running: '10km 러닝 준비템 추천해줘',
+		'running-crew-2': '다이어트 시작템 추천해줘',
+		'idol-2': '댕댕이 산책 필수템 추천해줘',
+		'beauty-2': '초보 냥집사 필수템 추천해줘',
+		whiskey: '홈베이킹 입문템 추천해줘',
+		'home-cafe': '위스키 입문 세트 추천해줘',
+		fashion: '봄 데일리룩 세트 추천해줘',
+		swimming: '게이밍 셋업 추천해줘',
+		gaming: '수영 입문 준비물 추천해줘'
+	};
+
+	const defaultAiPrompt = $derived(promptExamples[data.interest] ?? '자취 필수템');
 	let aiPrompt = $state('');
 
 	$effect(() => {
