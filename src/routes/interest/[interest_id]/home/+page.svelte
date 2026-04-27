@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Play, UserRound } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { Play, Search, Sparkles, UserRound } from 'lucide-svelte';
 	import type {
 		CardBadge,
 		FollowingCard,
@@ -20,6 +21,8 @@
 			theme: InterestHomeTheme;
 		};
 	}>();
+
+	let aiPrompt = $state('자취 필수템');
 
 	const leftCards = $derived(
 		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'left')
@@ -56,6 +59,15 @@
 			suffix: match[3]
 		};
 	}
+
+	function submitAiRequest(event: SubmitEvent) {
+		event.preventDefault();
+
+		const query = aiPrompt.trim() || '자취 필수템';
+		goto(
+			`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(query)}`
+		);
+	}
 </script>
 
 <svelte:head>
@@ -82,15 +94,22 @@
 		--home-ranking-accent: ${data.theme.palette.rankingAccent};
 	`}
 >
-	<div class="home-notice">
-		<div class="home-notice__text">
-			<span class="home-notice__icon">{data.theme.notice.icon}</span>
-			<span>{data.theme.notice.text} </span>
-			<strong>{data.theme.notice.highlight}</strong>
-			<span> 모아 봤어요!</span>
+	<form class="home-notice home-notice--ai" onsubmit={submitAiRequest}>
+		<label class="home-notice__text" for="home-ai-prompt">
+			<span class="home-notice__icon"><Sparkles size={16} fill="currentColor" /></span>
+			<span>유진님, 필요한 것을 말씀해 주세요. </span>
+		</label>
+		<div class="home-notice__prompt">
+			<Search size={15} />
+			<input
+				id="home-ai-prompt"
+				bind:value={aiPrompt}
+				placeholder="예: 자취 필수템"
+				aria-label="AI에게 요청하기"
+			/>
+			<button type="submit">요청</button>
 		</div>
-		<button type="button">{data.theme.notice.cta}</button>
-	</div>
+	</form>
 
 	<div class="home-columns">
 		<div class="home-column">
@@ -322,13 +341,14 @@
 
 	.home-notice {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.65rem;
+		align-items: stretch;
+		justify-content: center;
+		flex-direction: column;
+		gap: 0.54rem;
 		margin: 0.15rem 0 1rem;
-		padding: 0.52rem 0.56rem 0.52rem 0.8rem;
+		padding: 0.72rem;
 		border: 2px solid var(--home-notice-border);
-		border-radius: 999px;
+		border-radius: 1.2rem;
 		background: var(--home-notice-bg);
 		box-shadow: 0 10px 20px rgba(87, 77, 255, 0.12);
 	}
@@ -355,6 +375,41 @@
 		margin-right: 0.18rem;
 		color: #5a49ff;
 		font-size: 1.05rem;
+	}
+
+	.home-notice__icon :global(svg) {
+		display: block;
+	}
+
+	.home-notice__prompt {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.45rem;
+		width: 100%;
+		min-height: 2.72rem;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.92);
+		padding: 0.28rem 0.3rem 0.28rem 0.72rem;
+		color: #667085;
+		box-shadow: inset 0 0 0 1px rgba(91, 104, 168, 0.1);
+	}
+
+	.home-notice__prompt input {
+		min-width: 0;
+		border: none;
+		outline: none;
+		background: transparent;
+		color: #111827;
+		font-family: 'Pretendard', sans-serif;
+		font-size: 0.9rem;
+		font-weight: 700;
+		letter-spacing: 0;
+	}
+
+	.home-notice__prompt input::placeholder {
+		color: #98a2b3;
+		font-weight: 600;
 	}
 
 	.home-notice button {
@@ -784,7 +839,7 @@
 		}
 
 		.home-notice {
-			padding: 0.48rem 0.5rem 0.48rem 0.72rem;
+			padding: 0.66rem;
 		}
 
 		.home-notice__text {
