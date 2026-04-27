@@ -129,6 +129,22 @@ const INTERESTS_BASE: InterestDefinition[] = [
 		fillEnd: '#4d7863'
 	},
 	{
+		id: 'living-alone',
+		label: '자취',
+		emoji: '🏠',
+		badge: '82.4K 참여 중',
+		labelFontSize: 30,
+		shape: 'pill',
+		x: 604,
+		y: 708,
+		width: 220,
+		height: 154,
+		rotation: -6,
+		enabled: true,
+		fillStart: '#35c6a7',
+		fillEnd: '#2376d8'
+	},
+	{
 		id: 'running',
 		label: '러닝',
 		emoji: '🏃‍♀️🏃‍♂️',
