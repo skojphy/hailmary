@@ -1,8 +1,22 @@
 import { getCommerceItems, getShortsWidget } from '$lib/data/mock';
 import { INTERESTS } from '$lib/data/interests';
 import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export async function load({ params }) {
+type ShortsItem = {
+	id: string;
+	title: string;
+	views: string;
+	duration: string;
+	creator: string;
+	liked: boolean;
+	thumbnail: string;
+	overlayLabel?: string;
+	overlayPosition?: string;
+	overlayTone?: string;
+};
+
+export const load: PageServerLoad = async ({ params }) => {
 	const { interest_id, shorts_id } = params;
 
 	if (!INTERESTS.some((interest) => interest.id === interest_id)) {
@@ -12,7 +26,7 @@ export async function load({ params }) {
 	const shortsWidget = getShortsWidget(interest_id);
 	const commerceWidget = getCommerceItems(interest_id);
 
-	const shorts = shortsWidget ? shortsWidget.data : [];
+	const shorts = (shortsWidget ? shortsWidget.data : []) as ShortsItem[];
 	const initialIndex = shorts.findIndex((s) => s.id === shorts_id);
 
 	if (initialIndex === -1) {
@@ -25,4 +39,4 @@ export async function load({ params }) {
 		initialIndex,
 		relatedItem: commerceWidget[0]?.data
 	};
-}
+};
