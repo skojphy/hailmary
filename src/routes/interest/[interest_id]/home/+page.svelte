@@ -65,7 +65,7 @@
 
 		const query = aiPrompt.trim() || '자취 필수템';
 		goto(
-			`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(query)}`
+			`/ai-interest-routing?q=${encodeURIComponent(query)}&from=${encodeURIComponent(data.interest)}`
 		);
 	}
 </script>

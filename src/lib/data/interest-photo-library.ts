@@ -309,7 +309,11 @@ function getInterestCategory(interestId: string) {
 		return 'food';
 	}
 
-	if (['home', 'interior', 'travel', 'drive', 'plants', 'early-adopter-2'].includes(interestId)) {
+	if (
+		['home', 'living-alone', 'interior', 'travel', 'drive', 'plants', 'early-adopter-2'].includes(
+			interestId
+		)
+	) {
 		return 'home-travel';
 	}
 
