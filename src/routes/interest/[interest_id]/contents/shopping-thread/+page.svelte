@@ -23,8 +23,13 @@
 		experienceBoost?: Partial<Record<Experience, number>>;
 	};
 
-	const interestId = $derived(page.params.interest_id);
+	type MatchedProduct = Product & {
+		match: number;
+	};
+
+	const interestId = $derived(page.params.interest_id ?? 'living-alone');
 	const isTravelThread = $derived(interestId === 'early-adopter-2');
+	const isLivingThread = $derived(interestId === 'living-alone');
 	const query = $derived(
 		page.url.searchParams.get('q') || (isTravelThread ? '스페인 여행 가고 싶어' : '자취 필수템')
 	);
@@ -587,9 +592,410 @@
 		}
 	];
 
-	const products = $derived(isTravelThread ? travelProducts : livingProducts);
+	const topicProducts: Record<string, Product[]> = {
+		running: [
+			{
+				id: 'run-shoes',
+				name: '쿠션 러닝화 데일리 트레이너',
+				category: '러닝화',
+				group: '러닝화',
+				price: 129000,
+				image:
+					'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80',
+				tags: ['10km', '쿠션', '입문'],
+				reason: '10km 준비에는 발 부담을 줄이는 데일리 러닝화가 먼저예요.',
+				baseMatch: 94,
+				budgetBoost: { balanced: 5, premium: 6 },
+				experienceBoost: { first: 5 }
+			},
+			{
+				id: 'run-belt',
+				name: '초경량 러닝 벨트',
+				category: '보급템',
+				group: '보급템',
+				price: 24900,
+				image:
+					'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=700&q=80',
+				tags: ['휴대폰', '젤', '흔들림방지'],
+				reason: '휴대폰과 에너지젤을 넣고 뛰어도 흔들림이 적어요.',
+				baseMatch: 88,
+				budgetBoost: { starter: 5, balanced: 5 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'run-recovery',
+				name: '종아리 마사지 롤러',
+				category: '회복템',
+				group: '회복템',
+				price: 19900,
+				image:
+					'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80',
+				tags: ['회복', '종아리', '스트레칭'],
+				reason: '러닝 후 종아리 뭉침을 풀어 다음 훈련을 이어가기 좋아요.',
+				baseMatch: 84,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 3, some: 4 }
+			}
+		],
+		'running-crew-2': [
+			{
+				id: 'diet-meal',
+				name: '고단백 도시락 7팩',
+				category: '식단',
+				group: '식단',
+				price: 59900,
+				image:
+					'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=700&q=80',
+				tags: ['고단백', '칼로리관리', '일주일'],
+				reason: '초반 식단 실패를 줄이려면 바로 먹을 수 있는 구성이 좋아요.',
+				baseMatch: 93,
+				budgetBoost: { balanced: 5, premium: 5 },
+				experienceBoost: { first: 5 }
+			},
+			{
+				id: 'diet-band',
+				name: '홈트 저항밴드 세트',
+				category: '운동템',
+				group: '운동템',
+				price: 22900,
+				image:
+					'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80',
+				tags: ['홈트', '근력', '저항밴드'],
+				reason: '공간이 작아도 하체와 코어 운동을 시작하기 쉬워요.',
+				baseMatch: 87,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'diet-snack',
+				name: '저당 단백질 간식 박스',
+				category: '간식',
+				group: '간식',
+				price: 32900,
+				image:
+					'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80',
+				tags: ['저당', '단백질', '야식대체'],
+				reason: '식단 중간에 무너지기 쉬운 간식 타이밍을 잡아줘요.',
+				baseMatch: 85,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { first: 4 }
+			}
+		],
+		'idol-2': [
+			{
+				id: 'cat-litter',
+				name: '먼지 적은 벤토나이트 모래',
+				category: '화장실',
+				group: '화장실',
+				price: 28900,
+				image:
+					'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=80',
+				tags: ['모래', '먼지적음', '초보집사'],
+				reason: '냥집사 첫 준비는 냄새와 먼지를 줄이는 모래 선택이 중요해요.',
+				baseMatch: 93,
+				budgetBoost: { starter: 5, balanced: 5 },
+				experienceBoost: { first: 6 }
+			},
+			{
+				id: 'cat-feeder',
+				name: '자동 급식기 3L',
+				category: '급식',
+				group: '급식',
+				price: 64900,
+				image:
+					'https://images.unsplash.com/photo-1545249390-6bdfa286032f?auto=format&fit=crop&w=700&q=80',
+				tags: ['자동급식', '예약', '외출'],
+				reason: '출근이나 외출이 잦아도 급식 루틴을 안정적으로 만들어요.',
+				baseMatch: 87,
+				budgetBoost: { balanced: 5, premium: 6 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'cat-toy',
+				name: '낚싯대 장난감 5종',
+				category: '장난감',
+				group: '장난감',
+				price: 15900,
+				image:
+					'https://images.unsplash.com/photo-1547955922-26be0c1600c4?auto=format&fit=crop&w=700&q=80',
+				tags: ['사냥놀이', '낚싯대', '활동량'],
+				reason: '실내묘 스트레스를 줄이고 집사와 교감하기 좋아요.',
+				baseMatch: 84,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 5 }
+			}
+		],
+		'beauty-2': [
+			{
+				id: 'dog-harness',
+				name: '가슴줄 하네스 산책 세트',
+				category: '산책템',
+				group: '산책템',
+				price: 39900,
+				image:
+					'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=700&q=80',
+				tags: ['하네스', '리드줄', '산책'],
+				reason: '목 부담을 줄이고 첫 산책 루틴을 안전하게 시작해요.',
+				baseMatch: 94,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { first: 6 }
+			},
+			{
+				id: 'dog-treat',
+				name: '저알러지 트레이닝 간식',
+				category: '간식',
+				group: '간식',
+				price: 17900,
+				image:
+					'https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&w=700&q=80',
+				tags: ['훈련', '저알러지', '소형견'],
+				reason: '산책 훈련과 기다려 교육을 시작하기 좋은 보상 간식이에요.',
+				baseMatch: 88,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'dog-care',
+				name: '발 세정 티슈+브러쉬 세트',
+				category: '케어템',
+				group: '케어템',
+				price: 21900,
+				image:
+					'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=700&q=80',
+				tags: ['발세정', '브러쉬', '매일케어'],
+				reason: '산책 후 발과 털 관리까지 한 번에 챙길 수 있어요.',
+				baseMatch: 85,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { first: 4 }
+			}
+		],
+		whiskey: [
+			{
+				id: 'whiskey-bottle',
+				name: '입문 싱글몰트 위스키',
+				category: '위스키',
+				group: '위스키',
+				price: 89000,
+				image:
+					'https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=700&q=80',
+				tags: ['입문', '싱글몰트', '선물'],
+				reason: '향과 단맛 균형이 좋아 첫 병으로 실패 확률이 낮아요.',
+				baseMatch: 93,
+				budgetBoost: { balanced: 5, premium: 5 },
+				experienceBoost: { first: 5 }
+			},
+			{
+				id: 'whiskey-glass',
+				name: '글렌캐런 테이스팅 글라스 2P',
+				category: '글라스',
+				group: '글라스',
+				price: 24900,
+				image:
+					'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?auto=format&fit=crop&w=700&q=80',
+				tags: ['글라스', '향', '테이스팅'],
+				reason: '향을 모아줘 같은 위스키도 더 선명하게 느껴져요.',
+				baseMatch: 88,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'whiskey-snack',
+				name: '치즈&견과 페어링 세트',
+				category: '안주',
+				group: '안주',
+				price: 31900,
+				image:
+					'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=700&q=80',
+				tags: ['페어링', '치즈', '홈바'],
+				reason: '홈바 분위기를 빠르게 만들어주는 기본 페어링 구성이에요.',
+				baseMatch: 84,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { first: 3 }
+			}
+		],
+		'home-cafe': [
+			{
+				id: 'baking-pan',
+				name: '머핀팬+파운드틀 세트',
+				category: '도구',
+				group: '도구',
+				price: 28900,
+				image:
+					'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=700&q=80',
+				tags: ['오븐틀', '입문', '머핀'],
+				reason: '처음 만들기 쉬운 머핀과 파운드 케이크를 모두 커버해요.',
+				baseMatch: 92,
+				budgetBoost: { starter: 5, balanced: 5 },
+				experienceBoost: { first: 5 }
+			},
+			{
+				id: 'baking-kit',
+				name: '쿠키 믹스 재료 박스',
+				category: '재료',
+				group: '재료',
+				price: 24900,
+				image:
+					'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=700&q=80',
+				tags: ['쿠키', '재료', '실패적음'],
+				reason: '계량 부담을 줄여 첫 홈베이킹 성공률을 올려줘요.',
+				baseMatch: 89,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 6 }
+			},
+			{
+				id: 'baking-wrap',
+				name: '베이커리 포장 스티커 세트',
+				category: '포장',
+				group: '포장',
+				price: 12900,
+				image:
+					'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=80',
+				tags: ['선물', '포장', '스티커'],
+				reason: '완성한 쿠키나 빵을 선물하기 좋게 마무리해요.',
+				baseMatch: 82,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 3 }
+			}
+		],
+		fashion: [
+			{
+				id: 'daily-jacket',
+				name: '라이트 오버핏 자켓',
+				category: '아우터',
+				group: '아우터',
+				price: 79000,
+				image:
+					'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80',
+				tags: ['봄', '아우터', '데일리'],
+				reason: '티셔츠와 셔츠 위에 모두 걸치기 좋아 활용도가 높아요.',
+				baseMatch: 92,
+				budgetBoost: { balanced: 5, premium: 5 },
+				experienceBoost: { first: 3, some: 4 }
+			},
+			{
+				id: 'daily-shoes',
+				name: '화이트 데일리 스니커즈',
+				category: '신발',
+				group: '신발',
+				price: 69000,
+				image:
+					'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80',
+				tags: ['스니커즈', '화이트', '데일리'],
+				reason: '팬츠와 스커트 모두에 맞아 코디 고민을 줄여줘요.',
+				baseMatch: 88,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { first: 4 }
+			},
+			{
+				id: 'daily-point',
+				name: '실버 미니백 포인트템',
+				category: '포인트템',
+				group: '포인트템',
+				price: 45900,
+				image:
+					'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80',
+				tags: ['미니백', '포인트', '실버'],
+				reason: '기본 코디에 하나만 더해도 스타일이 살아나요.',
+				baseMatch: 83,
+				budgetBoost: { starter: 4, balanced: 5 },
+				experienceBoost: { some: 4, pro: 4 }
+			}
+		],
+		swimming: [
+			{
+				id: 'swim-goggles',
+				name: '안티포그 미러 수경',
+				category: '수경',
+				group: '수경',
+				price: 32900,
+				image:
+					'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=700&q=80',
+				tags: ['안티포그', '실내수영', '입문'],
+				reason: '김서림을 줄여 수업 중 시야 확보가 편해요.',
+				baseMatch: 93,
+				budgetBoost: { starter: 5, balanced: 5 },
+				experienceBoost: { first: 5 }
+			},
+			{
+				id: 'swim-suit',
+				name: '베이직 실내 수영복',
+				category: '수영복',
+				group: '수영복',
+				price: 59000,
+				image:
+					'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=700&q=80',
+				tags: ['실내', '베이직', '강습'],
+				reason: '강습용으로 부담 없이 입기 좋은 기본 수영복이에요.',
+				baseMatch: 89,
+				budgetBoost: { balanced: 5, premium: 5 },
+				experienceBoost: { first: 4 }
+			},
+			{
+				id: 'swim-bag',
+				name: '방수 파우치 샤워백',
+				category: '방수템',
+				group: '방수템',
+				price: 18900,
+				image:
+					'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?auto=format&fit=crop&w=700&q=80',
+				tags: ['방수', '샤워백', '수납'],
+				reason: '젖은 수영복과 샤워용품을 분리해 들고 다니기 좋아요.',
+				baseMatch: 85,
+				budgetBoost: { starter: 5, balanced: 4 },
+				experienceBoost: { first: 4, some: 3 }
+			}
+		],
+		gaming: [
+			{
+				id: 'game-keyboard',
+				name: '텐키리스 게이밍 키보드',
+				category: '키보드',
+				group: '키보드',
+				price: 89000,
+				image:
+					'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80',
+				tags: ['텐키리스', 'RGB', 'FPS'],
+				reason: '마우스 공간을 넓게 쓰기 좋아 입문 게이밍 셋업에 잘 맞아요.',
+				baseMatch: 92,
+				budgetBoost: { balanced: 5, premium: 5 },
+				experienceBoost: { first: 4, some: 4 }
+			},
+			{
+				id: 'game-headset',
+				name: '7.1채널 무선 게이밍 헤드셋',
+				category: '헤드셋',
+				group: '헤드셋',
+				price: 109000,
+				image:
+					'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=700&q=80',
+				tags: ['무선', '마이크', '공간감'],
+				reason: '보이스 채팅과 위치 사운드를 한 번에 챙길 수 있어요.',
+				baseMatch: 90,
+				budgetBoost: { balanced: 4, premium: 6 },
+				experienceBoost: { first: 4 }
+			},
+			{
+				id: 'game-deskmat',
+				name: '초대형 장패드+마우스 번들',
+				category: '책상셋업',
+				group: '책상셋업',
+				price: 39900,
+				image:
+					'https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=700&q=80',
+				tags: ['장패드', '마우스', '셋업'],
+				reason: '책상 위 움직임을 안정적으로 만들어 플레이 감각이 좋아져요.',
+				baseMatch: 86,
+				budgetBoost: { starter: 5, balanced: 5 },
+				experienceBoost: { first: 3, some: 4 }
+			}
+		]
+	};
 
-	const recommendedProducts = $derived.by(() =>
+	const products = $derived.by((): Product[] =>
+		isTravelThread ? travelProducts : (topicProducts[interestId] ?? livingProducts)
+	);
+
+	const recommendedProducts = $derived.by((): MatchedProduct[] =>
 		products
 			.map((product) => ({
 				...product,
@@ -619,7 +1025,33 @@
 		수납: 5,
 		항공권: 3,
 		투어티켓: 3,
-		여행물품: 3
+		여행물품: 3,
+		러닝화: 3,
+		보급템: 3,
+		회복템: 3,
+		식단: 3,
+		운동템: 3,
+		간식: 3,
+		화장실: 3,
+		급식: 3,
+		장난감: 3,
+		산책템: 3,
+		케어템: 3,
+		위스키: 3,
+		글라스: 3,
+		안주: 3,
+		도구: 3,
+		재료: 3,
+		포장: 3,
+		아우터: 3,
+		신발: 3,
+		포인트템: 3,
+		수경: 3,
+		수영복: 3,
+		방수템: 3,
+		키보드: 3,
+		헤드셋: 3,
+		책상셋업: 3
 	};
 
 	const recommendedGroups = $derived.by(() => {
@@ -651,34 +1083,52 @@
 				: roomSize === 'medium'
 					? '8-10일'
 					: '11일 이상'
-			: roomSize === 'small'
-				? '5-7평'
-				: roomSize === 'medium'
-					? '8-10평'
-					: '11평 이상',
+			: !isLivingThread
+				? roomSize === 'small'
+					? '입문'
+					: roomSize === 'medium'
+						? '데일리'
+						: '진심'
+				: roomSize === 'small'
+					? '5-7평'
+					: roomSize === 'medium'
+						? '8-10평'
+						: '11평 이상',
 		appliances:
 			appliances === 'none'
 				? isTravelThread
 					? '항공권부터'
-					: '가전 거의 없음'
+					: !isLivingThread
+						? '핵심만'
+						: '가전 거의 없음'
 				: appliances === 'partial'
 					? isTravelThread
 						? '투어까지'
-						: '가전 일부 있음'
+						: !isLivingThread
+							? '추천까지'
+							: '가전 일부 있음'
 					: isTravelThread
 						? '준비물까지'
-						: '가전 있음',
+						: !isLivingThread
+							? '풀세트'
+							: '가전 있음',
 		experience: isTravelThread
 			? experience === 'first'
 				? '첫 유럽여행'
 				: experience === 'some'
 					? '해외여행 경험'
 					: '여행 익숙함'
-			: experience === 'first'
-				? '첫 자취'
-				: experience === 'some'
-					? '경험 있음'
-					: '익숙함'
+			: !isLivingThread
+				? experience === 'first'
+					? '입문'
+					: experience === 'some'
+						? '경험 있음'
+						: '익숙함'
+				: experience === 'first'
+					? '첫 자취'
+					: experience === 'some'
+						? '경험 있음'
+						: '익숙함'
 	}));
 
 	function getDefaultSelection() {
@@ -764,16 +1214,27 @@
 	{#if showFilters && !isGenerating}
 		<div
 			class="thread-form"
-			aria-label={isTravelThread ? '스페인 여행 추천 조건' : '자취 필수템 추천 조건'}
+			aria-label={isTravelThread
+				? '스페인 여행 추천 조건'
+				: isLivingThread
+					? '자취 필수템 추천 조건'
+					: '딱 스레드 추천 조건'}
 		>
 			<div class="thread-form__group">
 				<label for="room-size"
-					><Home size={16} /> {isTravelThread ? '여행 기간' : '원룸 크기'}</label
+					><Home size={16} />
+					{isTravelThread ? '여행 기간' : isLivingThread ? '원룸 크기' : '목표'}</label
 				>
 				<select id="room-size" bind:value={roomSize}>
-					<option value="small">{isTravelThread ? '5-7일' : '5-7평'}</option>
-					<option value="medium">{isTravelThread ? '8-10일' : '8-10평'}</option>
-					<option value="large">{isTravelThread ? '11일 이상' : '11평 이상'}</option>
+					<option value="small"
+						>{isTravelThread ? '5-7일' : isLivingThread ? '5-7평' : '입문'}</option
+					>
+					<option value="medium"
+						>{isTravelThread ? '8-10일' : isLivingThread ? '8-10평' : '데일리'}</option
+					>
+					<option value="large"
+						>{isTravelThread ? '11일 이상' : isLivingThread ? '11평 이상' : '진심'}</option
+					>
 				</select>
 			</div>
 			<div class="thread-form__group">
@@ -796,18 +1257,30 @@
 				</div>
 			</div>
 			<div class="thread-form__group">
-				<label for="appliances">{isTravelThread ? '예약 범위' : '기본 가전'}</label>
+				<label for="appliances"
+					>{isTravelThread ? '예약 범위' : isLivingThread ? '기본 가전' : '구성 범위'}</label
+				>
 				<select id="appliances" bind:value={appliances}>
-					<option value="none">{isTravelThread ? '항공권부터' : '거의 없음'}</option>
-					<option value="partial">{isTravelThread ? '투어까지' : '일부 있음'}</option>
-					<option value="ready">{isTravelThread ? '준비물까지' : '대부분 있음'}</option>
+					<option value="none"
+						>{isTravelThread ? '항공권부터' : isLivingThread ? '거의 없음' : '핵심만'}</option
+					>
+					<option value="partial"
+						>{isTravelThread ? '투어까지' : isLivingThread ? '일부 있음' : '추천까지'}</option
+					>
+					<option value="ready"
+						>{isTravelThread ? '준비물까지' : isLivingThread ? '대부분 있음' : '풀세트'}</option
+					>
 				</select>
 			</div>
 			<div class="thread-form__group">
-				<label for="experience">{isTravelThread ? '여행 경험' : '자취 경험'}</label>
+				<label for="experience"
+					>{isTravelThread ? '여행 경험' : isLivingThread ? '자취 경험' : '경험'}</label
+				>
 				<select id="experience" bind:value={experience}>
-					<option value="first">{isTravelThread ? '첫 유럽여행' : '첫 자취'}</option>
-					<option value="some">{isTravelThread ? '해외여행 경험' : '경험 있음'}</option>
+					<option value="first"
+						>{isTravelThread ? '첫 유럽여행' : isLivingThread ? '첫 자취' : '입문'}</option
+					>
+					<option value="some">경험 있음</option>
 					<option value="pro">{isTravelThread ? '여행 익숙함' : '익숙함'}</option>
 				</select>
 			</div>
@@ -839,7 +1312,7 @@
 		<div class="generating-panel">
 			<div class="generating-panel__spark"><Sparkles size={22} fill="currentColor" /></div>
 			<strong>AI가 비슷한 상품을 묶는 중</strong>
-			<span>가격, 공간, 자취 경험을 기준으로 조합하고 있어요.</span>
+			<span>가격, 목표, 경험을 기준으로 조합하고 있어요.</span>
 		</div>
 	{/if}
 
@@ -850,7 +1323,9 @@
 				<span
 					>예산 {formatPrice(budgetLimit)} 안에서 {isTravelThread
 						? '예약과 여행물품을'
-						: '카테고리별 대표 상품을'} 골랐어요.</span
+						: isLivingThread
+							? '카테고리별 대표 상품을'
+							: '관심사별 대표 아이템을'} 골랐어요.</span
 				>
 			</div>
 			<div class="thread-summary__price">

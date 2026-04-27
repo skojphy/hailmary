@@ -49,7 +49,9 @@
 
 	onMount(() => {
 		const timer = window.setTimeout(() => {
-			goto(`/interest/${target.id}/home`, { replaceState: true });
+			goto(`/interest/${target.id}/contents/shopping-thread?q=${encodeURIComponent(query)}`, {
+				replaceState: true
+			});
 		}, 1500);
 
 		return () => window.clearTimeout(timer);
