@@ -116,7 +116,7 @@
 	.pick-card__copy h2 {
 		margin: 0;
 		max-width: 100%;
-		font-size: clamp(1.3rem, 6.6vw, 2rem);
+		font-size: clamp(1.04rem, 5.28vw, 1.6rem);
 		line-height: 1.14;
 		font-weight: 950;
 		letter-spacing: 0;

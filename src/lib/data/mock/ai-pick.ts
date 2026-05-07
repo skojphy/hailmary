@@ -91,7 +91,7 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 					name: '봄 웜톤 필수 에디션 섀도우 팔레트',
 					price: '29,000원~',
 					imageUrl:
-						'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=300&q=80'
+						'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=300&q=80'
 				}
 			}
 		]
