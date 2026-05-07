@@ -14,6 +14,9 @@
 
 	const interest = $derived(page.params.interest_id as InterestArea);
 	const meta = $derived(interestHeaderMeta[interest]);
+	const isDetailView = $derived(
+		/^\/interest\/[^/]+\/contents\/community\/[^/]+$/.test(page.url.pathname)
+	);
 </script>
 
 <div
@@ -26,19 +29,21 @@
     --contents-pill-shadow: ${meta.palette.cardShadow};
   `}
 >
-	<div class="contents-tabs scrollbar-hide">
-		{#each tabs as tab}
-			<a
-				href={tab.path.startsWith('..')
-					? `/interest/${page.params.interest_id}/home#following`
-					: `/interest/${page.params.interest_id}/contents/${tab.path}`}
-				class:contents-tab--active={page.url.pathname.includes(`/contents/${tab.path}`)}
-				class="contents-tab"
-			>
-				<span class:contents-tab__label--italic={tab.italic}>{tab.label}</span>
-			</a>
-		{/each}
-	</div>
+	{#if !isDetailView}
+		<div class="contents-tabs scrollbar-hide">
+			{#each tabs as tab}
+				<a
+					href={tab.path.startsWith('..')
+						? `/interest/${page.params.interest_id}/home#following`
+						: `/interest/${page.params.interest_id}/contents/${tab.path}`}
+					class:contents-tab--active={page.url.pathname.includes(`/contents/${tab.path}`)}
+					class="contents-tab"
+				>
+					<span class:contents-tab__label--italic={tab.italic}>{tab.label}</span>
+				</a>
+			{/each}
+		</div>
+	{/if}
 
 	<div class="w-full flex-1 relative">
 		{@render children()}

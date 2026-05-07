@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Eye, MessageCircle, ShoppingBag, Sparkles, TrendingUp } from 'lucide-svelte';
+	import { Eye, MessageCircle, Sparkles, TrendingUp } from 'lucide-svelte';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
 
 	type CommunityItem = {
@@ -39,27 +39,26 @@
 	<div class="post-list">
 		{#each data.communityItems as post, index}
 			{#if index === 2 && data.aiGuide}
-				<article class="ai-guide-card">
+				<a
+					class="ai-guide-card"
+					href={`/interest/${data.interest}/contents/community/ai-guide`}
+				>
 					<div class="ai-guide-card__head">
 						<span><Sparkles size={15} fill="currentColor" /> AI 쇼핑 가이드</span>
-						<small>관심사 트렌드 요약</small>
 					</div>
 					<h3>{data.aiGuide.title}</h3>
 					<p>{data.aiGuide.description}</p>
-					<div class="ai-guide-card__reason">{data.aiGuide.reason}</div>
 					<div class="ai-guide-product">
 						<img src={data.aiGuide.product.imageUrl} alt="" />
 						<div>
 							<strong>{data.aiGuide.product.brand}</strong>
 							<span>{data.aiGuide.product.name}</span>
-							<b>{data.aiGuide.product.price}</b>
 						</div>
-						<ShoppingBag size={20} />
 					</div>
-				</article>
+				</a>
 			{/if}
 
-			<a href={`/interest/${data.interest}/contents/community#${post.id}`} class="post-card">
+			<a href={`/interest/${data.interest}/contents/community/${post.id}`} class="post-card">
 				<div class="post-card__number">{String(index + 1).padStart(2, '0')}</div>
 				<div class="post-card__body">
 					<h3>{post.title}</h3>
@@ -222,22 +221,21 @@
 	}
 
 	.ai-guide-card {
+		display: block;
 		overflow: hidden;
-		padding: 1rem;
-		border-radius: 1.35rem;
-		background:
-			linear-gradient(145deg, rgba(17, 24, 39, 0.94), rgba(30, 41, 59, 0.96)),
-			radial-gradient(circle at 12% 0%, rgba(167, 243, 208, 0.4), transparent 35%);
+		padding: 0.92rem;
+		border-radius: 1.08rem;
+		background: linear-gradient(145deg, rgba(17, 24, 39, 0.96), rgba(30, 41, 59, 0.96));
 		color: #ffffff;
+		text-decoration: none;
 		box-shadow: 0 18px 36px rgba(15, 23, 42, 0.22);
 	}
 
 	.ai-guide-card__head {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		gap: 0.7rem;
-		margin-bottom: 0.92rem;
+		margin-bottom: 0.66rem;
 	}
 
 	.ai-guide-card__head span {
@@ -249,57 +247,39 @@
 		font-weight: 950;
 	}
 
-	.ai-guide-card__head small {
-		color: rgba(255, 255, 255, 0.64);
-		font-size: 0.72rem;
-		font-weight: 800;
-	}
-
 	.ai-guide-card h3 {
 		margin: 0;
 		max-width: 17rem;
-		font-size: 1.35rem;
-		line-height: 1.18;
+		font-size: 1.08rem;
+		line-height: 1.22;
 		font-weight: 950;
 		letter-spacing: 0;
 	}
 
 	.ai-guide-card p {
-		margin: 0.52rem 0 0;
+		margin: 0.42rem 0 0;
 		color: rgba(255, 255, 255, 0.8);
-		font-size: 0.92rem;
+		font-size: 0.84rem;
 		line-height: 1.42;
 		font-weight: 650;
 	}
 
-	.ai-guide-card__reason {
-		margin-top: 0.86rem;
-		padding: 0.72rem 0.78rem;
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 0.9rem;
-		background: rgba(255, 255, 255, 0.08);
-		color: rgba(255, 255, 255, 0.82);
-		font-size: 0.78rem;
-		line-height: 1.38;
-		font-weight: 750;
-	}
-
 	.ai-guide-product {
 		display: grid;
-		grid-template-columns: 4.15rem 1fr 1.6rem;
-		gap: 0.78rem;
+		grid-template-columns: 3.2rem 1fr;
+		gap: 0.64rem;
 		align-items: center;
-		margin-top: 0.9rem;
-		padding: 0.62rem;
-		border-radius: 1rem;
-		background: #ffffff;
-		color: #111827;
+		margin-top: 0.72rem;
+		padding: 0.52rem;
+		border-radius: 0.82rem;
+		background: rgba(255, 255, 255, 0.1);
+		color: #ffffff;
 	}
 
 	.ai-guide-product img {
-		width: 4.15rem;
-		height: 4.15rem;
-		border-radius: 0.72rem;
+		width: 3.2rem;
+		height: 3.2rem;
+		border-radius: 0.66rem;
 		object-fit: cover;
 	}
 
@@ -308,8 +288,7 @@
 	}
 
 	.ai-guide-product strong,
-	.ai-guide-product span,
-	.ai-guide-product b {
+	.ai-guide-product span {
 		display: block;
 	}
 
@@ -320,19 +299,9 @@
 
 	.ai-guide-product span {
 		margin-top: 0.18rem;
-		color: #334155;
+		color: rgba(255, 255, 255, 0.72);
 		font-size: 0.82rem;
 		line-height: 1.26;
 		font-weight: 700;
-	}
-
-	.ai-guide-product b {
-		margin-top: 0.22rem;
-		font-size: 0.98rem;
-		font-weight: 950;
-	}
-
-	.ai-guide-product :global(svg) {
-		color: #94a3b8;
 	}
 </style>
