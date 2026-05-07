@@ -6,7 +6,7 @@ import { communityData } from './mock/community';
 
 export interface WidgetData {
 	id: string;
-	type: 'commerce' | 'community' | 'shorts' | 'following' | 'banner';
+	type: 'commerce' | 'community' | 'shorts' | 'following' | 'banner' | 'ai-pick';
 	title?: string;
 	data: any;
 	styles?: {

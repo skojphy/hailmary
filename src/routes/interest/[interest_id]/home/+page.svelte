@@ -4,15 +4,13 @@
 	import type {
 		CardBadge,
 		FollowingCard,
-		GalleryCard,
 		InterestHomeCard,
 		InterestHomeTheme,
 		LiveCard,
 		ProductCard,
 		RankingCard,
 		ShortsCard,
-		StoryCard,
-		ThreadCard
+		StoryCard
 	} from '$lib/data/interest-home';
 	import { fly } from 'svelte/transition';
 
@@ -45,10 +43,16 @@
 	});
 
 	const leftCards = $derived(
-		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'left')
+		data.theme.cards.filter(
+			(card: InterestHomeCard) =>
+				card.column === 'left' && card.type !== 'thread' && card.type !== 'gallery'
+		)
 	);
 	const rightCards = $derived(
-		data.theme.cards.filter((card: InterestHomeCard) => card.column === 'right')
+		data.theme.cards.filter(
+			(card: InterestHomeCard) =>
+				card.column === 'right' && card.type !== 'thread' && card.type !== 'gallery'
+		)
 	);
 
 	function cardKey(card: InterestHomeCard) {
@@ -235,25 +239,6 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
-					{:else if card.type === 'thread'}
-						{@const thread = card as ThreadCard}
-						<div class="home-card__thread-badge">
-							<Sparkles size={15} fill="currentColor" />
-							<span>{thread.badge.text}</span>
-						</div>
-						<div class="home-card__thread-media">
-							{#each thread.images as image}
-								<img src={image} alt="" />
-							{/each}
-						</div>
-						<h3 class="home-card__story-title">{thread.title}</h3>
-						<p class="home-card__story-body">{thread.body}</p>
-						<a
-							class="home-card__action home-card__action--thread"
-							href={`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(thread.query)}`}
-						>
-							<strong>{thread.buttonLabel}</strong>
-						</a>
 					{/if}
 				</article>
 			{/each}
@@ -318,26 +303,6 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
-					{:else if card.type === 'gallery'}
-						{@const gallery = card as GalleryCard}
-						<div class={badgeClass(gallery.badge)}>{gallery.badge.text}</div>
-						<div class="home-card__media home-card__media--gallery">
-							<img src={gallery.image} alt="" />
-							<div class="home-card__overlay-copy">{gallery.title}</div>
-						</div>
-						<div class="home-card__meta">
-							<div class="home-card__avatars">
-								{#each gallery.avatars.slice(0, 3) as avatar (avatar)}
-									<img src={avatar} alt="" />
-								{/each}
-							</div>
-							<span>{gallery.meta}</span>
-						</div>
-						{@const action = getActionLabelParts(gallery.buttonLabel)}
-						<button type="button" class="home-card__action">
-							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
-							>
-						</button>
 					{:else if card.type === 'ranking'}
 						{@const ranking = card as RankingCard}
 						<div class={badgeClass(ranking.badge)}>{ranking.badge.text}</div>
@@ -360,25 +325,6 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
-					{:else if card.type === 'thread'}
-						{@const thread = card as ThreadCard}
-						<div class="home-card__thread-badge">
-							<Sparkles size={15} fill="currentColor" />
-							<span>{thread.badge.text}</span>
-						</div>
-						<div class="home-card__thread-media">
-							{#each thread.images as image}
-								<img src={image} alt="" />
-							{/each}
-						</div>
-						<h3 class="home-card__story-title">{thread.title}</h3>
-						<p class="home-card__story-body">{thread.body}</p>
-						<a
-							class="home-card__action home-card__action--thread"
-							href={`/interest/${data.interest}/contents/shopping-thread?q=${encodeURIComponent(thread.query)}`}
-						>
-							<strong>{thread.buttonLabel}</strong>
-						</a>
 					{/if}
 				</article>
 			{/each}
@@ -561,43 +507,6 @@
 		font-size: 0.92rem;
 	}
 
-	.home-card__thread-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.28rem;
-		margin-bottom: 0.82rem;
-		color: #4f46e5;
-		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 1rem;
-		line-height: 1;
-	}
-
-	.home-card__thread-badge :global(svg) {
-		width: 0.92rem;
-		height: 0.92rem;
-	}
-
-	.home-card__thread-media {
-		display: grid;
-		grid-template-columns: 1fr 0.72fr;
-		grid-template-rows: repeat(2, 2.35rem);
-		gap: 0.28rem;
-		overflow: hidden;
-		margin-bottom: 0.72rem;
-		border-radius: 0.92rem;
-		background: #eef2f7;
-	}
-
-	.home-card__thread-media img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.home-card__thread-media img:first-child {
-		grid-row: 1 / 3;
-	}
-
 	.home-card__chip {
 		padding: 0.22rem 0.44rem;
 		border-radius: 0.46rem;
@@ -652,19 +561,16 @@
 	}
 
 	.home-card__media--shorts,
-	.home-card__media--gallery,
 	.home-card__media--live {
 		position: relative;
 	}
 
 	.home-card__media--shorts img,
-	.home-card__media--gallery img,
 	.home-card__media--live img {
 		aspect-ratio: 0.82;
 	}
 
-	.home-card__media--shorts::after,
-	.home-card__media--gallery::after {
+	.home-card__media--shorts::after {
 		content: '';
 		position: absolute;
 		inset: auto 0 0;
@@ -809,19 +715,6 @@
 	.home-card__action strong {
 		color: #1b1b1b;
 		font-weight: 600;
-	}
-
-	.home-card__action--thread {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-decoration: none;
-		background: #111827;
-	}
-
-	.home-card__action--thread strong {
-		color: #ffffff;
-		font-weight: 800;
 	}
 
 	.home-card__link {
