@@ -71,8 +71,8 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 				id: 'm_ai_1',
 				label: '번들거림이 싫다면',
 				title: '보송하게 스며드는 톤업을 위해',
-				description: '매트한 제형으로 마무리돼요. 베이스 전에 얇게 올리기 좋아요.',
-				reason: '수부지 베이스와 뷰티 특가템 이야기가 함께 많이 올라와서 골랐어요.',
+				description: '번들거림은 잡고 피부 톤은 자연스럽게 정리해 주는 데일리 베이스예요.',
+				reason: '수부지 베이스 반응을 보고 골랐어요.',
 				imageUrl:
 					'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=85',
 				product: {
@@ -86,7 +86,7 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 			{
 				id: 'm_ai_2',
 				label: '봄 웜톤 저장템',
-				title: '은은한 코랄 무드로 실패 없는 데일리 메이크업',
+				title: '코랄 무드로 실패 없는 데일리 메이크업',
 				description: '과한 글리터보다 맑은 음영을 먼저 쌓으면 출근 메이크업에도 부담이 적어요.',
 				reason: '퍼스널 컬러 후기와 장바구니 저장 글의 공통 키워드를 반영했어요.',
 				imageUrl:

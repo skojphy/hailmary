@@ -1,6 +1,6 @@
-<script lang="ts">
+	<script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Play, Search, Sparkles, UserRound } from 'lucide-svelte';
+	import { Play, Search, Sparkles, UserRound, WandSparkles } from 'lucide-svelte';
 	import type {
 		CardBadge,
 		FollowingCard,
@@ -12,12 +12,15 @@
 		ShortsCard,
 		StoryCard
 	} from '$lib/data/interest-home';
+	import type { AiPickCard } from '$lib/data/mock/ai-pick';
 	import { fly } from 'svelte/transition';
 
 	let { data } = $props<{
 		data: {
 			interest: string;
 			theme: InterestHomeTheme;
+			aiGuide: AiPickCard | null;
+			aiPick: AiPickCard | null;
 		};
 	}>();
 
@@ -134,6 +137,38 @@
 			<button type="submit">요청</button>
 		</div>
 	</form>
+
+	{#if data.aiGuide || data.aiPick}
+		<section class="home-ai-modules" aria-label="AI 추천 콘텐츠">
+			{#if data.aiGuide}
+				<a
+					class="home-ai-module home-ai-module--guide"
+					href={`./contents/community/ai-guide`}
+				>
+					<div class="home-ai-module__copy">
+						<span><WandSparkles size={15} fill="currentColor" /> AI 쇼핑가이드</span>
+						<h3>{data.aiGuide.title}</h3>
+						<p>{data.aiGuide.description}</p>
+					</div>
+					<div class="home-ai-module__summary">
+						{data.aiGuide.reason}
+					</div>
+				</a>
+			{/if}
+
+			{#if data.aiPick}
+				<a class="home-ai-module home-ai-module--pick" href="./contents/ai-pick">
+					<img class="home-ai-module__bg" src={data.aiPick.imageUrl} alt="" />
+					<div class="home-ai-module__shade"></div>
+					<div class="home-ai-module__copy">
+						<span><Sparkles size={15} fill="currentColor" /> AI PICK</span>
+						<h3>{data.aiPick.title}</h3>
+						<p>{data.aiPick.label}</p>
+					</div>
+				</a>
+			{/if}
+		</section>
+	{/if}
 
 	<div class="home-columns">
 		<div class="home-column">
@@ -427,6 +462,126 @@
 		font-size: 0.8rem;
 		font-weight: 700;
 		line-height: 1;
+	}
+
+	.home-ai-modules {
+		display: grid;
+		grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+		gap: 0.78rem;
+		margin: 0 0 1rem;
+	}
+
+	.home-ai-module {
+		position: relative;
+		display: flex;
+		min-height: 9.2rem;
+		overflow: hidden;
+		border-radius: 1.2rem;
+		color: inherit;
+		text-decoration: none;
+		box-shadow: 0 14px 28px rgba(15, 23, 42, 0.11);
+	}
+
+	.home-ai-module--guide {
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.72rem;
+		padding: 0.92rem;
+		background:
+			linear-gradient(145deg, rgba(17, 24, 39, 0.96), rgba(30, 41, 59, 0.96)),
+			radial-gradient(circle at 10% 0%, rgba(134, 239, 172, 0.24), transparent 36%);
+		color: #ffffff;
+	}
+
+	.home-ai-module--pick {
+		align-items: flex-end;
+		padding: 0.82rem;
+		background: #111827;
+		color: #ffffff;
+	}
+
+	.home-ai-module__bg,
+	.home-ai-module__shade {
+		position: absolute;
+		inset: 0;
+	}
+
+	.home-ai-module__bg {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.home-ai-module__shade {
+		background: linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.8));
+	}
+
+	.home-ai-module__copy {
+		position: relative;
+		z-index: 1;
+		min-width: 0;
+	}
+
+	.home-ai-module__copy span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
+		color: #86efac;
+		font-size: 0.74rem;
+		line-height: 1;
+		font-weight: 850;
+	}
+
+	.home-ai-module--pick .home-ai-module__copy span {
+		color: #ffffff;
+	}
+
+	.home-ai-module__copy h3 {
+		display: -webkit-box;
+		overflow: hidden;
+		margin: 0.5rem 0 0;
+		color: inherit;
+		font-size: 1rem;
+		line-height: 1.22;
+		font-weight: 800;
+		letter-spacing: 0;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
+
+	.home-ai-module--guide .home-ai-module__copy h3 {
+		font-size: 0.9rem;
+	}
+
+	.home-ai-module__copy p {
+		display: -webkit-box;
+		overflow: hidden;
+		margin: 0.38rem 0 0;
+		color: rgba(255, 255, 255, 0.78);
+		font-size: 0.76rem;
+		line-height: 1.35;
+		font-weight: 560;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
+
+	.home-ai-module__summary {
+		position: relative;
+		z-index: 1;
+		border-radius: 0.9rem;
+		background: rgba(255, 255, 255, 0.12);
+		padding: 0.66rem 0.72rem;
+		overflow: hidden;
+		color: rgba(255, 255, 255, 0.72);
+		display: -webkit-box;
+		font-size: 0.78rem;
+		line-height: 1.38;
+		font-weight: 680;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
 	}
 
 	.home-columns {
