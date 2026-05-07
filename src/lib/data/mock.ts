@@ -59,6 +59,15 @@ function createFallbackCommerceWidgets(interestId: string): WidgetData[] {
 function createFallbackCommunityWidget(interestId: string): WidgetData {
 	const interest = getInterestInfo(interestId);
 	const seed = hashString(interestId);
+	const topics = [
+		`${interest.label} 입문자가 처음 사면 좋은 것들 정리`,
+		`요즘 ${interest.label}에서 반응 좋은 아이템 써본 후기`,
+		`${interest.label} 오래 즐기는 사람들이 공통으로 말하는 팁`,
+		`이번 주 ${interest.label} 커뮤니티에서 제일 많이 저장된 조합`,
+		`${interest.label} 좋아하면 공감할 실패 줄이는 방법`,
+		`${interest.label} 고수들이 은근히 챙기는 디테일 모음`
+	];
+	const authors = ['리뷰노트', '취향수집가', '장바구니러', '입문메이트', '핫딜탐정', '실사용러'];
 
 	return {
 		id: `${interestId}-community`,
@@ -66,8 +75,8 @@ function createFallbackCommunityWidget(interestId: string): WidgetData {
 		title: `${interest.label} 커뮤니티`,
 		data: Array.from({ length: 6 }, (_, index) => ({
 			id: `${interestId}-p${index + 1}`,
-			author: `${interest.label}메이트${index + 1}`,
-			title: `${interest.label} 좋아하는 사람들이 요즘 많이 이야기하는 주제 ${index + 1}`,
+			author: `${interest.label}${authors[index % authors.length]}`,
+			title: topics[index % topics.length],
 			views: `${0.4 + ((seed + index) % 9) / 10}K`,
 			comments: 10 + ((seed + index * 7) % 120)
 		}))

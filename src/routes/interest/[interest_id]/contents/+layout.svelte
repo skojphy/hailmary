@@ -6,10 +6,10 @@
 	let { children } = $props();
 
 	const tabs = [
-		{ id: 'shorts', label: 'Shorts', path: 'shorts', italic: true },
-		{ id: 'commerce', label: '공동구매', path: 'commerce' },
 		{ id: 'ai-pick', label: 'AI PICK', path: 'ai-pick' },
-		{ id: 'community', label: '🏆 인기글', path: 'community' }
+		{ id: 'shorts', label: 'Shorts', path: 'shorts', italic: true },
+		{ id: 'community', label: '🏆 인기글', path: 'community' },
+		{ id: 'commerce', label: '공동구매', path: 'commerce' }
 	];
 
 	const interest = $derived(page.params.interest_id as InterestArea);

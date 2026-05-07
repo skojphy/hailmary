@@ -23,6 +23,10 @@
 	function getProductHref(card: AiPickCard) {
 		return card.product.url ?? 'https://item.gmarket.co.kr/Item?goodscode=3080578382';
 	}
+
+	function getProductViewHref(card: AiPickCard) {
+		return `/interest/${data.interest}/product?url=${encodeURIComponent(getProductHref(card))}`;
+	}
 </script>
 
 <svelte:head>
@@ -46,9 +50,7 @@
 
 			<a
 				class="pick-product"
-				href={getProductHref(card)}
-				target="_blank"
-				rel="noreferrer"
+				href={getProductViewHref(card)}
 				aria-label={`${card.product.name} 상품 보기`}
 			>
 				<div class="pick-product__handle"></div>

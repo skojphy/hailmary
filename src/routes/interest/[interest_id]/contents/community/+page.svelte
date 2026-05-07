@@ -87,14 +87,14 @@
 		align-items: flex-end;
 		justify-content: space-between;
 		gap: 1rem;
-		margin-bottom: 1rem;
-		padding: 1.15rem;
+		margin-bottom: 0.82rem;
+		padding: 0.86rem 0.95rem;
 		border: 1px solid rgba(17, 24, 39, 0.06);
-		border-radius: 1.4rem;
+		border-radius: 1.05rem;
 		background:
 			linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.88)),
 			radial-gradient(circle at 18% 0%, rgba(87, 77, 255, 0.16), transparent 36%);
-		box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+		box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
 	}
 
 	.community-hero__eyebrow {
@@ -102,36 +102,36 @@
 		align-items: center;
 		gap: 0.35rem;
 		color: #4f46e5;
-		font-size: 0.78rem;
+		font-size: 0.72rem;
 		font-weight: 900;
 	}
 
 	.community-hero h2 {
-		margin: 0.38rem 0 0;
-		font-size: 1.72rem;
+		margin: 0.24rem 0 0;
+		font-size: 1.34rem;
 		line-height: 1;
 		font-weight: 950;
 		letter-spacing: 0;
 	}
 
 	.community-hero p {
-		margin: 0.5rem 0 0;
+		margin: 0.36rem 0 0;
 		max-width: 15rem;
 		color: #64748b;
-		font-size: 0.88rem;
-		line-height: 1.38;
+		font-size: 0.78rem;
+		line-height: 1.3;
 		font-weight: 650;
 	}
 
 	.community-hero__rank {
 		display: grid;
-		width: 4.25rem;
-		height: 4.25rem;
+		width: 3.35rem;
+		height: 3.35rem;
 		place-items: center;
-		border-radius: 1.15rem;
+		border-radius: 0.9rem;
 		background: #111827;
 		color: #ffffff;
-		box-shadow: 0 14px 24px rgba(17, 24, 39, 0.2);
+		box-shadow: 0 10px 18px rgba(17, 24, 39, 0.16);
 	}
 
 	.community-hero__rank strong,
@@ -142,13 +142,13 @@
 	.community-hero__rank strong {
 		align-self: end;
 		color: #a7f3d0;
-		font-size: 0.7rem;
+		font-size: 0.62rem;
 		font-weight: 950;
 	}
 
 	.community-hero__rank span {
 		align-self: start;
-		font-size: 1.55rem;
+		font-size: 1.22rem;
 		font-weight: 950;
 	}
 
