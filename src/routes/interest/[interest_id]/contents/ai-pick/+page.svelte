@@ -41,17 +41,13 @@
 </section>
 
 <style>
-	:global(body) {
-		background: #111827;
-	}
-
 	.ai-pick-feed {
-		height: calc(100dvh - 9rem);
-		min-height: 34rem;
+		height: calc(100dvh - 14.1rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+		min-height: 28rem;
 		overflow-y: auto;
 		scroll-snap-type: y mandatory;
-		padding: 0 0 calc(5.5rem + env(safe-area-inset-bottom));
-		background: #111827;
+		padding: 0 1.18rem 1.2rem;
+		background: transparent;
 	}
 
 	.ai-pick-feed::-webkit-scrollbar {
@@ -61,11 +57,18 @@
 	.pick-card {
 		position: relative;
 		display: flex;
-		min-height: calc(100dvh - 9rem);
+		min-height: calc(100dvh - 16.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		overflow: hidden;
+		margin-bottom: 1.18rem;
+		border-radius: 1.65rem;
 		scroll-snap-align: start;
 		color: #ffffff;
 		isolation: isolate;
+		box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+	}
+
+	.pick-card:first-child {
+		margin-top: 1.18rem;
 	}
 
 	.pick-card__background,
@@ -90,13 +93,14 @@
 
 	.pick-card__copy {
 		align-self: flex-end;
-		width: 100%;
-		padding: 5rem 1rem 13.8rem;
+		width: min(100%, 22rem);
+		margin: 0 auto;
+		padding: 5rem 1.25rem 13.8rem;
 	}
 
 	.pick-card__copy h2 {
 		margin: 0;
-		max-width: 19rem;
+		max-width: 100%;
 		font-size: clamp(1.3rem, 6.6vw, 2rem);
 		line-height: 1.14;
 		font-weight: 950;
@@ -106,8 +110,8 @@
 
 	.pick-card__copy p {
 		margin: 0.82rem 0 0;
-		max-width: 18rem;
-		font-size: 1.08rem;
+		max-width: 100%;
+		font-size: 1rem;
 		line-height: 1.36;
 		font-weight: 800;
 		color: rgba(255, 255, 255, 0.9);
@@ -115,7 +119,7 @@
 
 	.pick-card__reason {
 		margin-top: 0.95rem;
-		max-width: 19rem;
+		max-width: 100%;
 		padding: 0.78rem 0.9rem;
 		border: 1px solid rgba(255, 255, 255, 0.18);
 		border-radius: 1rem;
@@ -129,9 +133,9 @@
 
 	.pick-product {
 		position: absolute;
-		left: 1rem;
-		right: 1rem;
-		bottom: calc(5.35rem + env(safe-area-inset-bottom));
+		left: 1.18rem;
+		right: 1.18rem;
+		bottom: 1.18rem;
 		display: grid;
 		grid-template-columns: 4.8rem 1fr 2.4rem;
 		gap: 0.85rem;
@@ -209,12 +213,13 @@
 
 	@media (min-width: 520px) {
 		.ai-pick-feed {
-			height: calc(100dvh - 8.5rem);
+			height: calc(100dvh - 13.7rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+			padding: 0 1.3rem 1.25rem;
 			border-radius: 1.4rem;
 		}
 
 		.pick-card {
-			min-height: calc(100dvh - 8.5rem);
+			min-height: calc(100dvh - 16.2rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		}
 	}
 </style>
