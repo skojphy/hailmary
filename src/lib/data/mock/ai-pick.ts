@@ -1,5 +1,8 @@
 import type { InterestArea } from '$lib/stores/interest';
 import type { WidgetData } from '../mock';
+import { INTERESTS } from '$lib/data/interests';
+import { getInterestPhotoSet } from '$lib/data/interest-photo-library';
+import { getCommerceItems } from '../mock';
 
 export type AiPickCard = {
 	id: string;
@@ -133,3 +136,158 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 		]
 	}
 };
+
+const interestLabelById = new Map(INTERESTS.map((interest) => [interest.id, interest.label]));
+
+const categoryCopy = {
+	beauty: [
+		{
+			title: '오늘 분위기는 결 좋은 광채로',
+			description: '피부 표현은 가볍게, 포인트 컬러는 하나만 남기면 데일리 메이크업이 쉬워져요.',
+			reason: '베이스 지속력과 톤 정리 키워드가 같이 많이 언급돼서 추천해요.'
+		},
+		{
+			title: '작은 파우치에 담는 실패 없는 조합',
+			description: '선크림, 립, 미니 팔레트처럼 자주 쓰는 제품만 남기면 휴대성이 좋아요.',
+			reason: '세일 장바구니와 정착템 후기에서 반복되는 조합을 반영했어요.'
+		}
+	],
+	tech: [
+		{
+			title: '체감이 큰 데스크 업그레이드',
+			description: '입력장치와 화면 배치를 먼저 바꾸면 작업 루틴이 바로 가벼워져요.',
+			reason: '셋업 인증과 실사용 후기에서 만족도가 높게 언급된 흐름이에요.'
+		},
+		{
+			title: '가볍게 들고 다니는 생산성 세트',
+			description: '무선 오디오와 휴대용 액세서리를 맞추면 이동 중 작업 전환이 빨라져요.',
+			reason: '신제품 후기와 할인 정보가 함께 반응을 얻고 있어요.'
+		}
+	],
+	sports: [
+		{
+			title: '오래 움직이는 날엔 가벼운 장비부터',
+			description: '착용감 좋은 기본템을 먼저 맞추면 운동 후반 피로감이 덜해요.',
+			reason: '입문 장비와 회복 루틴 질문이 같이 늘고 있어서 골랐어요.'
+		},
+		{
+			title: '주말 루틴을 안정적으로 만드는 준비물',
+			description: '날씨와 컨디션 변화에 대응할 수 있는 소품을 챙기면 꾸준함이 쉬워져요.',
+			reason: '실전 후기형 인기글에서 반복되는 불편 포인트를 반영했어요.'
+		}
+	],
+	food: [
+		{
+			title: '집에서 즐기는 작은 취향 루틴',
+			description: '자주 쓰는 도구와 베이스 재료를 맞추면 첫 시도도 부담이 줄어요.',
+			reason: '입문템 추천과 저장용 레시피 글의 공통 키워드를 묶었어요.'
+		},
+		{
+			title: '주말에 꺼내기 좋은 홈카페 조합',
+			description: '향과 질감이 살아나는 기본 아이템을 고르면 만족도가 오래가요.',
+			reason: '후기에서 재구매와 선물 언급이 함께 올라오는 흐름이에요.'
+		}
+	],
+	home: [
+		{
+			title: '공간을 넓게 쓰는 생활 정리템',
+			description: '바닥을 비우고 자주 쓰는 물건만 가까이 두면 집이 훨씬 정돈돼 보여요.',
+			reason: '좁은 공간 활용과 첫 구매템 질문이 많이 겹쳐서 추천해요.'
+		},
+		{
+			title: '하루 끝을 편하게 만드는 무드 세팅',
+			description: '조명, 패브릭, 수납을 같이 맞추면 작은 변화로도 분위기가 달라져요.',
+			reason: '방 분위기 전환과 실용템 후기가 함께 반응을 얻고 있어요.'
+		}
+	],
+	culture: [
+		{
+			title: '취향을 오래 남기는 기록 아이템',
+			description: '보고 듣고 읽은 것을 바로 정리할 수 있으면 콘텐츠 경험이 더 깊어져요.',
+			reason: '저장하고 다시 보는 콘텐츠형 글의 반응이 높아지고 있어요.'
+		},
+		{
+			title: '이번 주말 감도를 올리는 작은 준비',
+			description: '가볍게 들고 나갈 수 있는 아이템 하나만 있어도 경험이 더 선명해져요.',
+			reason: '전시, 독서, 사진 후기에서 공통으로 나온 니즈를 반영했어요.'
+		}
+	]
+};
+
+function getAiPickCategory(interestId: string) {
+	if (['makeup', 'beauty', 'beauty-2', 'perfume', 'nail', 'fashion'].includes(interestId)) {
+		return 'beauty';
+	}
+
+	if (['tech', 'phone', 'streaming', 'gaming'].includes(interestId)) {
+		return 'tech';
+	}
+
+	if (
+		[
+			'running',
+			'running-crew',
+			'running-crew-2',
+			'yoga',
+			'climbing',
+			'swimming',
+			'camping',
+			'early-adopter'
+		].includes(interestId)
+	) {
+		return 'sports';
+	}
+
+	if (['bakery', 'tech-2', 'home-cafe', 'cooking', 'whiskey'].includes(interestId)) {
+		return 'food';
+	}
+
+	if (
+		['home', 'living-alone', 'interior', 'travel', 'drive', 'plants', 'early-adopter-2'].includes(
+			interestId
+		)
+	) {
+		return 'home';
+	}
+
+	return 'culture';
+}
+
+function formatPrice(price: number) {
+	return `${price.toLocaleString()}원~`;
+}
+
+function createFallbackAiPickCards(interestId: string): AiPickCard[] {
+	const label = interestLabelById.get(interestId) ?? '관심사';
+	const photoSet = getInterestPhotoSet(interestId);
+	const products = getCommerceItems(interestId);
+	const copySet = categoryCopy[getAiPickCategory(interestId)];
+
+	return Array.from({ length: 4 }, (_, index) => {
+		const product = products[index % products.length]?.data;
+		const copy = copySet[index % copySet.length];
+		const imagePool = [...photoSet.galleryImages, ...photoSet.shortsImages, ...photoSet.productImages];
+
+		return {
+			id: `${interestId}_ai_generated_${index + 1}`,
+			label: `${label} AI 추천`,
+			title: index % 2 === 0 ? `${label} 취향에 맞춘 AI PICK` : copy.title,
+			description: copy.description,
+			reason: `${label} 인기글의 질문, 저장, 구매 반응을 함께 보고 골랐어요.`,
+			imageUrl: imagePool[index % imagePool.length],
+			product: {
+				brand: product?.title?.split(' ')[0] ?? label,
+				name: product?.title ?? `${label} 추천 아이템 ${index + 1}`,
+				price: typeof product?.price === 'number' ? formatPrice(product.price) : '추천가 확인',
+				imageUrl: product?.imageUrl ?? photoSet.productImages[index % photoSet.productImages.length]
+			}
+		};
+	});
+}
+
+export function getAiPickCards(interestId: string): AiPickCard[] {
+	const curated = (aiPickData as Record<string, { data: AiPickCard[] }>)[interestId]?.data ?? [];
+	const fallback = createFallbackAiPickCards(interestId);
+
+	return [...curated, ...fallback].slice(0, 6);
+}

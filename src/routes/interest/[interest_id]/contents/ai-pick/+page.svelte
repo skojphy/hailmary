@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ShoppingBag } from 'lucide-svelte';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
+	import { onMount, tick } from 'svelte';
 
 	let { data } = $props<{
 		data: {
@@ -8,14 +9,62 @@
 			cards: AiPickCard[];
 		};
 	}>();
+
+	type RepeatedAiPickCard = AiPickCard & { repeatKey: string };
+
+	const repeatCount = 9;
+	const middleRepeat = Math.floor(repeatCount / 2);
+	const repeatedCards: RepeatedAiPickCard[] = $derived.by(() =>
+		Array.from({ length: repeatCount }, (_, repeatIndex) =>
+			data.cards.map((card: AiPickCard) => ({
+				...card,
+				repeatKey: `${repeatIndex}-${card.id}`
+			}))
+		).flat()
+	);
+
+	let feedRef: HTMLElement;
+	let isLooping = false;
+
+	function getCycleHeight() {
+		if (!feedRef || repeatCount <= 0) return 0;
+		return feedRef.scrollHeight / repeatCount;
+	}
+
+	function handleInfiniteScroll() {
+		if (!feedRef || isLooping) return;
+
+		const cycleHeight = getCycleHeight();
+		if (!cycleHeight) return;
+
+		const upperBound = cycleHeight * 1.5;
+		const lowerBound = cycleHeight * (repeatCount - 1.5);
+
+		if (feedRef.scrollTop < upperBound || feedRef.scrollTop > lowerBound) {
+			isLooping = true;
+			feedRef.scrollTop = cycleHeight * middleRepeat + (feedRef.scrollTop % cycleHeight);
+			requestAnimationFrame(() => {
+				isLooping = false;
+			});
+		}
+	}
+
+	onMount(async () => {
+		await tick();
+		const cycleHeight = getCycleHeight();
+
+		if (feedRef && cycleHeight) {
+			feedRef.scrollTop = cycleHeight * middleRepeat;
+		}
+	});
 </script>
 
 <svelte:head>
 	<title>AI PICK</title>
 </svelte:head>
 
-<section class="ai-pick-feed" aria-label="AI PICK 카드 피드">
-	{#each data.cards as card}
+<section bind:this={feedRef} class="ai-pick-feed" aria-label="AI PICK 카드 피드" onscroll={handleInfiniteScroll}>
+	{#each repeatedCards as card (card.repeatKey)}
 		<article class="pick-card">
 			<img class="pick-card__background" src={card.imageUrl} alt="" />
 			<div class="pick-card__shade"></div>
@@ -59,16 +108,12 @@
 		display: flex;
 		min-height: calc(100dvh - 16.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		overflow: hidden;
-		margin-bottom: 1.18rem;
+		margin: 1.18rem 0;
 		border-radius: 1.65rem;
 		scroll-snap-align: start;
 		color: #ffffff;
 		isolation: isolate;
 		box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
-	}
-
-	.pick-card:first-child {
-		margin-top: 1.18rem;
 	}
 
 	.pick-card__background,
