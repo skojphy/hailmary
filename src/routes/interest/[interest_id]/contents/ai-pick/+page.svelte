@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { ShoppingBag } from 'lucide-svelte';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
 
 	let { data } = $props<{
@@ -20,6 +19,10 @@
 			}))
 		).flat()
 	);
+
+	function getProductHref(card: AiPickCard) {
+		return card.product.url ?? 'https://item.gmarket.co.kr/Item?goodscode=3080578382';
+	}
 </script>
 
 <svelte:head>
@@ -41,7 +44,13 @@
 				<p>{card.description}</p>
 			</div>
 
-			<div class="pick-product">
+			<a
+				class="pick-product"
+				href={getProductHref(card)}
+				target="_blank"
+				rel="noreferrer"
+				aria-label={`${card.product.name} 상품 보기`}
+			>
 				<div class="pick-product__handle"></div>
 				<img src={card.product.imageUrl} alt="" />
 				<div class="pick-product__copy">
@@ -49,8 +58,7 @@
 					<span>{card.product.name}</span>
 					<b>{card.product.price}</b>
 				</div>
-				<button type="button" aria-label="상품 담기"><ShoppingBag size={22} /></button>
-			</div>
+			</a>
 		</article>
 	{/each}
 </section>
@@ -170,13 +178,14 @@
 		right: 1.18rem;
 		bottom: 1.18rem;
 		display: grid;
-		grid-template-columns: 4.8rem 1fr 2.4rem;
+		grid-template-columns: 4.8rem 1fr;
 		gap: 0.85rem;
 		align-items: center;
 		padding: 1rem;
 		border-radius: 1.08rem;
 		background: #ffffff;
 		color: #111827;
+		text-decoration: none;
 		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
 	}
 
@@ -231,17 +240,6 @@
 		margin-top: 0.34rem;
 		font-size: 1.08rem;
 		font-weight: 950;
-	}
-
-	.pick-product button {
-		display: grid;
-		width: 2.4rem;
-		height: 2.4rem;
-		place-items: center;
-		border: 0;
-		border-radius: 999px;
-		background: #f1f5f9;
-		color: #64748b;
 	}
 
 	@media (min-width: 520px) {

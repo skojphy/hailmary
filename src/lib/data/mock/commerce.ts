@@ -86,7 +86,8 @@ export const commerceData: Record<InterestArea, WidgetData[]> = {
 				discountRate: 60,
 				currentParticipants: 840,
 				targetParticipants: 1000,
-				imageUrl: 'https://plus.unsplash.com/premium_photo-1681980018511-cbac52cc21be?w=400&q=80'
+				imageUrl:
+					'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80'
 			}
 		},
 		{

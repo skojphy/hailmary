@@ -45,7 +45,7 @@ const beautyPhotos: InterestPhotoSet = {
 		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1586495777744-4413f21b72a0?auto=format&fit=crop&w=900&q=80',
-		'https://plus.unsplash.com/premium_photo-1681980018511-cbac52cc21be?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80'
 	],
 	shortsImages: [

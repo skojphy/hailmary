@@ -16,8 +16,12 @@ export type AiPickCard = {
 		name: string;
 		price: string;
 		imageUrl: string;
+		url?: string;
 	};
 };
+
+const gmarketProductUrl =
+	'https://item.gmarket.co.kr/Item?goodscode=3080578382';
 
 export const aiPickData: Record<InterestArea, WidgetData> = {
 	running: {
@@ -75,7 +79,8 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 					brand: '홀리카홀리카',
 					name: '메이크업 선크림 SPF50+ PA+++',
 					price: '15,000원~',
-					imageUrl: '/images/items/makeup1.webp'
+					imageUrl: '/images/items/makeup1.webp',
+					url: gmarketProductUrl
 				}
 			},
 			{
@@ -339,7 +344,8 @@ function createFallbackAiPickCards(interestId: string): AiPickCard[] {
 				brand: product?.title?.split(' ')[0] ?? label,
 				name: product?.title ?? `${label} 추천 아이템 ${index + 1}`,
 				price: typeof product?.price === 'number' ? formatPrice(product.price) : '추천가 확인',
-				imageUrl: product?.imageUrl ?? photoSet.productImages[index % photoSet.productImages.length]
+				imageUrl: product?.imageUrl ?? photoSet.productImages[index % photoSet.productImages.length],
+				url: gmarketProductUrl
 			}
 		};
 	});
