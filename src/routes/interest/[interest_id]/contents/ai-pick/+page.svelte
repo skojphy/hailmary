@@ -68,11 +68,14 @@
 		<article class="pick-card">
 			<img class="pick-card__background" src={card.imageUrl} alt="" />
 			<div class="pick-card__shade"></div>
+			<div class="pick-card__reason">
+				<span>AI PICK</span>
+				<p>{card.reason}</p>
+			</div>
 
 			<div class="pick-card__copy">
 				<h2>{card.title}</h2>
 				<p>{card.description}</p>
-				<div class="pick-card__reason">{card.reason}</div>
 			</div>
 
 			<div class="pick-product">
@@ -163,17 +166,35 @@
 	}
 
 	.pick-card__reason {
-		margin-top: 0.95rem;
-		max-width: 100%;
-		padding: 0.78rem 0.9rem;
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		right: 1rem;
+		z-index: 1;
+		padding: 0.74rem 0.82rem;
 		border: 1px solid rgba(255, 255, 255, 0.18);
-		border-radius: 1rem;
-		background: rgba(17, 24, 39, 0.38);
+		border-radius: 0.95rem;
+		background: rgba(17, 24, 39, 0.34);
 		color: rgba(255, 255, 255, 0.86);
-		font-size: 0.82rem;
-		line-height: 1.38;
+		backdrop-filter: blur(12px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+	}
+
+	.pick-card__reason span {
+		display: inline-flex;
+		margin-bottom: 0.35rem;
+		color: #86efac;
+		font-size: 0.68rem;
+		line-height: 1;
+		font-weight: 950;
+		letter-spacing: 0.08em;
+	}
+
+	.pick-card__reason p {
+		margin: 0;
+		font-size: 0.78rem;
+		line-height: 1.34;
 		font-weight: 750;
-		backdrop-filter: blur(10px);
 	}
 
 	.pick-product {

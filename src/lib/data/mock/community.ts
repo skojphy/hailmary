@@ -20,10 +20,10 @@ export const communityData: Record<InterestArea, WidgetData> = {
     type: 'community',
     title: '뷰티 TALK',
     data: [
-      { id: 'mp1', author: '코덕일기', title: '이번 올리브영 세일때 꼭 사야할 리스트', views: '8.4K', comments: 120 },
+      { id: 'mp1', author: '코덕일기', title: '이번 뷰티 특가 때 꼭 담아야 할 리스트', views: '8.4K', comments: 120 },
       { id: 'mp2', author: '틴트장인', title: '퍼스널 컬러 진단 받았는데 충격...', views: '3.1K', comments: 45 },
       { id: 'mp3', author: '수부지탈출', title: '수부지에 맞는 파운데이션 정착템 찾았습니다', views: '12K', comments: 88 },
-      { id: 'mp4', author: '올영vvipp', title: '단종돼서 오열한 레전드 아이템들 ㅠㅠ 돌아와', views: '2.2K', comments: 34 },
+      { id: 'mp4', author: '뷰티찐팬', title: '단종돼서 오열한 레전드 아이템들 ㅠㅠ 돌아와', views: '2.2K', comments: 34 },
       { id: 'mp5', author: '글리터덕', title: '까마귀들 모여라 영롱 보스 글리터 모음.zip', views: '5.5K', comments: 92 },
     ],
   },
