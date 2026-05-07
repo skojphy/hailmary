@@ -289,5 +289,5 @@ export function getAiPickCards(interestId: string): AiPickCard[] {
 	const curated = (aiPickData as Record<string, { data: AiPickCard[] }>)[interestId]?.data ?? [];
 	const fallback = createFallbackAiPickCards(interestId);
 
-	return [...curated, ...fallback].slice(0, 6);
+	return [...curated, ...fallback].slice(0, 4);
 }

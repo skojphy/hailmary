@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { ShoppingBag } from 'lucide-svelte';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
-	import { onMount, tick } from 'svelte';
 
 	let { data } = $props<{
 		data: {
@@ -12,8 +11,7 @@
 
 	type RepeatedAiPickCard = AiPickCard & { repeatKey: string };
 
-	const repeatCount = 9;
-	const middleRepeat = Math.floor(repeatCount / 2);
+	const repeatCount = 2;
 	const repeatedCards: RepeatedAiPickCard[] = $derived.by(() =>
 		Array.from({ length: repeatCount }, (_, repeatIndex) =>
 			data.cards.map((card: AiPickCard) => ({
@@ -22,48 +20,13 @@
 			}))
 		).flat()
 	);
-
-	let feedRef: HTMLElement;
-	let isLooping = false;
-
-	function getCycleHeight() {
-		if (!feedRef || repeatCount <= 0) return 0;
-		return feedRef.scrollHeight / repeatCount;
-	}
-
-	function handleInfiniteScroll() {
-		if (!feedRef || isLooping) return;
-
-		const cycleHeight = getCycleHeight();
-		if (!cycleHeight) return;
-
-		const upperBound = cycleHeight * 1.5;
-		const lowerBound = cycleHeight * (repeatCount - 1.5);
-
-		if (feedRef.scrollTop < upperBound || feedRef.scrollTop > lowerBound) {
-			isLooping = true;
-			feedRef.scrollTop = cycleHeight * middleRepeat + (feedRef.scrollTop % cycleHeight);
-			requestAnimationFrame(() => {
-				isLooping = false;
-			});
-		}
-	}
-
-	onMount(async () => {
-		await tick();
-		const cycleHeight = getCycleHeight();
-
-		if (feedRef && cycleHeight) {
-			feedRef.scrollTop = cycleHeight * middleRepeat;
-		}
-	});
 </script>
 
 <svelte:head>
 	<title>AI PICK</title>
 </svelte:head>
 
-<section bind:this={feedRef} class="ai-pick-feed" aria-label="AI PICK 카드 피드" onscroll={handleInfiniteScroll}>
+<section class="ai-pick-feed" aria-label="AI PICK 카드 피드">
 	{#each repeatedCards as card (card.repeatKey)}
 		<article class="pick-card">
 			<img class="pick-card__background" src={card.imageUrl} alt="" />
@@ -99,6 +62,7 @@
 		overflow-y: auto;
 		scroll-snap-type: y mandatory;
 		padding: 0 1.18rem 1.2rem;
+		scroll-padding-top: 1.18rem;
 		background: transparent;
 	}
 
@@ -111,12 +75,15 @@
 		display: flex;
 		min-height: calc(100dvh - 16.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 		overflow: hidden;
-		margin: 1.18rem 0;
+		margin: 0 0 1.18rem;
 		border-radius: 1.65rem;
 		scroll-snap-align: start;
 		color: #ffffff;
 		isolation: isolate;
-		box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+	}
+
+	.pick-card:first-child {
+		margin-top: 1.18rem;
 	}
 
 	.pick-card__background,
@@ -281,7 +248,6 @@
 		.ai-pick-feed {
 			height: calc(100dvh - 13.7rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 			padding: 0 1.3rem 1.25rem;
-			border-radius: 1.4rem;
 		}
 
 		.pick-card {
