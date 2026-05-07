@@ -74,7 +74,7 @@ export const aiPickData: Record<InterestArea, WidgetData> = {
 				description: '매트한 제형으로 마무리돼요. 베이스 전에 얇게 올리기 좋아요.',
 				reason: '수부지 베이스와 뷰티 특가템 이야기가 함께 많이 올라와서 골랐어요.',
 				imageUrl:
-					'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=1000&q=85',
+					'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=85',
 				product: {
 					brand: '홀리카홀리카',
 					name: '메이크업 선크림 SPF50+ PA+++',

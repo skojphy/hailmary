@@ -55,6 +55,7 @@
 		--header-pill-text: ${activeMeta.palette.headerPillText};
 		--header-accent: ${activeMeta.palette.accent};
 		--header-accent-strong: ${activeMeta.palette.accentStrong};
+		--header-bg-gradient: ${activeMeta.palette.backgroundGradient};
 	`}
 >
 	<button class="interest-header__title" type="button" onclick={() => (showDropdown = true)}>
@@ -119,20 +120,24 @@
 
 <style>
 	.interest-header {
-		position: relative;
+		position: sticky;
+		top: 0;
 		z-index: 120;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 0.75rem;
-		padding: calc(1.95rem + env(safe-area-inset-top)) 1.25rem 0.95rem;
+		gap: 0.6rem;
+		padding: calc(1.55rem + env(safe-area-inset-top)) 1rem 0.76rem;
 		color: var(--header-text);
+		background: var(--header-bg-gradient);
+		background-position: top center;
+		background-size: 100% 100vh;
 	}
 
 	.interest-header__title {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.35rem;
+		gap: 0.28rem;
 		border: none;
 		background: transparent;
 		padding: 0;
@@ -140,13 +145,13 @@
 	}
 
 	.interest-header__emoji {
-		font-size: 1.57rem;
+		font-size: 1.26rem;
 		line-height: 1;
 	}
 
 	.interest-header__label {
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 1.74rem;
+		font-size: 1.39rem;
 		line-height: 1;
 		letter-spacing: -0.03em;
 	}
@@ -154,19 +159,21 @@
 	.interest-header__title :global(svg) {
 		flex-shrink: 0;
 		margin-left: 0.1rem;
+		width: 1.1rem;
+		height: 1.1rem;
 	}
 
 	.interest-header__pill {
 		display: inline-flex;
 		flex-shrink: 0;
 		align-items: center;
-		gap: 0.34rem;
+		gap: 0.27rem;
 		border: none;
-		border-radius: 10px;
+		border-radius: 8px;
 		background: rgba(255, 255, 255, 0.34);
-		padding: 0.58rem 0.72rem;
+		padding: 0.46rem 0.58rem;
 		color: #ff5a63;
-		font-size: 0.79rem;
+		font-size: 0.63rem;
 		font-weight: 800;
 		letter-spacing: -0.02em;
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
@@ -236,16 +243,16 @@
 
 	@media (max-width: 420px) {
 		.interest-header {
-			padding: calc(1.7rem + env(safe-area-inset-top)) 1rem 0.85rem;
+			padding: calc(1.36rem + env(safe-area-inset-top)) 0.8rem 0.68rem;
 		}
 
 		.interest-header__label {
-			font-size: 1.62rem;
+			font-size: 1.3rem;
 		}
 
 		.interest-header__pill {
-			padding: 0.52rem 0.66rem;
-			font-size: 0.74rem;
+			padding: 0.42rem 0.53rem;
+			font-size: 0.59rem;
 		}
 	}
 </style>

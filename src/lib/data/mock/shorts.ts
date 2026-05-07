@@ -106,7 +106,7 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 				creator: '@shiningyou',
 				liked: true,
 				overlayPosition: 'bottom',
-				thumbnail: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=700&q=80'
+				thumbnail: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=700&q=80'
 			},
 			{
 				id: 'v13',
@@ -146,7 +146,7 @@ export const shortsData: Record<InterestArea, WidgetData> = {
 				creator: '@moodbeauty',
 				liked: false,
 				overlayPosition: 'bottom',
-				thumbnail: 'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?w=700&q=80'
+				thumbnail: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=700&q=80'
 			}
 		]
 	},

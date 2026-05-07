@@ -34,21 +34,43 @@
 			<p>{guide.description}</p>
 		</header>
 
+		<section class="ai-blog-intro">
+			<p>{data.article.kicker}</p>
+		</section>
+
 		<div class="detail-photo-grid">
 			{#each data.photos as photo}
 				<img src={photo} alt="" />
 			{/each}
 		</div>
 
-		<section class="detail-section">
-			<h2>트렌드 분석</h2>
-			{#each data.trends as trend}
+		{#each data.article.sections as section}
+			<section class="detail-section detail-section--article">
+				<h2>{section.title}</h2>
+				{#each section.paragraphs as paragraph}
+					<p>{paragraph}</p>
+				{/each}
+			</section>
+		{/each}
+
+		<section class="ai-trend-box">
+			<h2>AI 트렌드 노트</h2>
+			{#each data.article.analysis as trend}
 				<p>{trend}</p>
 			{/each}
 		</section>
 
-		<section class="detail-section">
-			<h2>AI 추천 이유</h2>
+		<section class="ai-tip-box">
+			<h2>{data.article.tipTitle}</h2>
+			<ul>
+				{#each data.article.tips as tip}
+					<li>{tip}</li>
+				{/each}
+			</ul>
+		</section>
+
+		<section class="detail-section detail-section--article">
+			<h2>그래서 이 상품을 연결했어요</h2>
 			<p>{guide.reason}</p>
 		</section>
 
@@ -169,6 +191,20 @@
 		color: #475569;
 	}
 
+	.ai-blog-intro {
+		margin-top: 1rem;
+		padding: 0.98rem 0;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.ai-blog-intro p {
+		margin: 0;
+		color: #1f2937;
+		font-size: 0.98rem;
+		line-height: 1.62;
+		font-weight: 760;
+	}
+
 	.detail-photo-grid {
 		display: grid;
 		grid-template-columns: 1.4fr 1fr;
@@ -210,6 +246,82 @@
 		margin: 0;
 		font-size: 1.06rem;
 		font-weight: 950;
+	}
+
+	.detail-section--article h2 {
+		font-size: 1.14rem;
+		line-height: 1.28;
+	}
+
+	.detail-section--article p {
+		color: #334155;
+		font-size: 0.95rem;
+		line-height: 1.68;
+		font-weight: 620;
+	}
+
+	.ai-trend-box,
+	.ai-tip-box {
+		margin-top: 1.15rem;
+		border-radius: 1rem;
+		padding: 1rem;
+	}
+
+	.ai-trend-box {
+		border: 1px solid #dbeafe;
+		background: #f8fbff;
+	}
+
+	.ai-tip-box {
+		border: 1px solid #e9d5ff;
+		background: #fbf7ff;
+	}
+
+	.ai-trend-box h2,
+	.ai-tip-box h2 {
+		margin: 0;
+		color: #111827;
+		font-size: 0.98rem;
+		font-weight: 950;
+	}
+
+	.ai-trend-box p {
+		position: relative;
+		margin: 0.62rem 0 0;
+		padding-left: 0.78rem;
+		color: #334155;
+		font-size: 0.89rem;
+		line-height: 1.52;
+		font-weight: 720;
+	}
+
+	.ai-trend-box p::before {
+		position: absolute;
+		left: 0;
+		top: 0.62em;
+		width: 0.28rem;
+		height: 0.28rem;
+		border-radius: 999px;
+		background: #4f46e5;
+		content: '';
+	}
+
+	.ai-tip-box ul {
+		display: grid;
+		gap: 0.56rem;
+		margin: 0.72rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.ai-tip-box li {
+		border-radius: 0.78rem;
+		background: #ffffff;
+		padding: 0.72rem 0.78rem;
+		color: #334155;
+		font-size: 0.88rem;
+		line-height: 1.48;
+		font-weight: 720;
 	}
 
 	.detail-product {

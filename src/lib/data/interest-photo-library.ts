@@ -42,17 +42,17 @@ const mixedKoreanPortraits = [
 
 const beautyPhotos: InterestPhotoSet = {
 	productImages: [
-		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=900&q=80',
-		'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1586495777744-4413f21b72a0?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80',
-		'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80'
+		'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=900&q=80'
 	],
 	shortsImages: [
-		'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80',
-		'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80',
+		'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80',
 		'https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?auto=format&fit=crop&w=900&q=80',
-		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=900&q=80'
+		'https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=900&q=80'
 	],
 	galleryImages: [
 		'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80',
@@ -62,7 +62,7 @@ const beautyPhotos: InterestPhotoSet = {
 	],
 	peopleImages: [...koreanWomenPortraits],
 	rankingImages: [
-		'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=240&q=80',
+		'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1586495777744-4413f21b72a0?auto=format&fit=crop&w=240&q=80',
 		'https://images.unsplash.com/photo-1596704017254-9db1944358aa?auto=format&fit=crop&w=240&q=80'
 	],

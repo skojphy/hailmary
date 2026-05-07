@@ -780,7 +780,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 						label: '립 브러쉬',
 						views: '0.6K 조회',
 						image:
-							'https://images.unsplash.com/photo-1512496115851-a1c8f137e02c?auto=format&fit=crop&w=180&q=80'
+							'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=180&q=80'
 					}
 				],
 				buttonLabel: '더 많은 키워드 보기'
