@@ -63,7 +63,7 @@
 		display: flex;
 		gap: 0.7rem;
 		overflow-x: auto;
-		padding: 0.55rem 0.85rem 1.05rem;
+		padding: 0.34rem 0.85rem 0.62rem;
 	}
 
 	.contents-tab {
@@ -71,8 +71,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 3.45rem;
-		padding: 0.88rem 1.55rem;
+		min-height: 2.72rem;
+		padding: 0.62rem 1.42rem;
 		border-radius: 999px;
 		background: var(--contents-pill-muted-bg);
 		color: var(--contents-pill-text);
@@ -97,12 +97,12 @@
 	@media (max-width: 420px) {
 		.contents-tabs {
 			gap: 0.62rem;
-			padding: 0.48rem 0.78rem 0.98rem;
+			padding: 0.3rem 0.78rem 0.56rem;
 		}
 
 		.contents-tab {
-			min-height: 3.22rem;
-			padding: 0.82rem 1.38rem;
+			min-height: 2.58rem;
+			padding: 0.58rem 1.26rem;
 			font-size: 0.98rem;
 		}
 	}

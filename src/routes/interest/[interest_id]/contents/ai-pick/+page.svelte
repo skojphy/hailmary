@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Info, ShoppingBag, Sparkles } from 'lucide-svelte';
+	import { ShoppingBag } from 'lucide-svelte';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
 
 	let { data } = $props<{
@@ -19,11 +19,6 @@
 		<article class="pick-card">
 			<img class="pick-card__background" src={card.imageUrl} alt="" />
 			<div class="pick-card__shade"></div>
-
-			<div class="pick-card__top">
-				<span><Sparkles size={15} fill="currentColor" /> {card.label}</span>
-				<div>AI 추천 <Info size={16} /></div>
-			</div>
 
 			<div class="pick-card__copy">
 				<h2>{card.title}</h2>
@@ -93,50 +88,17 @@
 			linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 58%);
 	}
 
-	.pick-card__top {
-		position: absolute;
-		top: 1.1rem;
-		left: 1rem;
-		right: 1rem;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.8rem;
-	}
-
-	.pick-card__top span {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.38rem;
-		padding: 0.5rem 0.82rem;
-		border-radius: 999px;
-		background: rgba(17, 24, 39, 0.58);
-		color: #86efac;
-		font-size: 0.83rem;
-		font-weight: 950;
-		backdrop-filter: blur(10px);
-	}
-
-	.pick-card__top div {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.28rem;
-		color: rgba(255, 255, 255, 0.88);
-		font-size: 0.86rem;
-		font-weight: 850;
-	}
-
 	.pick-card__copy {
 		align-self: flex-end;
 		width: 100%;
-		padding: 5rem 1rem 8.9rem;
+		padding: 5rem 1rem 13.8rem;
 	}
 
 	.pick-card__copy h2 {
 		margin: 0;
 		max-width: 19rem;
-		font-size: clamp(2.15rem, 11vw, 3.35rem);
-		line-height: 1.06;
+		font-size: clamp(1.3rem, 6.6vw, 2rem);
+		line-height: 1.14;
 		font-weight: 950;
 		letter-spacing: 0;
 		text-shadow: 0 4px 18px rgba(0, 0, 0, 0.24);
@@ -169,7 +131,7 @@
 		position: absolute;
 		left: 1rem;
 		right: 1rem;
-		bottom: calc(1rem + env(safe-area-inset-bottom));
+		bottom: calc(5.35rem + env(safe-area-inset-bottom));
 		display: grid;
 		grid-template-columns: 4.8rem 1fr 2.4rem;
 		gap: 0.85rem;
