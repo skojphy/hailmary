@@ -9,37 +9,37 @@
 		const text = query.toLowerCase();
 
 		if (/스페인|여행|항공|투어/.test(text)) {
-			return { id: 'early-adopter-2', label: '여행', kind: 'travel' };
+			return { id: 'home', label: '방꾸미기', kind: 'home' };
 		}
 		if (/댕댕|강아지|산책/.test(text)) {
-			return { id: 'beauty-2', label: '댕댕이', kind: 'home' };
+			return { id: 'running', label: '러닝', kind: 'home' };
 		}
 		if (/냥|고양이|집사/.test(text)) {
-			return { id: 'idol-2', label: '냥집사', kind: 'home' };
+			return { id: 'home', label: '방꾸미기', kind: 'home' };
 		}
 		if (/러닝|10km|마라톤|페이스/.test(text)) {
 			return { id: 'running', label: '러닝', kind: 'home' };
 		}
 		if (/다이어트|식단|체중/.test(text)) {
-			return { id: 'running-crew-2', label: '다이어트', kind: 'home' };
+			return { id: 'running', label: '러닝', kind: 'home' };
 		}
 		if (/위스키|홈바|글라스/.test(text)) {
-			return { id: 'whiskey', label: '위스키', kind: 'home' };
+			return { id: 'home', label: '방꾸미기', kind: 'home' };
 		}
 		if (/홈베이킹|베이킹|오븐|빵/.test(text)) {
-			return { id: 'home-cafe', label: '홈베이킹', kind: 'home' };
+			return { id: 'home', label: '방꾸미기', kind: 'home' };
 		}
 		if (/패션|데일리룩|패셔니스타|아우터/.test(text)) {
-			return { id: 'fashion', label: '패셔니스타', kind: 'home' };
+			return { id: 'fashion', label: '패션', kind: 'home' };
 		}
 		if (/수영|수경|수영복/.test(text)) {
-			return { id: 'swimming', label: '수영', kind: 'home' };
+			return { id: 'running', label: '러닝', kind: 'home' };
 		}
 		if (/게임|게이밍|키보드|헤드셋/.test(text)) {
-			return { id: 'gaming', label: '게임', kind: 'home' };
+			return { id: 'tech', label: '테크', kind: 'home' };
 		}
 
-		return { id: 'living-alone', label: '자취', kind: 'home' };
+		return { id: 'makeup', label: '메이크업', kind: 'home' };
 	});
 	const targetCopy = $derived(
 		target.kind === 'travel'
