@@ -10,7 +10,8 @@
 		ProductCard,
 		RankingCard,
 		ShortsCard,
-		StoryCard
+		StoryCard,
+		AmbassadorCard
 	} from '$lib/data/interest-home';
 	import type { AiPickCard } from '$lib/data/mock/ai-pick';
 	import { fly } from 'svelte/transition';
@@ -250,6 +251,34 @@
 							<span>{live.meta}</span>
 						</div>
 						{@const action = getActionLabelParts(live.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
+						</button>
+					{:else if card.type === 'ambassador'}
+						{@const ambassador = card as AmbassadorCard}
+						<div class="home-card__badge-ambassador">
+							<span class="ambassador-badge-text">{ambassador.badge.text}</span>
+						</div>
+						<a href="./contents/shorts" class="home-card__link">
+							<div class="home-card__media home-card__media--shorts ambassador-media-highlight">
+								<img src={ambassador.image} alt="" />
+								<div class="home-card__duration">
+									<Play size={11} fill="currentColor" />
+									{ambassador.duration}
+								</div>
+								<div class="home-card__overlay-copy">{ambassador.title}</div>
+							</div>
+						</a>
+						<div class="home-card__meta">
+							<div class="home-card__avatars">
+								{#each ambassador.avatars.slice(0, 3) as avatar (avatar)}
+									<img src={avatar} alt="" />
+								{/each}
+							</div>
+							<span>{ambassador.meta}</span>
+						</div>
+						{@const action = getActionLabelParts(ambassador.buttonLabel)}
 						<button type="button" class="home-card__action">
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
@@ -1015,5 +1044,29 @@
 		.home-card__title {
 			font-size: 0.96rem;
 		}
+	}
+
+	.home-card__badge-ambassador {
+		display: inline-flex;
+		align-items: center;
+		margin-bottom: 0.82rem;
+	}
+
+	.ambassador-badge-text {
+		background: #ff3b3b;
+		color: #ffffff;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
+		font-size: 0.95rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		box-shadow: 0 4px 8px rgba(255, 59, 59, 0.25);
+	}
+
+	.ambassador-media-highlight {
+		border: 3px solid #ff3b3b;
+		border-radius: 1.1rem;
+		box-shadow: 0 0 15px rgba(255, 59, 59, 0.3);
 	}
 </style>

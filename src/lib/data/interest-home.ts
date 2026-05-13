@@ -99,6 +99,16 @@ export type ShortsCard = BaseCard & {
 	meta: string;
 };
 
+export type AmbassadorCard = BaseCard & {
+	type: 'ambassador';
+	badge: TextBadge;
+	image: string;
+	title: string;
+	duration: string;
+	avatars: string[];
+	meta: string;
+};
+
 export type LiveCard = BaseCard & {
 	type: 'live';
 	badge: LiveBadge;
@@ -158,7 +168,8 @@ export type InterestHomeCard =
 	| GalleryCard
 	| RankingCard
 	| FollowingCard
-	| ThreadCard;
+	| ThreadCard
+	| AmbassadorCard;
 
 export type InterestHomeTheme = {
 	header: HomeHeader;
@@ -578,6 +589,18 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 				buttonLabel: '더 많은 라이브 보기'
 			},
 			{
+				id: `${interest.id}-ambassador`,
+				type: 'ambassador',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
+				image: pick(photoSet.shortsImages, seed + 4),
+				title: `${interest.label} 앰버서더의 특별한 릴스 추천`,
+				duration: '00:45',
+				avatars,
+				meta: createMetric(seed + 8, '봄'),
+				buttonLabel: '앰버서더 콘텐츠 더보기'
+			},
+			{
 				id: `${interest.id}-gallery`,
 				type: 'gallery',
 				column: 'right',
@@ -713,6 +736,18 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				meta: '391개 구매',
 				mediaCaption: '500개 한정\n공동구매',
 				buttonLabel: '더 많은 라이브 보기'
+			},
+			{
+				id: 'mk-ambassador',
+				type: 'ambassador',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
+				image: '/images/shorts/makeup2.gif',
+				title: '메이크업 앰버서더가 알려주는 꿀팁 릴스',
+				duration: '00:45',
+				avatars: makeupAvatars,
+				meta: '12,045명이 봄',
+				buttonLabel: '앰버서더 콘텐츠 더보기'
 			},
 			{
 				id: 'mk-gallery',
@@ -874,6 +909,18 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				buttonLabel: '더 많은 라이브 보기'
 			},
 			{
+				id: 'rn-ambassador',
+				type: 'ambassador',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
+				image: '/images/shorts/run2.gif',
+				title: '러닝 앰버서더의 러닝화 추천 릴스',
+				duration: '00:52',
+				avatars: runningAvatars,
+				meta: '18,204명이 봄',
+				buttonLabel: '앰버서더 콘텐츠 더보기'
+			},
+			{
 				id: 'rn-gallery',
 				type: 'gallery',
 				column: 'right',
@@ -1031,6 +1078,18 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 				meta: '486개 구매',
 				mediaCaption: '500개 한정\n공동구매',
 				buttonLabel: '더 많은 라이브 보기'
+			},
+			{
+				id: 'te-ambassador',
+				type: 'ambassador',
+				column: 'left',
+				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
+				image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=80',
+				title: '테크 앰버서더의 데스크 셋업 릴스',
+				duration: '01:05',
+				avatars: techAvatars,
+				meta: '25,102명이 봄',
+				buttonLabel: '앰버서더 콘텐츠 더보기'
 			},
 			{
 				id: 'te-gallery',
