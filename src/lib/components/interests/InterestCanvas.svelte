@@ -260,7 +260,7 @@
 
 		return {
 			x: minX > maxX ? (minX + maxX) / 2 : Math.min(maxX, Math.max(minX, x)),
-			y: minY > maxY ? (minY + maxY) / 2 : Math.min(maxY, Math.max(minY, y))
+			y: minY > maxY ? maxY : Math.min(maxY, Math.max(minY, y))
 		};
 	}
 
