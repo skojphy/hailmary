@@ -24,8 +24,10 @@
 		return card.product.url ?? 'https://item.gmarket.co.kr/Item?goodscode=3080578382';
 	}
 
-	function getProductViewHref(card: AiPickCard) {
-		return `/interest/${data.interest}/product?url=${encodeURIComponent(getProductHref(card))}`;
+	function getProductViewHref(card: RepeatedAiPickCard) {
+		const mockParam = card.repeatKey === '0-m_ai_1' ? '&mock=pdp' : '';
+
+		return `/interest/${data.interest}/product?url=${encodeURIComponent(getProductHref(card))}${mockParam}`;
 	}
 </script>
 

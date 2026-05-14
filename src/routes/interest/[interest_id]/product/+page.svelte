@@ -5,6 +5,7 @@
 
 	const fallbackUrl = 'https://item.gmarket.co.kr/Item?goodscode=3080578382';
 	const productUrl = $derived(page.url.searchParams.get('url') || fallbackUrl);
+	const useMockPdp = $derived(page.url.searchParams.get('mock') === 'pdp');
 
 	function goBack() {
 		goto(`/interest/${page.params.interest_id}/contents/ai-pick`);
@@ -24,9 +25,19 @@
 				<span>AI PICK</span>
 			</button>
 		</div>
-		<div class="product-view__mock-container">
-			<img src="/images/pdp.png" alt="상품 상세" />
-		</div>
+		{#if useMockPdp}
+			<div class="product-view__mock-container">
+				<img src="/images/pdp.png" alt="상품 상세" />
+			</div>
+		{:else}
+			<iframe
+				src={productUrl}
+				title="Gmarket 상품 상세"
+				loading="eager"
+				referrerpolicy="no-referrer-when-downgrade"
+				sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+			></iframe>
+		{/if}
 	</div>
 </section>
 
@@ -81,6 +92,16 @@
 		border-radius: 1.25rem;
 		background: #ffffff;
 		box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
+	}
+
+	.product-view__frame iframe {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		background: #ffffff;
 	}
 
 	.product-view__mock-container {
