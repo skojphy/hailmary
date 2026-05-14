@@ -361,6 +361,54 @@
 							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
 							>
 						</button>
+					{:else if card.type === 'ambassador'}
+						{@const ambassador = card as AmbassadorCard}
+						<div class="home-card__badge-ambassador">
+							<span class="ambassador-badge-text">{ambassador.badge.text}</span>
+						</div>
+						<a href="./contents/shorts" class="home-card__link">
+							<div class="home-card__media home-card__media--shorts ambassador-media-highlight">
+								<img src={ambassador.image} alt="" />
+								<div class="home-card__duration">
+									<Play size={11} fill="currentColor" />
+									{ambassador.duration}
+								</div>
+								<div class="home-card__overlay-copy">{ambassador.title}</div>
+							</div>
+						</a>
+						<div class="home-card__meta">
+							<div class="home-card__avatars">
+								{#each ambassador.avatars.slice(0, 3) as avatar (avatar)}
+									<img src={avatar} alt="" />
+								{/each}
+							</div>
+							<span>{ambassador.meta}</span>
+						</div>
+						{@const action = getActionLabelParts(ambassador.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
+						</button>
+					{:else if card.type === 'following'}
+						{@const following = card as FollowingCard}
+						<div class={badgeClass(following.badge)}>{following.badge.text}</div>
+						<div class="following-grid">
+							{#each following.people as person}
+								<div class="following-person">
+									<div class="following-person__avatar">
+										<img src={person.image} alt="" />
+										<span>+</span>
+									</div>
+									<strong>{person.name}</strong>
+									<small><UserRound size={12} /> {person.followers}</small>
+								</div>
+							{/each}
+						</div>
+						{@const action = getActionLabelParts(following.buttonLabel)}
+						<button type="button" class="home-card__action">
+							<span>{action.prefix}</span><strong>{action.focus}</strong><span>{action.suffix}</span
+							>
+						</button>
 					{:else if card.type === 'ranking'}
 						{@const ranking = card as RankingCard}
 						<div class={badgeClass(ranking.badge)}>{ranking.badge.text}</div>
@@ -1043,19 +1091,20 @@
 	.home-card__badge-ambassador {
 		display: inline-flex;
 		align-items: center;
-		margin-bottom: 0.82rem;
+		margin-bottom: 0.72rem;
 	}
 
 	.ambassador-badge-text {
-		background: #ff3b3b;
+		background: linear-gradient(135deg, #ff4545 0%, #ff336d 100%);
 		color: #ffffff;
-		padding: 0.25rem 0.5rem;
-		border-radius: 4px;
+		padding: 0.18rem 0.48rem 0.2rem;
+		border-radius: 999px;
 		font-family: 'RomanticGumi', 'Pretendard', sans-serif;
-		font-size: 0.95rem;
+		font-size: 0.74rem;
 		font-weight: 700;
-		letter-spacing: -0.02em;
-		box-shadow: 0 4px 8px rgba(255, 59, 59, 0.25);
+		line-height: 1;
+		letter-spacing: 0;
+		box-shadow: 0 3px 8px rgba(255, 59, 95, 0.18);
 	}
 
 	.ambassador-media-highlight {

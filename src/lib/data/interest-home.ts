@@ -591,7 +591,7 @@ function createGenericTheme(interest: InterestDefinition, index: number): Intere
 			{
 				id: `${interest.id}-ambassador`,
 				type: 'ambassador',
-				column: 'left',
+				column: 'right',
 				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
 				image: pick(photoSet.shortsImages, seed + 4),
 				title: `${interest.label} 앰버서더의 특별한 릴스 추천`,
@@ -740,7 +740,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 			{
 				id: 'mk-ambassador',
 				type: 'ambassador',
-				column: 'left',
+				column: 'right',
 				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
 				image: '/images/shorts/makeup2.gif',
 				title: '메이크업 앰버서더가 알려주는 꿀팁 릴스',
@@ -911,7 +911,7 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 			{
 				id: 'rn-ambassador',
 				type: 'ambassador',
-				column: 'left',
+				column: 'right',
 				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
 				image: '/images/shorts/run2.gif',
 				title: '러닝 앰버서더의 러닝화 추천 릴스',
@@ -1082,9 +1082,10 @@ const curatedInterestHomeThemes: Record<string, InterestHomeTheme> = {
 			{
 				id: 'te-ambassador',
 				type: 'ambassador',
-				column: 'left',
+				column: 'right',
 				badge: { kind: 'text', text: '🏆 AMBASSADOR' },
-				image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=80',
+				image:
+					'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=80',
 				title: '테크 앰버서더의 데스크 셋업 릴스',
 				duration: '01:05',
 				avatars: techAvatars,
