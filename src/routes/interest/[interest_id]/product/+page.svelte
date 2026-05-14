@@ -24,13 +24,9 @@
 				<span>AI PICK</span>
 			</button>
 		</div>
-		<iframe
-			src={productUrl}
-			title="Gmarket 상품 상세"
-			loading="eager"
-			referrerpolicy="no-referrer-when-downgrade"
-			sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-		></iframe>
+		<div class="product-view__mock-container">
+			<img src="/images/pdp.png" alt="상품 상세" />
+		</div>
 	</div>
 </section>
 
@@ -87,14 +83,21 @@
 		box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
 	}
 
-	.product-view__frame iframe {
-		position: relative;
+	.product-view__mock-container {
+		position: absolute;
+		inset: 0;
+		overflow-y: auto;
+		background: #ffffff;
 		z-index: 1;
+	}
+
+	.product-view__mock-container::-webkit-scrollbar {
+		display: none;
+	}
+
+	.product-view__mock-container img {
 		display: block;
 		width: 100%;
-		height: calc(100% + 50px);
-		border: 0;
-		background: #ffffff;
-		transform: translateY(-50px);
+		height: auto;
 	}
 </style>
